@@ -1,7 +1,8 @@
 import { redirect } from 'next/navigation';
 import { ROUTES } from '@/contants/routes';
 import { Button } from '@/components/ui/button';
-import { EVerifyStatus, TVerifyProps } from './types';
+import { EVerifyResponseStatus } from '@/types/verify';
+import { TVerifyProps } from './types';
 import Link from 'next/link';
 
 export const metadata = {
@@ -17,7 +18,7 @@ export default async function VerifyTokenPage({ searchParams }: TVerifyProps) {
     redirect(`${ROUTES.LOGIN}`);
   }
 
-  if (status === EVerifyStatus.SUCCESS) {
+  if (status === EVerifyResponseStatus.SUCCESS) {
     return (
       <div className="max-w-sm mx-auto mt-16">
         <h2 className="text-xl font-bold mb-2">Email successfully verified!</h2>
@@ -31,7 +32,7 @@ export default async function VerifyTokenPage({ searchParams }: TVerifyProps) {
     );
   }
 
-  if (status === EVerifyStatus.ALREADY_VERIFIED) {
+  if (status === EVerifyResponseStatus.ALREADY_VERIFIED) {
     return (
       <div className="max-w-sm mx-auto mt-16">
         <h2 className="text-xl font-bold mb-2">Email already verified!</h2>
@@ -43,7 +44,7 @@ export default async function VerifyTokenPage({ searchParams }: TVerifyProps) {
     );
   }
 
-  if (status === EVerifyStatus.ERROR) {
+  if (status === EVerifyResponseStatus.ERROR) {
     return (
       <div className="max-w-sm mx-auto mt-16">
         <h2 className="text-xl font-bold mb-2">Email verification failed!</h2>

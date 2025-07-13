@@ -4,7 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
-import { EResponseCode } from '@/api/auth/[...nextauth]/types';
+import { ELoginResponseCode } from '@/types/login';
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -22,10 +22,10 @@ export const authOptions = {
         const user = await prisma.user.findUnique({
           where: { email: credentials?.email },
         });
-        if (!user || !user.passwordHash) throw new Error(EResponseCode.USER_NOT_FOUND);
+        if (!user || !user.passwordHash) throw new Error(ELoginResponseCode.USER_NOT_FOUND);
         const valid = await compare(credentials!.password, user.passwordHash);
-        if (!valid) throw new Error(EResponseCode.INVALID_PASSWORD);
-        if (!user.emailVerified) throw new Error(EResponseCode.EMAIL_NOT_VERIFIED);
+        if (!valid) throw new Error(ELoginResponseCode.INVALID_PASSWORD);
+        if (!user.emailVerified) throw new Error(ELoginResponseCode.EMAIL_NOT_VERIFIED);
         return { id: user.id, email: user.email };
       },
     }),

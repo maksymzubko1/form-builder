@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangePasswordForm as TChangePasswordForm, ChangePasswordSchema } from './schema';
+import { ChangePasswordForm as TChangePasswordForm, ChangePasswordSchema } from '@/types/change-password';
 import { useSession } from 'next-auth/react';
 import { API_ROUTES } from '@/contants/routes';
 import z from 'zod';

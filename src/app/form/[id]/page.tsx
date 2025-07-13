@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-export default async function PublicFormPage({ params }: { params: { id: string } }) {
+export default async function PublicFormPage() {
   // TODO: load from DB
   const form = null; // await getForm(params.id)
   if (!form) return notFound();

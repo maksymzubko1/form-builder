@@ -2,14 +2,14 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResetForm as TResetForm, ResetSchema } from './schema';
+import { ResetForm as TResetForm, ResetSchema } from '@/types/reset-password';
+import { EResetPasswordStatus } from '@/app/reset-password/types';
 import { API_ROUTES, ROUTES } from '@/contants/routes';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { EResetPasswordStatus } from '@/app/reset-password/types';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 

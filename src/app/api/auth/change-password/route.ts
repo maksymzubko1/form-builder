@@ -3,7 +3,7 @@ import { authOptions } from '@/api/auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hash } from 'bcryptjs';
-import { ChangePasswordSchema } from '@/types/zod-schemas';
+import { ChangePassword } from '@/types/change-password';
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json();
-  const parse = ChangePasswordSchema.safeParse(body);
+  const parse = ChangePassword.safeParse(body);
   if (!parse.success) {
     return NextResponse.json({ error: parse.error.issues[0].message }, { status: 400 });
   }

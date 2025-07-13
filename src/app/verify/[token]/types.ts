@@ -1,11 +1,6 @@
-export enum EVerifyTokenStatus {
-  PENDING = 'pending',
-  ERROR = 'error',
-  SUCCESS = 'success',
-  ALREADY_VERIFIED = 'already_verified',
-}
+import { EVerifyResponseStatus } from '@/types/verify';
 
 export type TVerifyTokenProps = {
   params: Promise<{ token: string }>
-  searchParams: Promise<{ status: EVerifyTokenStatus | undefined }>;
+  searchParams: Promise<{ status: EVerifyResponseStatus | undefined }>;
 };

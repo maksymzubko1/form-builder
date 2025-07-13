@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResetTokenForm as TResetTokenForm, ResetTokenSchema } from './schema';
+import { ResetTokenForm as TResetTokenForm, ResetTokenSchema, ETokenReset } from '@/types/reset-password';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES, ROUTES } from '@/contants/routes';
 import { z } from 'zod';
@@ -10,7 +10,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { ETokenReset } from '@/app/reset-password/[token]/types';
 
 export default function ResetTokenForm() {
   const params = useParams<{ token: string }>();

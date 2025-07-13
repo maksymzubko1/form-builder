@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { API_ROUTES, ROUTES } from '@/contants/routes';
-import { EVerifyTokenStatus } from '@/app/verify/[token]/types';
+import { EVerifyResponseStatus } from '@/types/verify';
 
 export default function VerifyToken({ token }: { token: string }) {
   const { push } = useRouter();
@@ -13,13 +13,13 @@ export default function VerifyToken({ token }: { token: string }) {
       try {
         const res = await fetch(`${API_ROUTES.VERIFY}/${token}`);
         if (res.ok) {
-          push(`${ROUTES.VERIFY}?status=${EVerifyTokenStatus.SUCCESS}`);
+          push(`${ROUTES.VERIFY}?status=${EVerifyResponseStatus.SUCCESS}`);
         } else {
           const json = await res.json();
-          push(`${ROUTES.VERIFY}?status=${EVerifyTokenStatus[json.status.toUpperCase() as keyof typeof EVerifyTokenStatus] || EVerifyTokenStatus.ERROR}`);
+          push(`${ROUTES.VERIFY}?status=${EVerifyResponseStatus[json.status.toUpperCase() as keyof typeof EVerifyResponseStatus] || EVerifyResponseStatus.ERROR}`);
         }
       } catch {
-        push(`${ROUTES.VERIFY}/?status=${EVerifyTokenStatus.ERROR}`);
+        push(`${ROUTES.VERIFY}/?status=${EVerifyResponseStatus.ERROR}`);
       }
     };
 
