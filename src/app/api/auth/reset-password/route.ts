@@ -3,7 +3,7 @@ import { sendResetMail } from '@/lib/email';
 import { createToken } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import { ROUTES } from '@/contants/routes';
-import { ResetSchema } from '@/types/zod-schemas';
+import { ResetSchema } from '@/types/reset-password';
 
 export async function POST(req: Request) {
   const body = await req.json();

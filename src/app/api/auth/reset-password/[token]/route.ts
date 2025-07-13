@@ -2,8 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { consumeToken } from '@/lib/auth';
 import { hash } from 'bcryptjs';
 import { NextResponse } from 'next/server';
-import { ResetTokenSchema } from '@/types/zod-schemas';
-import { ETokenResetCode } from '@/api/auth/reset-password/[token]/types';
+import { ResetTokenSchema, ETokenResetCode } from '@/types/reset-password';
 
 export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;

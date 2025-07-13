@@ -4,8 +4,7 @@ import { NextResponse } from 'next/server';
 import { sendConfirmationMail } from '@/lib/email';
 import { createToken } from '@/lib/auth';
 import { ROUTES } from '@/contants/routes';
-import { RegisterSchema } from '@/types/zod-schemas';
-import { ERegisterResponseCode } from '@/api/auth/register/types';
+import { RegisterSchema, ERegisterResponseCode} from '@/types/register';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -31,7 +30,7 @@ export async function POST(req: Request) {
   });
 
   const token = await createToken(user.id, 'verify');
-  const confirmUrl = `${process.env.NEXTAUTH_URL}/${ROUTES.VERIFY_TOKEN(token)}?status=pending`;
+  const confirmUrl = `${process.env.NEXTAUTH_URL}/${ROUTES.VERIFY_TOKEN(token)}`;
 
   await sendConfirmationMail({ to: email, confirmUrl });
 

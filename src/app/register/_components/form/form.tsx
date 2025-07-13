@@ -2,14 +2,14 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterForm as TRegisterForm, RegisterSchema } from './schema';
+import { RegisterForm as TRegisterForm, RegisterSchema, ERegisterResponse } from '@/types/register';
 import { API_ROUTES, ROUTES } from '@/contants/routes';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { ERegisterResponse, ERegisterStatus } from '@/app/register/types';
+import { ERegisterStatus } from '@/app/register/types';
 import { useRouter } from 'next/navigation';
 
 export default function RegisterForm() {

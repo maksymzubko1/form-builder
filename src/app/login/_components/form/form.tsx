@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginForm as TLoginForm, LoginSchema } from './schema';
+import { LoginForm as TLoginForm, LoginSchema, ELoginResponseTypes } from '@/types/login';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { ROUTES } from '@/contants/routes';
@@ -10,7 +10,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { z } from 'zod';
-import { EResponseTypes } from '@/app/login/types';
 import { toast } from 'sonner';
 
 export default function LoginForm() {
@@ -33,7 +32,7 @@ export default function LoginForm() {
         ...data,
       });
       if (res?.error) {
-        toast.error(EResponseTypes[res.error as keyof typeof EResponseTypes] || 'Unknown error')
+        toast.error(ELoginResponseTypes[res.error as keyof typeof ELoginResponseTypes] || 'Unknown error')
       }
       else router.push(ROUTES.ADMIN);
     } catch {
