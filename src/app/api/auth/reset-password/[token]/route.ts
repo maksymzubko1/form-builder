@@ -1,0 +1,26 @@
+import { prisma } from '@/lib/prisma';
+import { consumeToken } from '@/lib/auth';
+import { hash } from 'bcryptjs';
+import { NextResponse } from 'next/server';
+import { ResetTokenSchema } from '@/types/zod-schemas';
+import { ETokenResetCode } from '@/api/auth/reset-password/[token]/types';
+
+export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params;
+  const body = await req.json();
+  const parse = ResetTokenSchema.safeParse(body);
+  if (!parse.success) {
+    return NextResponse.json({ error: parse.error.issues[0].message }, { status: 400 });
+  }
+
+  const { password } = body;
+  const userId = await consumeToken(token, 'reset');
+  if (!userId) return NextResponse.json({ error: ETokenResetCode.INVALID_TOKEN }, { status: 400 });
+
+  const passwordHash = await hash(password, 10);
+  await prisma.user.update({
+    where: { id: userId },
+    data: { passwordHash },
+  });
+  return NextResponse.json({ ok: true });
+}
