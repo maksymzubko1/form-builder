@@ -8,6 +8,7 @@ export const ROUTES = {
   VERIFY_TOKEN: (token: string) => `/verify/${token}`,
   ADMIN: '/admin',
   ADMIN_FORMS: '/admin/forms',
+  ADMIN_FORMS_CREATE: '/admin/forms/new',
   ADMIN_RESULTS: '/admin/results',
   ADMIN_PROFILE: '/admin/profile',
   FORM: (id: string) => `/form/${id}`,
