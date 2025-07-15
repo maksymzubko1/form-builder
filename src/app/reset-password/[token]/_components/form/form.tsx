@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ResetTokenForm as TResetTokenForm, ResetTokenSchema, ETokenReset } from '@/types/reset-password';
 import { useParams, useRouter } from 'next/navigation';
-import { API_ROUTES, ROUTES } from '@/contants/routes';
+import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';

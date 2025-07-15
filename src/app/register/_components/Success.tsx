@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 import { Button } from '@/components/ui/button';
 
 export function RegisterSuccess() {

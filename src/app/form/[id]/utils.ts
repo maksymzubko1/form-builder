@@ -1,4 +1,4 @@
-import { API_ROUTES } from '@/contants/routes';
+import { API_ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
 import { formDataToJson, Value } from '@/lib/utils';
 

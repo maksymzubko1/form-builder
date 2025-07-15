@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils';
+
 const variants = {
   s: 'w-4 h-4',
   m: 'w-6 h-6',
@@ -5,9 +7,14 @@ const variants = {
   xl: 'w-10 h-10',
 };
 
-export default function Loader({ size = 's' }: { size?: 's' | 'm' | 'l' | 'xl' }) {
+interface Props {
+  size?: 's' | 'm' | 'l' | 'xl';
+  className?: string;
+}
+
+export default function Loader({ size = 's', className }: Props) {
   return (
-    <div role="status" className="w-full h-full grid place-content-center">
+    <div role="status" className={cn(`w-full h-full grid place-content-center`, className)}>
       <svg aria-hidden="true"
            className={`inline ${variants[size]} text-gray-200 animate-spin dark:text-gray-600 fill-white`}
            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -10,7 +10,7 @@ import { Form } from '@/components/ui/form';
 import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
 import { Data } from '@measured/puck';
 import { Button } from '@/components/ui/button';
-import { API_ROUTES, ROUTES } from '@/contants/routes';
+import { API_ROUTES, ROUTES } from '@/constants/routes';
 
 export function FormEditor() {
   const router = useRouter();

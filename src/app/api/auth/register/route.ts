@@ -3,7 +3,7 @@ import { hash } from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import { sendConfirmationMail } from '@/lib/email';
 import { createToken } from '@/lib/auth';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 import { RegisterSchema, ERegisterResponseCode} from '@/types/register';
 
 export async function POST(req: Request) {

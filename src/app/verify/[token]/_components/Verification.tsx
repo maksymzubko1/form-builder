@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { API_ROUTES, ROUTES } from '@/contants/routes';
+import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { EVerifyResponseStatus } from '@/types/verify';
 
 export default function VerifyToken({ token }: { token: string }) {

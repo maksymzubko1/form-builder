@@ -12,19 +12,30 @@ export const ROUTES = {
   ADMIN_RESULTS: '/admin/results',
   ADMIN_PROFILE: '/admin/profile',
   FORM: (id: string) => `/form/${id}`,
+
+  ADMIN_FORM_SUBMISSIONS: (formId: string) => `/admin/forms/${formId}/submissions`,
+  ADMIN_FORM_SUBMISSION_DETAILS: (formId: string, submissionId: string) =>
+    `/admin/forms/${formId}/submissions/${submissionId}`,
 };
 
 export const API_ROUTES = {
   LOGIN: '/api/auth/login',
   REGISTER: '/api/auth/register',
-  FORM: (id: string) => `/api/forms/${id}`,
   CHANGE_PASSWORD: '/api/auth/change-password',
   RESET: '/api/auth/reset-password',
   RESET_TOKEN: (token: string) => `/api/auth/reset-password/${token}`,
   VERIFY: '/api/auth/verify',
   LOGOUT: `/api/auth/signout`,
+
   FORMS: '/api/forms',
+  FORM: (id: string) => `/api/forms/${id}`,
+
   PUBLIC_FORMS: '/api/public-forms',
   PUBLIC_FORMS_DRAFT: (id: string) => `/api/public-forms/${id}/draft`,
   S3_PRESIGNED: '/api/s3-presign',
+
+  FORM_SUBMISSIONS: (formId: string) => `/api/forms/${formId}/submissions`,
+  FORM_SUBMISSION: (formId: string, submissionId: string) =>
+    `/api/forms/${formId}/submissions/${submissionId}`,
+  FORM_SUBMISSIONS_EXPORT: (formId: string) => `/api/forms/${formId}/submissions/export`,
 };

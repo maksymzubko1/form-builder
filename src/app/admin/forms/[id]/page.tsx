@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { FormEditor } from './_components/FormEditor';
 import { cookies } from 'next/headers';
-import { API_ROUTES } from '@/contants/routes';
+import { API_ROUTES } from '@/constants/routes';
 
 // SEO
 export const metadata: Metadata = {

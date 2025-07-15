@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChangePasswordForm as TChangePasswordForm, ChangePasswordSchema } from '@/types/change-password';
 import { useSession } from 'next-auth/react';
-import { API_ROUTES } from '@/contants/routes';
+import { API_ROUTES } from '@/constants/routes';
 import z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';

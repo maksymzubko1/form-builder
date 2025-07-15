@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { z } from 'zod';
 import PuckRender from '@/components/shared/PuckEditor/PuckRender';
 import { Input } from '@/components/ui/input';
-import { API_ROUTES, ROUTES } from '@/contants/routes';
+import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { extractFields, makeFormSchema } from '@/types/public-forms';

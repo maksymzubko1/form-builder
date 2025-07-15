@@ -4,12 +4,8 @@ import { createUsePuck, Data } from '@measured/puck';
 import { UserConfig } from '@/components/shared/PuckEditor/types';
 import { Button } from '@/components/ui/button';
 import { Globe, PanelLeft, PanelRight } from 'lucide-react';
-import { PublishFormButton } from '@/app/admin/forms/[id]/_components/PublishFormButton';
-import { CopyFormButton } from '@/app/admin/forms/[id]/_components/CopyFormButton';
-import { DeleteFormDialog } from '@/app/admin/forms/[id]/_components/DeleteFormDialog';
-import { useRouter } from 'next/navigation';
 import Loader from '@/components/ui/loader';
-import Link from 'next/link';
+import ActionButtons from '@/components/shared/PuckEditor/_sections/ActionButtons';
 
 const usePuck = createUsePuck<UserConfig>();
 
@@ -29,7 +25,6 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
   const previewMode = usePuck((s) => s.appState.ui.previewMode);
   const leftSideBarVisible = usePuck((s) => s.appState.ui.leftSideBarVisible);
   const rightSideBarVisible = usePuck((s) => s.appState.ui.rightSideBarVisible);
-  const router = useRouter();
 
   const toggleMode = () => {
     dispatch({
@@ -81,20 +76,7 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
             Switch to {previewMode === 'edit' ? 'interactive' : 'edit'}
           </Button>
         </div>
-        <div className="gap-4 flex flex-wrap">
-          {isEditing && formProps && (
-            <>
-              <PublishFormButton formId={formProps.id} isPublished={formProps.isPublished}
-                                 onDone={() => router.refresh()} />
-              <CopyFormButton formId={formProps.id} />
-              <DeleteFormDialog formId={formProps.id} />
-              <Button aria-label="View public form" asChild>
-                <Link href={`/form/${formProps.id}`} target="_blank">
-                  View
-                </Link>
-              </Button>
-            </>
-          )}
+        <div className="gap-4 flex flex-wrap items-center">
           <Button onClick={publish} disabled={isLoading}>
             {isLoading ?
               <Loader /> :
@@ -103,6 +85,9 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
               </>
             }
           </Button>
+          {isEditing && formProps && (
+            <ActionButtons formProps={formProps} />
+          )}
         </div>
       </div>
     </header>

@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 
 const NAV = [
-  { href: ROUTES.ADMIN_FORMS, label: 'My forms' },
-  { href: ROUTES.ADMIN_RESULTS, label: 'Results' },
+  { href: ROUTES.ADMIN_FORMS, label: 'My Forms' },
+  // { href: ROUTES.ADMIN_RESULTS, label: 'Results' },
   { href: ROUTES.ADMIN_PROFILE, label: 'My Profile' },
 ];
 
