@@ -1,5 +1,5 @@
 import { TVerifyTokenProps } from './types';
-import VerifyToken from './_components/verification';
+import VerifyToken from './_components/Verification';
 
 export const metadata = {
   title: 'Confirming Email',

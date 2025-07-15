@@ -1,5 +1,5 @@
-import RegisterForm from './_components/form/form';
-import { RegisterSuccess } from './_components/success';
+import RegisterForm from './_components/form/Form';
+import { RegisterSuccess } from './_components/Success';
 import { ERegisterStatus, TRegisterPageParams } from './types';
 
 export const metadata = {

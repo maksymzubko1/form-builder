@@ -10,11 +10,15 @@ const NAV = [
   { href: ROUTES.ADMIN_PROFILE, label: 'My Profile' },
 ];
 
-export default function AdminNav() {
+type Props = {
+  onClose: () => void;
+}
+
+export default function AdminNav({ onClose }: Props) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-2 mt-4 mb-4">
+    <nav className="flex flex-col gap-2 mt-4 mb-4 p-2" onClick={onClose}>
       {NAV.map((item) => (
         <Link
           key={item.href}
