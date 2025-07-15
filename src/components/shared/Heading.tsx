@@ -17,7 +17,7 @@ const variants = {
 }
 
 export const Heading = ({ children, rank, size = "m" }: HeadingProps) => {
-  const Tag: any = rank ? `h${rank}` : "span";
+  const Tag: unknown = rank ? `h${rank}` : "span";
 
   return (
     <Tag

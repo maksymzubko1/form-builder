@@ -35,11 +35,6 @@ export async function sendResetMail({to, resetUrl}: SendResetParams) {
 }
 
 async function sendMail({ to, templateId, dynamicTemplateData }: SendMailParams) {
-  // if (process.env.NODE_ENV !== 'production') {
-  //   // В dev просто логируем
-  //   console.log('[MOCK EMAIL]', { to, templateId, dynamicTemplateData });
-  //   return;
-  // }
   if (!process.env.SENDGRID_API_KEY || !process.env.EMAIL_FROM) {
     throw new Error('SENDGRID_API_KEY or EMAIL_FROM not set');
   }

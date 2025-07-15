@@ -85,7 +85,7 @@ export function withLayout<
   componentConfig: ComponentConfig<Props>
 ): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
   return {
-    ...(componentConfig as any),
+    ...(componentConfig as unknown),
     fields: {
       ...componentConfig.fields,
       layout: layoutField,

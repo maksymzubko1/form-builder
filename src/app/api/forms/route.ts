@@ -10,12 +10,12 @@ export async function GET(req: NextRequest) {
 
   const url = new URL(req.url);
   const search = url.searchParams.get('search') ?? '';
-  const status = url.searchParams.get('status'); // 'published' | 'draft' | undefined
-  const order = url.searchParams.get('order'); // 'published' | 'draft' | undefined
+  const status = url.searchParams.get('status');
+  const order = url.searchParams.get('order');
   const page = Number(url.searchParams.get('page')) || 1;
   const limit = Number(url.searchParams.get('limit')) || 20;
 
-  const where: any = {
+  const where: unknown = {
     userId: session.user.id,
     ...(search && { title: { contains: search, mode: 'insensitive' } }),
     ...(status === 'published'
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
         : {}),
   };
 
-  const orderBy: any = {
+  const orderBy: unknown = {
     ...(order ? { [order.split('_')[0]]: order.split('_')[1] } : { updatedAt: 'desc' }),
   };
 

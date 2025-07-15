@@ -82,7 +82,7 @@ export function PublicForm({ form, email }: Props) {
     if (email && form.id) {
       fetchDraftData();
     }
-  }, [email, form.id]);
+  }, [email, form.id, reset]);
 
   const onSubmit = async (e: FormEvent) => {
     setLoading(true);

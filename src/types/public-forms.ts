@@ -6,12 +6,12 @@ export type FormFieldDef = {
   id: string;
   type: string;
   required?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export function extractFields(data: Data): FormFieldDef[] {
   if (!data || !Array.isArray(data.content)) return [];
-  return data.content.map((item: any) => ({
+  return data.content.map((item: unknown) => ({
     id: item.props.id,
     type: item.type,
     required: item.props?.required,
@@ -20,7 +20,7 @@ export function extractFields(data: Data): FormFieldDef[] {
 }
 
 export const makeFormSchema = (fields: FormFieldDef[], forServer = false) => {
-  const shape: any = {
+  const shape: unknown = {
     email: emailSchema,
   };
   fields.forEach(f => {

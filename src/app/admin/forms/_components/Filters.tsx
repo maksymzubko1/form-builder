@@ -2,15 +2,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { SearchInput } from '@/components/shared/SearchInput';
 import { FormCreateButton } from '@/app/admin/forms/_components/FormCreateButton';
 
+type Order = 'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc'
+type Status = 'all' | 'published' | 'draft'
+
 type FormsFilterBarProps = {
   search: string;
   onSearchChange: (v: string) => void;
-  status: 'all' | 'published' | 'draft';
-  order: 'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc';
-  onOrderChange: (v: 'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc') => void;
-  onStatusChange: (v: 'all' | 'published' | 'draft') => void;
+  status: Status;
+  order: Order;
+  onOrderChange: (v: Order) => void;
+  onStatusChange: (v: Status) => void;
   onCreate?: () => void;
-  children?: React.ReactNode; // Можно передавать кнопки/экшены, если надо
+  children?: React.ReactNode;
 };
 
 export default function Filters({
@@ -29,7 +32,7 @@ export default function Filters({
         onChange={e => onSearchChange(e.target.value)}
         onClear={() => onSearchChange('')}
       />
-      <Select value={status} onValueChange={v => onStatusChange(v as any)}>
+      <Select value={status} onValueChange={v => onStatusChange(v as Status)}>
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Filter status" />
         </SelectTrigger>
@@ -39,7 +42,7 @@ export default function Filters({
           <SelectItem value="draft">Draft</SelectItem>
         </SelectContent>
       </Select>
-      <Select value={order} onValueChange={v => onOrderChange(v as any)}>
+      <Select value={order} onValueChange={v => onOrderChange(v as Order)}>
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Filter order" />
         </SelectTrigger>

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import AdminNav from '@/app/_components/AdminNav';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/api/auth/[...nextauth]/route';
 import { ROUTES } from '@/contants/routes';

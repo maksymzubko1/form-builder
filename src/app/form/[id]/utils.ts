@@ -52,8 +52,8 @@ export async function uploadFiles(filesToUpload: UploadFilesProps): Promise<Reco
 
 export const validateAndPrepareData = async ({ data, schema, setError, needValidate }: {
   data: FormData,
-  schema: any,
-  setError: any,
+  schema: unknown,
+  setError: (props: unknown, settings: unknown) => void,
   needValidate: boolean
 }) => {
   const formatedFormData = formDataToJson(data) as Record<string, Value>;

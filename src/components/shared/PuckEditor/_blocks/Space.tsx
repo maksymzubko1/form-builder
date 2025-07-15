@@ -38,7 +38,7 @@ export const Space: ComponentConfig<SpaceProps> = {
       <div
         className={variants[direction] || ""}
         ref={puck.dragRef}
-        style={{ "--size": size } as any}
+        style={{ "--size": size } as unknown}
       />
     );
   },
