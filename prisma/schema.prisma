@@ -41,6 +41,7 @@ model FormSubmission {
   email       String
   data        Json
   submittedAt DateTime @default(now())
+  isDraft     Boolean  @default(true)
 }
 
 model Token {

@@ -1,12 +1,10 @@
-'use client';
+import { Button } from '@/components/ui/button';
 
-import { FormCreateButton } from './FormCreateButton';
-
-export function EmptyState() {
+export function EmptyState({ onCreate }: { onCreate?: () => void }) {
   return (
     <div className="py-24 text-center">
-      <p className="text-lg mb-4">No forms yet</p>
-      <FormCreateButton />
+      <p className="text-lg mb-4">No forms found</p>
+      <Button onClick={onCreate}>Create your first form</Button>
     </div>
   );
 }

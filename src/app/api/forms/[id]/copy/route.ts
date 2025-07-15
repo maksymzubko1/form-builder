@@ -3,11 +3,12 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const form = await prisma.form.findUnique({ where: { id: params.id } });
+  const id = (await params).id;
+  const form = await prisma.form.findUnique({ where: { id } });
   if (!form ) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }

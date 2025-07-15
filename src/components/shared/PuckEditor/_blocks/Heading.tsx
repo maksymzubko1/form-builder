@@ -64,11 +64,13 @@ const HeadingInternal: ComponentConfig<HeadingProps> = {
       padding: "8px",
     },
   },
-  render: ({ align, text, size, level }) => {
+  render: ({ align, text, size, level, puck }) => {
+    const isRender = puck.metadata.isRender;
+
     return (
       <Section>
         <_Heading size={size} rank={level}>
-          <span style={{ display: "block", textAlign: align, width: "100%" }}>
+          <span className={`${isRender ? '' : 'text-black'}`} style={{ display: "block", textAlign: align, width: "100%" }}>
             {text}
           </span>
         </_Heading>

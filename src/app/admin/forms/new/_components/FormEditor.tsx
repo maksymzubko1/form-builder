@@ -4,87 +4,84 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormSchema, FormType } from '@/types/forms';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Form } from '@/components/ui/form';
 import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
+import { Data } from '@measured/puck';
+import { Button } from '@/components/ui/button';
+import { API_ROUTES, ROUTES } from '@/contants/routes';
 
-export function FormEditor({ mode = 'create' }: { mode: 'create' | 'edit' }) {
+export function FormEditor() {
   const router = useRouter();
-  const [content, setContent] = useState<unknown>({});
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<FormType>({
     resolver: zodResolver(FormSchema),
     defaultValues: { title: '', description: '', content: {} },
   });
 
-  const { handleSubmit, control, formState: { isSubmitting } } = form;
+  const { setValue, handleSubmit, getValues, formState: { isSubmitting, errors } } = form;
+  const { content } = getValues();
 
   const onSubmit = async (data: FormType) => {
     try {
-      const res = await fetch('/api/forms', {
+      setLoading(true);
+      const res = await fetch(API_ROUTES.FORMS, {
         method: 'POST',
-        body: JSON.stringify({ ...data, content }),
+        body: JSON.stringify({ ...data }),
         headers: { 'Content-Type': 'application/json' },
       });
       if (res.ok) {
         const json = await res.json();
-        router.push(`/admin/forms/${json.form.id}`);
+        router.push(`${ROUTES.ADMIN_FORMS}/${json.form.id}`);
       } else {
         const json = await res.json();
         toast.error(json.error || 'Failed to create form');
       }
     } catch {
       toast.error('Network error. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
+  const onPublish = (data: Data) => {
+    setValue('content', data);
+    setValue('title', data.root.props?.title)
+    setValue('description', data.root.props?.description)
+
+    submitButtonRef.current?.click();
+  };
+
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-4">
       <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto space-y-4 w-full">
-          <FormField
-            control={control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input tabIndex={0} placeholder="Title..." autoFocus {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea tabIndex={1} placeholder="Description..." className='resize-none' autoFocus rows={2} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/*<Button*/}
-          {/*  type="submit"*/}
-          {/*  disabled={isSubmitting}*/}
-          {/*  aria-busy={isSubmitting}*/}
-          {/*>*/}
-          {/*  {isSubmitting ? 'Creating...' : 'Create Form'}*/}
-          {/*</Button>*/}
+        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto space-y-4 w-full" noValidate>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+            className="hidden"
+            style={{ display: 'none' }}
+            ref={submitButtonRef}
+          >
+            {isSubmitting ? 'Creating...' : 'Create Form'}
+          </Button>
         </form>
       </Form>
 
-      <PuckEditorForm content={content as never} setContent={setContent} />
+      <div className="flex flex-col">
+        <label className={`block text-sm ${errors.content ? 'text-destructive' : ''} font-medium mb-3`}>Form
+          Content</label>
+        <div className="error mb-2 flex flex-col">
+          {errors.title && <span className="text-destructive text-sm">{errors.title.message}</span>}
+          {errors.description && <span className="text-destructive text-sm">{errors.description.message}</span>}
+          {errors.content && <span className="text-destructive text-sm">{errors.content.message}</span>}
+        </div>
+        <PuckEditorForm content={content} onPublish={onPublish} isLoading={loading} />
+      </div>
     </div>
   );
 }

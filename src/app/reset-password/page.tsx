@@ -1,5 +1,5 @@
-import ResetForm from './_components/form/form';
-import { ResetSuccess } from './_components/success';
+import ResetForm from './_components/form/Form';
+import { ResetSuccess } from './_components/Success';
 import { EResetPasswordStatus, TResetPasswordProps } from './types';
 
 export const metadata = {

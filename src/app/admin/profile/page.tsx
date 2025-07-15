@@ -1,4 +1,4 @@
-import ChangePasswordForm from './_components/change-password/form';
+import ChangePasswordForm from './_components/change-password/Form';
 
 export const metadata = {
   title: 'My Profile',

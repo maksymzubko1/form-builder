@@ -13,6 +13,10 @@ import { File as FileInput } from './_blocks/FileInput';
 
 import { UserConfig } from './types';
 
+export const InteractiveItems = [
+  'Textarea', 'Input', 'FileInput', 'Select', 'RadioButton', 'Checkbox'
+]
+
 export const puckConfig: UserConfig = {
   root: Root,
   categories: {

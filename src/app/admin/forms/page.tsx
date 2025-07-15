@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import FormsList from './_components/FormList';
+import { FormsList } from './_components/FormList';
 
 export const metadata: Metadata = {
   title: 'My Forms',

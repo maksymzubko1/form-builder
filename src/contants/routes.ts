@@ -23,4 +23,8 @@ export const API_ROUTES = {
   RESET_TOKEN: (token: string) => `/api/auth/reset-password/${token}`,
   VERIFY: '/api/auth/verify',
   LOGOUT: `/api/auth/signout`,
+  FORMS: '/api/forms',
+  PUBLIC_FORMS: '/api/public-forms',
+  PUBLIC_FORMS_DRAFT: (id: string) => `/api/public-forms/${id}/draft`,
+  S3_PRESIGNED: '/api/s3-presign',
 };
