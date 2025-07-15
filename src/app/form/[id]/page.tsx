@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { PublicForm } from './_components/PublicForm';
-import { API_ROUTES } from '@/contants/routes';
+import { API_ROUTES } from '@/constants/routes';
 import { FormSubmitSuccess } from '@/app/form/[id]/_components/Success';
 import { FormProps } from '@/app/form/[id]/types';
 import { EmailStep } from '@/app/form/[id]/_components/EmailStep';

@@ -5,7 +5,17 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { Eye, EyeOffIcon } from 'lucide-react';
 import Loader from '@/components/ui/loader';
-import { API_ROUTES } from '@/contants/routes';
+import { API_ROUTES } from '@/constants/routes';
+
+interface PublishFormButtonProps {
+  formId: string;
+  isPublished: boolean;
+  size?: 'default' | 'icon';
+  onDone?: () => void;
+  loading?: boolean;
+  setLoading?: (loading: boolean) => void;
+  asDropdown?: boolean;
+}
 
 export function PublishFormButton({
                                     formId,
@@ -14,14 +24,8 @@ export function PublishFormButton({
                                     onDone,
                                     loading,
                                     setLoading,
-                                  }: {
-  formId: string;
-  isPublished: boolean;
-  size?: 'default' | 'icon';
-  onDone?: () => void;
-  loading?: boolean;
-  setLoading?: (loading: boolean) => void;
-}) {
+                                    asDropdown
+                                  }: PublishFormButtonProps) {
   const [internalLoading, setInternalLoading] = useState(false);
   const busy = loading !== undefined ? loading : internalLoading;
 
@@ -48,6 +52,21 @@ export function PublishFormButton({
     }
   };
 
+
+  if (asDropdown) {
+    return (
+      <button
+        type="button"
+        onClick={handlePublish}
+        disabled={loading}
+        aria-label={isPublished ? 'Unpublish form' : 'Publish form'}
+        className="w-full flex"
+      >
+        {isPublished ? "Unpublish" : "Publish"}
+      </button>
+    );
+  }
+
   return (
     <Button
       onClick={handlePublish}
@@ -57,18 +76,17 @@ export function PublishFormButton({
       disabled={busy}
       type="button"
     >
-      {isPublished ? (
-        <>
-          {size === 'icon' ? (busy ? <Loader /> : <EyeOffIcon className="w-4 h-4" />) :
-            <EyeOffIcon className="w-4 h-4" />}
-          {size !== 'icon' && <span className="ml-2">{busy ? 'Wait...' : 'Unpublish'}</span>}
-        </>
-      ) : (
-        <>
-          {size === 'icon' ? (busy ? <Loader /> : <Eye className="w-4 h-4" />) :
-            <Eye className="w-4 h-4" />}
-          {size !== 'icon' && <span className="ml-2">{busy ? 'Wait...' : 'Publish'}</span>}
-        </>
+      {busy ? <Loader /> : isPublished
+        ? <EyeOffIcon className="w-4 h-4" />
+        : <Eye className="w-4 h-4" />}
+      {size !== 'icon' && (
+        <span className="ml-2">
+          {busy
+            ? 'Wait...'
+            : isPublished
+              ? 'Unpublish'
+              : 'Publish'}
+        </span>
       )}
     </Button>
   );

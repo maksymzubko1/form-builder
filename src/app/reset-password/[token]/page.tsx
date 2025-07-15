@@ -1,7 +1,7 @@
 import ResetTokenForm from './_components/form/form';
 import { validateToken } from '@/lib/auth';
 import Link from 'next/link';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 import { Button } from '@/components/ui/button';
 import { TResetTokenPageParams } from './types';
 

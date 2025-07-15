@@ -1,7 +1,7 @@
 import { NextFetchEvent, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 
 const AUTH_PAGES = [
   ROUTES.LOGIN,

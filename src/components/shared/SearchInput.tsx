@@ -1,12 +1,10 @@
 import { XIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { ChangeEvent } from 'react';
+import { cn } from '@/lib/utils';
 
 type SearchInputProps = {
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onClear: () => void;
-};
+} & React.HTMLProps<HTMLInputElement>;
 
 export function SearchInput({ value, onChange, onClear, ...props }: SearchInputProps) {
   return (
@@ -14,15 +12,15 @@ export function SearchInput({ value, onChange, onClear, ...props }: SearchInputP
       <Input
         value={value}
         onChange={onChange}
-        placeholder="Search by title…"
-        className="pr-8"
         {...props}
+        placeholder={props?.placeholder ?? "Search by title..."}
+        className={cn('pr-8', props?.className)}
       />
       {value && (
         <button
           type="button"
           onClick={onClear}
-          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-inherit text-gray-400 hover:text-gray-600"
           aria-label="Clear search"
           tabIndex={0}
         >

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { FormsList } from './_components/FormList';
+import { FormsTable } from './_components/FormList';
 
 export const metadata: Metadata = {
   title: 'My Forms',
@@ -11,7 +11,7 @@ export default function AdminFormsPage() {
   return (
     <section>
       <h1 className="text-2xl font-bold mb-6">My Forms</h1>
-      <FormsList />
+      <FormsTable />
     </section>
   );
 }

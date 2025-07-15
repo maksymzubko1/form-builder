@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginForm as TLoginForm, LoginSchema, ELoginResponseTypes } from '@/types/login';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';

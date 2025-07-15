@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 
 export const metadata = {
   title: 'Smart Form Builder',

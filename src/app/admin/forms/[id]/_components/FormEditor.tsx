@@ -9,13 +9,13 @@ import { toast } from 'sonner';
 import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
 import { Data } from '@measured/puck';
 import { Form } from '@/components/ui/form';
-import { API_ROUTES } from '@/contants/routes';
+import { API_ROUTES } from '@/constants/routes';
 
-export function FormEditor({
-                             initialForm,
-                           }: {
+interface FormEditorProps {
   initialForm: FormType & { id: string; isPublished: boolean };
-}) {
+}
+
+export function FormEditor({ initialForm }: FormEditorProps) {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
 
@@ -57,8 +57,8 @@ export function FormEditor({
 
   const onPublish = (data: Data) => {
     setValue('content', data);
-    setValue('title', data.root.props?.title)
-    setValue('description', data.root.props?.description)
+    setValue('title', data.root.props?.title);
+    setValue('description', data.root.props?.description);
 
     submitButtonRef.current?.click();
   };
@@ -75,7 +75,6 @@ export function FormEditor({
             </Button>
           </div>
         </form>
-
       </Form>
 
       <div className="flex flex-col">

@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { signOut } from 'next-auth/react';
-import { ROUTES } from '@/contants/routes';
+import { ROUTES } from '@/constants/routes';
 
 export default function LogoutButton(){
   const logout = () => signOut({callbackUrl: ROUTES.LOGIN})

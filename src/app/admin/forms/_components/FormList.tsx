@@ -1,27 +1,34 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { FormCard } from './FormCard';
-import { EmptyState } from './EmptyState';
+import { useEffect, useState, useMemo, JSX } from 'react';
+import { formsColumns } from './columns';
+import type { FormListItem } from '@/app/admin/forms/types';
+import { DataTable } from '@/components/ui/data-table';
+import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { useDebounce } from '@/lib/hooks/useDebounce';
-import { FormListItem } from '@/app/admin/forms/types';
+import { FormsFilterForm } from './FormsFilterForm';
+import { useRouter } from 'next/navigation';
 import { Pagination } from '@/components/shared/Pagination';
-import Filters from './Filters';
-import { API_ROUTES } from '@/contants/routes';
+import { useModal } from '@/lib/hooks/useModal';
+import { DeleteFormDialog } from '@/app/admin/forms/_components/actions/DeleteFormDialog';
 
 const LIMIT = 20;
 
-export function FormsList() {
+export function FormsTable(): JSX.Element {
   const [forms, setForms] = useState<FormListItem[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [rawSearch, setRawSearch] = useState('');
+  const [total, setTotal] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [rawSearch, setRawSearch] = useState<string>('');
   const search = useDebounce(rawSearch, 500);
   const [status, setStatus] = useState<'all' | 'published' | 'draft'>('all');
-  const [order, setOrder] = useState<'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc'>('createdAt_asc');
-  const [page, setPage] = useState(1);
+  const [order, setOrder] = useState<'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc'>('createdAt_desc');
+  const [page, setPage] = useState<number>(1);
+  const { toggle, open, hide } = useModal(false);
+  const [selectedItem, setSelectedItem] = useState<FormListItem | null>(null);
 
-  const fetchForms = useCallback(async () => {
+  const router = useRouter();
+
+  const fetchForms = async (): Promise<void> => {
     setLoading(true);
     const params = new URLSearchParams({
       ...(search && { search }),
@@ -35,49 +42,74 @@ export function FormsList() {
     setForms(data.forms || []);
     setTotal(data.total || 0);
     setLoading(false);
-  }, [search, status, page, order]);
+  };
 
   useEffect(() => {
     fetchForms();
-  }, [fetchForms]);
+    // eslint-disable-next-line
+  }, [search, status, order, page]);
 
   useEffect(() => {
     setPage(1);
   }, [search, status, order]);
 
-  const showEmpty = !loading && forms.length === 0;
+  // Actions
+  const onEdit = (form: FormListItem) => {
+    router.push(`${ROUTES.ADMIN_FORMS}/${form.id}`);
+  };
+  const onPublish = () => {
+    fetchForms();
+  };
+  const onDelete = (form: FormListItem) => {
+    setSelectedItem(form);
+    toggle();
+  };
+  const onDeleteCompleted = () => {
+    fetchForms();
+  };
+  const onCopy = () => {
+    // fetchForms();
+  };
+  const onPageChange = (page: number) => {
+    setPage(page);
+  };
+
+  const tableMeta = useMemo(
+    () => ({
+      onEdit,
+      onDelete,
+      onPublish,
+      onCopy,
+    }),
+    // eslint-disable-next-line
+    [],
+  );
+
+  const totalPages = Math.ceil(total / LIMIT);
 
   return (
     <div>
-      <Filters
+      <FormsFilterForm
         search={rawSearch}
         onSearchChange={setRawSearch}
         status={status}
+        onStatusChange={setStatus}
         order={order}
         onOrderChange={setOrder}
-        onStatusChange={setStatus}
-        onCreate={fetchForms}
       />
 
-      {loading ? (
-        <div className="py-12 text-center">Loading...</div>
-      ) : showEmpty ? (
-        <EmptyState onCreate={fetchForms} />
-      ) : (
-        <>
-          <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-1">
-            {forms.map(form => (
-              <FormCard key={form.id} form={form} refetch={fetchForms} />
-            ))}
-          </div>
-          <Pagination
-            page={page}
-            total={total}
-            limit={LIMIT}
-            onPageChange={setPage}
-          />
-        </>
-      )}
+      <DataTable
+        columns={formsColumns}
+        data={forms}
+        loading={loading}
+        emptyLabel="No forms found"
+        meta={tableMeta}
+      />
+
+      {totalPages > 1 && <Pagination total={total} page={page} limit={LIMIT} onPageChange={onPageChange} />}
+
+      {selectedItem &&
+        <DeleteFormDialog formId={selectedItem.id} onClose={hide} onDone={onDeleteCompleted} open={open} />}
     </div>
   );
 }

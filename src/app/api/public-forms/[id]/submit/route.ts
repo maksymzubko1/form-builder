@@ -35,6 +35,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         formId: id,
         email,
         data: rest,
+        isDraft: false
       },
     });
 
