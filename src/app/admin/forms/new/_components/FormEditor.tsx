@@ -19,7 +19,7 @@ export function FormEditor() {
 
   const form = useForm<FormType>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { title: '', description: '', content: {} },
+    defaultValues: { title: '', description: '', emailNotification: false, content: {} },
   });
 
   const { setValue, handleSubmit, getValues, formState: { isSubmitting, errors } } = form;
@@ -50,6 +50,7 @@ export function FormEditor() {
   const onPublish = (data: Data) => {
     setValue('content', data);
     setValue('title', data.root.props?.title)
+    setValue('emailNotification', data.root.props?.emailNotification)
     setValue('description', data.root.props?.description)
 
     submitButtonRef.current?.click();

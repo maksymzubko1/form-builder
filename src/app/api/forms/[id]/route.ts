@@ -39,9 +39,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
+  const {emailNotification, ...rest} = body;
+
   const updated = await prisma.form.update({
     where: { id },
-    data: { ...body, updatedAt: new Date() },
+    data: { ...rest, notifyOnSubmission: emailNotification, updatedAt: new Date() },
     select: { id: true, title: true, description: true, isPublished: true, updatedAt: true },
   });
 

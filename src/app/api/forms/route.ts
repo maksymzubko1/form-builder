@@ -61,13 +61,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parse.error.issues[0].message }, { status: 400 });
   }
 
-  const { title, description, content } = body;
+  const { title, description, content, emailNotification } = body;
 
   const form = await prisma.form.create({
     data: {
       userId: session.user.id,
       title,
       description,
+      notifyOnSubmission: emailNotification,
       content,
     },
     select: {

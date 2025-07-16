@@ -97,11 +97,11 @@ export const validateAndPrepareData = async ({ data, schema, setError, needValid
         filesToUpload['data'].set(rest.id, file as File);
       } else {
         const prevFile = state[rest.id];
-        payloadData[rest.id] = { ...rest, value: prevFile && typeof prevFile === 'string' ? prevFile : undefined };
+        payloadData[rest.id] = { ...rest, value: prevFile && typeof prevFile === 'string' ? prevFile : null };
       }
     } else {
       const item = data.get(rest.id);
-      payloadData[rest.id] = { ...rest, value: item ? item : rest.value || undefined };
+      payloadData[rest.id] = { ...rest, value: item ? item : rest.value || null };
     }
   });
 
