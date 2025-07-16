@@ -1,7 +1,7 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import type { FormListItem } from "@/app/admin/forms/types";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import type { ColumnDef } from '@tanstack/react-table';
+import type { FormListItem } from '@/app/admin/forms/types';
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -16,23 +16,23 @@ import { DeleteFormAction } from '@/app/admin/forms/_components/actions/DeleteFo
 
 export const formsColumns: ColumnDef<FormListItem>[] = [
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: 'title',
+    header: 'Title',
     cell: ({ row }) => <span className="font-semibold">{row.original.title}</span>,
   },
   {
-    accessorKey: "createdAt",
-    header: "Created",
+    accessorKey: 'createdAt',
+    header: 'Created',
     cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
   },
   {
-    accessorKey: "updatedAt",
-    header: "Updated",
+    accessorKey: 'updatedAt',
+    header: 'Updated',
     cell: ({ row }) => new Date(row.original.updatedAt).toLocaleDateString(),
   },
   {
-    accessorKey: "isPublished",
-    header: "Status",
+    accessorKey: 'isPublished',
+    header: 'Status',
     cell: ({ row }) =>
       row.original.isPublished ? (
         <span className="text-green-600 font-medium">Published</span>
@@ -41,8 +41,8 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
       ),
   },
   {
-    id: "actions",
-    header: "",
+    id: 'actions',
+    header: '',
     cell: ({ row, table }) => {
       const form = row.original;
       const { onEdit, onDelete, onPublish, onCopy } = table.options.meta as {
@@ -63,7 +63,7 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link className="w-full flex cursor-pointer"  href={ROUTES.FORM(form.id)} target="_blank">
+              <Link className="w-full flex cursor-pointer" href={ROUTES.FORM(form.id)} target="_blank">
                 View
               </Link>
             </DropdownMenuItem>
@@ -99,6 +99,11 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
             <DropdownMenuItem asChild>
               <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_SUBMISSIONS(form.id)}>
                 Submissions
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_INSIGHTS(form.id)}>
+                Insights
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

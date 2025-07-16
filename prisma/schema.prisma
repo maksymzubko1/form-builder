@@ -32,6 +32,7 @@ model Form {
   updatedAt     DateTime         @updatedAt
   submissions   FormSubmission[]
   AiChatSession AiChatSession[]
+  FormView      FormView[]
 }
 
 model FormSubmission {
@@ -42,6 +43,15 @@ model FormSubmission {
   data        Json
   submittedAt DateTime @default(now())
   isDraft     Boolean  @default(true)
+}
+
+model FormView {
+  id          String   @id @default(uuid())
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId      String
+  viewedAt    DateTime @default(now())
+  viewerEmail String
+  viewerIp    String?
 }
 
 model Token {

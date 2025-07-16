@@ -1,19 +1,31 @@
 import { SubmissionsTable } from './_components/SubmissionsTable';
-import type { FC } from 'react';
 import { Metadata } from 'next';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes';
+import { ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Form submissions',
   description: 'Analyze your form submissions.',
-  robots: 'noindex'
+  robots: 'noindex',
 };
 
 interface SubmissionsPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-const SubmissionsPage: FC<SubmissionsPageProps> = ({ params }) => {
-  return <SubmissionsTable formId={params.id} />;
-};
+export default async function SubmissionsPage({ params }: SubmissionsPageProps) {
+  const { id } = await params;
 
-export default SubmissionsPage;
+  return (
+    <div>
+      <Button variant="secondary" asChild className="mb-4">
+        <Link href={`${ROUTES.ADMIN_FORMS}/${id}`} className="flex items-center">
+          <ArrowLeft /> Back to form
+        </Link>
+      </Button>
+      <SubmissionsTable formId={id} />
+    </div>
+  );
+};

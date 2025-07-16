@@ -19,7 +19,7 @@ export function extractFields(data: Data): FormFieldDef[] {
   }));
 }
 
-export const makeFormSchema = (fields: FormFieldDef[], forServer = false) => {
+export const makeFormSchema = (fields: FormFieldDef[]) => {
   const shape: unknown = {
     email: emailSchema,
   };
@@ -38,21 +38,7 @@ export const makeFormSchema = (fields: FormFieldDef[], forServer = false) => {
       } else {
         shape[f.id] = base.optional();
       }
-    } else if (f.type === 'Checkbox') {
-      const base = z.string('Field is required');
-      if (f.required) {
-        shape[f.id] = base.min(1, 'Field is required');
-      } else {
-        shape[f.id] = base.optional();
-      }
-    } else if (f.type === 'Select') {
-      const base = z.string('Field is required');
-      if (f.required) {
-        shape[f.id] = base.min(1, 'Field is required');
-      } else {
-        shape[f.id] = base.optional();
-      }
-    } else if (f.type === 'RadioButton') {
+    } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
       const base = z.string('Field is required');
       if (f.required) {
         shape[f.id] = base.min(1, 'Field is required');
@@ -60,22 +46,51 @@ export const makeFormSchema = (fields: FormFieldDef[], forServer = false) => {
         shape[f.id] = base.optional();
       }
     } else if (f.type === 'FileInput') {
-        const base = fileSchemaByAccept(f.fileType, forServer);
-        if(f.required){
-          shape[f.id] = base.required()
-        } else {
-          shape[f.id] = base.optional();
-        }
+      const base = fileSchemaByAccept(f.fileType);
+      if (f.required) {
+        shape[f.id] = base.required();
+      } else {
+        shape[f.id] = base.optional();
+      }
     }
   });
   return z.object(shape);
 };
 
+export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
+  const shape: unknown = {
+    email: emailSchema,
+  };
+  fields.forEach(f => {
+    if (f.type === 'Input') {
+      if (f.required) {
+        shape[f.id] = z.object({ value: z.string().min(1, "Field is required") });
+      } else {
+        shape[f.id] = z.object({ value: z.string().optional() });
+      }
+    } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
+      if (f.required) {
+        shape[f.id] = z.object({ value: z.string().min(1, "Field is required") });
+      } else {
+        shape[f.id] = z.object({ value: z.string().optional() });
+      }
+    } else if (f.type === 'FileInput') {
+      const base = fileSchemaByAccept(f.fileType, true);
+      if (f.required) {
+        shape[f.id] = base.required();
+      } else {
+        shape[f.id] = base.optional();
+      }
+    }
+  });
+  return z.object(shape);
+};
+
+
 function fileSchemaByAccept(accept: string, forServer = false) {
   if (forServer) {
     return z.object({
-      url: z.url('Invalid url'),
-      isFile: z.boolean(),
+      value: z.url('Invalid url'),
     });
   }
 

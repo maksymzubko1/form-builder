@@ -16,6 +16,7 @@ import { extractFields, makeFormSchema } from '@/types/public-forms';
 import { EFromStatus } from '@/app/form/[id]/types';
 import Loader from '@/components/ui/loader';
 import { validateAndPrepareData } from '@/app/form/[id]/utils';
+import { useTrackFormView } from '@/app/form/[id]/_hooks/useTrackFormView';
 
 type Props = {
   form: {
@@ -32,6 +33,9 @@ export function PublicForm({ form, email }: Props) {
   const [loadingDraft, setLoadingDraft] = useState<boolean>(false);
   const [fetchingDraft, setFetchingDraft] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
+
+  // track as view
+  useTrackFormView(form.id, email);
 
   const { push } = useRouter();
   const fields = extractFields(form.content);
@@ -53,7 +57,7 @@ export function PublicForm({ form, email }: Props) {
     defaultValues,
   });
 
-  const { clearErrors, reset, setError, control, formState: { errors, isSubmitting } } = _form;
+  const { clearErrors, getValues, reset, setError, control, formState: { errors, isSubmitting } } = _form;
 
   useEffect(() => {
     const fetchDraftData = async () => {
@@ -62,10 +66,15 @@ export function PublicForm({ form, email }: Props) {
         const res = await fetch(`${API_ROUTES.PUBLIC_FORMS_DRAFT(form.id)}?email=${encodeURIComponent(email)}`);
         if (res.ok) {
           const json = await res.json();
-          if(!json.draft) return;
+          if (!json.draft) return;
 
-          setDefaultValues(prev=>({...prev, ...json.draft}))
-          reset({ email, ...json.draft });
+          const parsedData = Object.entries(json.draft).reduce((previousValue, [key, value]) => {
+            previousValue[key] = value.value;
+            return previousValue;
+          }, {});
+
+          setDefaultValues(prev => ({ ...prev, ...parsedData, email }));
+          reset({ ...parsedData, email });
           toast.info('Found your saved progress. Continue filling the form.');
         } else {
           const json = await res.json();
@@ -92,9 +101,11 @@ export function PublicForm({ form, email }: Props) {
     try {
       const payload = await validateAndPrepareData({
         data: new FormData(e.target as HTMLFormElement),
+        state: getValues(),
         schema,
         setError,
         needValidate: true,
+        allFields: fields,
       });
 
       if (!payload) {
@@ -132,7 +143,9 @@ export function PublicForm({ form, email }: Props) {
         data: new FormData(formRef.current),
         schema,
         setError,
+        state: getValues(),
         needValidate: false,
+        allFields: fields,
       });
 
       if (!payload) {

@@ -45,11 +45,28 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
       page: pageValue.toString(),
       perPage: perPageValue.toString(),
     } as Record<string, string>);
-    const res = await fetch(`${API_ROUTES.FORM_SUBMISSIONS(formId)}?${params}`);
-    const json = await res.json();
-    setSubmissions(json.data ?? []);
-    setTotal(json.total ?? 0);
-    setLoading(false);
+    try {
+      const res = await fetch(`${API_ROUTES.FORM_SUBMISSIONS(formId)}?${params}`);
+      if (res.ok) {
+        const json = await res.json();
+        const parsedData = json.data.map((item) => {
+          const data = Object.entries(item.data).reduce((previousValue, [key, value]) => {
+            previousValue[key] = value.value;
+            return previousValue;
+          }, {});
+
+          return { ...item, data };
+        });
+        setSubmissions(parsedData ?? []);
+        setTotal(json.total ?? 0);
+      } else {
+        toast.error('Failed to load submissions');
+      }
+    } catch {
+      toast.error('Failed to load submissions');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { PayloadSchema } from './types';
-import { makeFormSchema } from '@/types/public-forms';
+import { makeFormSchemaServer } from '@/types/public-forms';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const id = (await params).id;
     const { fields, data } = body;
 
-    const schema = makeFormSchema(fields, true);
+    const schema = makeFormSchemaServer(fields);
 
     const parse = PayloadSchema(schema).safeParse(body);
     if (!parse.success) {
