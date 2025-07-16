@@ -4,7 +4,6 @@ import { FormEditor } from './_components/FormEditor';
 import { cookies } from 'next/headers';
 import { API_ROUTES } from '@/constants/routes';
 
-// SEO
 export const metadata: Metadata = {
   title: 'Edit Form',
   description: 'Edit your form with Puck visual editor.',
