@@ -56,8 +56,8 @@ export const FileInner: ComponentConfig<FileProps> = {
           </Label>
           <_Input aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined} name={id}
                   tabIndex={puck.isEditing ? -1 : undefined} accept={accept} id={id} type="file" />
-          {defaultValue?.url && (
-            <Link href={defaultValue.url} className="text-blue-500 mt-1 mb-2" target="_blank">Selected file</Link>
+          {defaultValue && (
+            <Link href={defaultValue} className="text-blue-500 mt-1 mb-2" target="_blank">Previous file</Link>
           )}
           {fileType !== 'all' && (
             <p className="text-xs text-muted-foreground mt-1">

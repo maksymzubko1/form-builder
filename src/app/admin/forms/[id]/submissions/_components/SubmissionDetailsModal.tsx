@@ -24,7 +24,7 @@ export const SubmissionDetailsModal: FC<SubmissionDetailsModalProps> = ({ submis
           <div>
             <b>Date:</b> {new Date(submission.submittedAt).toLocaleString()}
           </div>
-          <pre className="bg-muted rounded p-2 whitespace-pre-wrap text-xs">
+          <pre className="bg-muted rounded p-2 whitespace-pre-wrap text-xs max-h-[50dvh] overflow-auto">
             {JSON.stringify(submission.data, null, 2)}
           </pre>
         </div>

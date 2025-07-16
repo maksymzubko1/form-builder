@@ -23,7 +23,7 @@ interface Props {
   formProps: {
     id: string;
     isPublished: boolean;
-  }
+  };
 }
 
 const ActionButtons = ({ formProps }: Props) => {
@@ -88,6 +88,11 @@ const ActionButtons = ({ formProps }: Props) => {
           <DropdownMenuItem asChild>
             <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_SUBMISSIONS(formProps.id)}>
               Submissions
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_INSIGHTS(formProps.id)}>
+              Insights
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
