@@ -70,7 +70,7 @@ const HeadingInternal: ComponentConfig<HeadingProps> = {
     return (
       <Section>
         <_Heading size={size} rank={level}>
-          <span className={`${isRender ? '' : 'text-black'}`} style={{ display: "block", textAlign: align, width: "100%" }}>
+          <span style={{ display: "block", textAlign: align, width: "100%" }}>
             {text}
           </span>
         </_Heading>

@@ -1,4 +1,5 @@
 import { InteractiveItems } from '@/components/shared/PuckEditor/config';
+import { getUniqueName } from '@/lib/submission';
 
 export type FieldDescriptor = {
   id: string;      // "Input-xxxx"
@@ -15,7 +16,7 @@ export function parseFieldsFromFormContent(content: unknown): FieldDescriptor[] 
     if (InteractiveItems.includes(node.type) && node.props?.id) {
       fields.push({
         id: node.props.id,
-        label: node.props.displayName || node.props.label || node.props.placeholder || node.props.id,
+        label: getUniqueName(node.props.displayName as string || node.type as string, fields.map(field => field.label)),
         type: node.type,
       });
     }

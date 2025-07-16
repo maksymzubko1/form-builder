@@ -20,9 +20,7 @@ export const Root: RootConfig<RootProps> = {
   defaultProps: { title: '', description: '', emailNotification: false },
   render: ({ puck: { renderDropZone: DropZone } }) => {
     return (
-      <div
-        style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'white' }}
-      >
+      <div className="flex flex-col min-h-[100vh] bg-muted">
         <DropZone zone="default-zone" style={{ flexGrow: 1 }} />
       </div>
     );

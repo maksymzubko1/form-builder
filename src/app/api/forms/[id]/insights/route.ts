@@ -48,7 +48,7 @@ export async function GET(
     prisma.formSubmission.count({ where: { formId: (await params).id } }),
     prisma.formSubmission.findMany({
       where,
-      orderBy: { submittedAt: 'desc' },
+      orderBy: { submittedAt: 'asc' },
     }),
     prisma.formView.count({ where: whereFormView }),
   ]);
