@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { PayloadSchema } from './types';
 import { makeFormSchemaServer } from '@/types/public-forms';
+import { sendNewSubmissionEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -20,27 +21,40 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     const form = await prisma.form.findUnique({
       where: { id },
-      select: { isPublished: true },
+      select: { isPublished: true, notifyOnSubmission: true, user: true },
     });
     if (!form || !form.isPublished) {
       return NextResponse.json({ error: 'Form not found or unpublished' }, { status: 400 });
     }
 
     await prisma.formSubmission.deleteMany({
-      where: { formId: id, email, isDraft: true }
+      where: { formId: id, email, isDraft: true },
     });
 
-    await prisma.formSubmission.create({
+    const submission = await prisma.formSubmission.create({
       data: {
         formId: id,
         email,
         data: rest,
-        isDraft: false
+        isDraft: false,
       },
     });
 
+    const prepared = Object
+      .entries(rest).map(([key, value]) => ({ label: value?.label || key, value: value.value }));
+
+    if (form?.notifyOnSubmission && form.user?.email) {
+      await sendNewSubmissionEmail({
+        to: form.user.email,
+        formTitle: form.title,
+        submission: prepared,
+        submittedAt: submission.submittedAt.toLocaleDateString()
+      });
+    }
+
     return NextResponse.json({ success: true });
-  } catch {
+  } catch(error: unknown) {
+    console.log(`[Submit Public Form]: ${error?.message}`);
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }

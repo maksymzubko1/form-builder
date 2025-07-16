@@ -29,28 +29,28 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
       if (f.required) {
         shape[f.id] = base.min(1, 'Field is required');
       } else {
-        shape[f.id] = base.optional();
+        shape[f.id] = base.optional().nullable();
       }
     } else if (f.type === 'Textarea') {
       const base = z.string('Field is required');
       if (f.required) {
         shape[f.id] = base.min(1, 'Field is required');
       } else {
-        shape[f.id] = base.optional();
+        shape[f.id] = base.optional().nullable();
       }
     } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
       const base = z.string('Field is required');
       if (f.required) {
         shape[f.id] = base.min(1, 'Field is required');
       } else {
-        shape[f.id] = base.optional();
+        shape[f.id] = base.optional().nullable();
       }
     } else if (f.type === 'FileInput') {
       const base = fileSchemaByAccept(f.fileType);
       if (f.required) {
         shape[f.id] = base.required();
       } else {
-        shape[f.id] = base.optional();
+        shape[f.id] = base.optional().nullable();
       }
     }
   });
@@ -66,20 +66,20 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
       if (f.required) {
         shape[f.id] = z.object({ value: z.string().min(1, "Field is required") });
       } else {
-        shape[f.id] = z.object({ value: z.string().optional() });
+        shape[f.id] = z.object({ value: z.string().optional().nullable() });
       }
     } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
       if (f.required) {
         shape[f.id] = z.object({ value: z.string().min(1, "Field is required") });
       } else {
-        shape[f.id] = z.object({ value: z.string().optional() });
+        shape[f.id] = z.object({ value: z.string().optional().nullable() });
       }
     } else if (f.type === 'FileInput') {
       const base = fileSchemaByAccept(f.fileType, true);
       if (f.required) {
         shape[f.id] = base.required();
       } else {
-        shape[f.id] = base.optional();
+        shape[f.id] = base.optional().nullable();
       }
     }
   });
@@ -90,7 +90,7 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
 function fileSchemaByAccept(accept: string, forServer = false) {
   if (forServer) {
     return z.object({
-      value: z.url('Invalid url'),
+      value: z.url('Invalid url').nullable(),
     });
   }
 

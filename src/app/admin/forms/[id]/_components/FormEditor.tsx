@@ -24,6 +24,7 @@ export function FormEditor({ initialForm }: FormEditorProps) {
     defaultValues: {
       title: initialForm.title || '',
       description: initialForm.description || '',
+      emailNotification: initialForm.emailNotification || false,
       content: initialForm.content || {},
     },
   });
@@ -58,6 +59,7 @@ export function FormEditor({ initialForm }: FormEditorProps) {
   const onPublish = (data: Data) => {
     setValue('content', data);
     setValue('title', data.root.props?.title);
+    setValue('emailNotification', data.root.props?.emailNotification)
     setValue('description', data.root.props?.description);
 
     submitButtonRef.current?.click();

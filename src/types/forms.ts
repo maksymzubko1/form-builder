@@ -5,6 +5,7 @@ import { InteractiveItems } from '@/components/shared/PuckEditor/config';
 export const FormSchema = z.object({
   title: z.string().min(2, 'Title is required').max(128),
   description: z.string().max(1024).optional(),
+  emailNotification: z.boolean(),
   content: z
     .custom<Data>()
     .refine(
