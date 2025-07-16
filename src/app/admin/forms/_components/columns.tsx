@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { FormListItem } from '@/app/admin/forms/types';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
+import { EditIcon, Eye, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -42,12 +42,34 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
       ),
   },
   {
+    accessorKey: 'quick_actions',
+    header: 'Quick Actions',
+    cell: ({ row, table }) => {
+      const form = row.original;
+      const { onEdit } = table.options.meta as {
+        onEdit: (form: FormListItem) => void;
+      };
+
+      return (
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" asChild={form.isPublished} disabled={!form.isPublished}>
+            {form.isPublished ? <Link className="cursor-pointer" href={ROUTES.FORM(form.id)} target="_blank">
+              <Eye className="w-4 h-4" />
+            </Link> : <Eye className="w-4 h-4" />}
+          </Button>
+          <Button variant="secondary" onClick={() => onEdit(form)} className="">
+            <EditIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      );
+    },
+  },
+  {
     id: 'actions',
     header: '',
     cell: ({ row, table }) => {
       const form = row.original;
-      const { onEdit, onDelete, onPublish, onCopy } = table.options.meta as {
-        onEdit: (form: FormListItem) => void;
+      const { onDelete, onPublish, onCopy } = table.options.meta as {
         onDelete: (form: FormListItem) => void;
         onPublish: (form: FormListItem) => void;
         onCopy: (form: FormListItem) => void;
@@ -64,17 +86,9 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link className="w-full flex cursor-pointer" href={ROUTES.FORM(form.id)} target="_blank">
-                View
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_PREVIEW(form.id)}>
                 Preview
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <button onClick={() => onEdit(form)} className="w-full flex">Edit</button>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
