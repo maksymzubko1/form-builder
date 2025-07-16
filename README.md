@@ -9,7 +9,6 @@ TODO:
 - custom 404 page for user layout
 - AI
 - revalidate all TS in project
-- sort submissions by date
 
 ## Getting Started
 
