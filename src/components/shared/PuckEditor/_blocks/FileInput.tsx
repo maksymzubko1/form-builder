@@ -9,6 +9,7 @@ export type FileProps = {
   label: string;
   fileType: string;
   required: boolean;
+  displayName?: string;
 };
 
 const ACCEPT_PRESETS: Record<string, string> = {
@@ -36,11 +37,13 @@ export const FileInner: ComponentConfig<FileProps> = {
         { label: 'Required', value: true },
       ],
     },
+    displayName: { type: 'text', label: 'Display name' },
   },
   defaultProps: {
     label: 'Upload file',
     fileType: 'all',
     required: false,
+    displayName: ''
   },
   render: ({ id, label, puck, fileType, required }) => {
     const { errors, defaultValues } = puck?.metadata;

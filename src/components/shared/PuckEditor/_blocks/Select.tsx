@@ -16,6 +16,7 @@ export type SelectProps = {
   label: string;
   items: { title: string; value: string }[];
   required: boolean;
+  displayName?: string;
 };
 
 export const SelectInner: ComponentConfig<SelectProps> = {
@@ -36,12 +37,14 @@ export const SelectInner: ComponentConfig<SelectProps> = {
         { label: 'Required', value: true },
       ],
     },
+    displayName: { type: 'text', label: 'Display name' },
   },
   defaultProps: {
     placeholder: 'Placeholder',
     label: 'Label',
     items: [],
     required: false,
+    displayName: ''
   },
   render: ({ id, label, puck, placeholder, items, required }) => {
     const { errors, defaultValues } = puck?.metadata;

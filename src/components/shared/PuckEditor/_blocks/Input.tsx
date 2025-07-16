@@ -8,6 +8,8 @@ export type InputProps = {
   placeholder: string;
   label: string;
   required: boolean;
+  displayName?: string;
+  validate?: string;
 };
 
 export const InputInner: ComponentConfig<InputProps> = {
@@ -21,13 +23,25 @@ export const InputInner: ComponentConfig<InputProps> = {
         { label: 'Required', value: true },
       ],
     },
+    displayName: { type: 'text', label: 'Display name' },
+    validate: {
+      type: 'select',
+      label: 'Validate as',
+      options: [
+        { label: 'Not validate', value: 'off' },
+        { label: 'Phone', value: 'phone' },
+        { label: 'Email', value: 'email' },
+      ],
+    },
   },
   defaultProps: {
     placeholder: 'Placeholder',
     label: 'Label',
     required: false,
+    displayName: '',
+    validate: 'off',
   },
-  render: ({ id, label, puck, placeholder, required }) => {
+  render: ({ id, label, puck, placeholder, required, validate }) => {
     const { errors, defaultValues } = puck?.metadata;
     const defaultValue = defaultValues?.[id];
     const error = errors?.[id];
@@ -38,7 +52,8 @@ export const InputInner: ComponentConfig<InputProps> = {
           <Label htmlFor={id} className={`${error ? 'text-destructive' : ''}`}>
             {label}{required ? <span className="text-destructive">*</span> : ''}
           </Label>
-          <_Input tabIndex={puck.isEditing ? -1 : undefined} defaultValue={defaultValue} name={id}
+          <_Input autoComplete={validate} tabIndex={puck.isEditing ? -1 : undefined} defaultValue={defaultValue}
+                  name={id}
                   id={id} placeholder={placeholder} aria-invalid={!!error}
                   aria-describedby={error ? `${id}-error` : undefined} />
           {error && (

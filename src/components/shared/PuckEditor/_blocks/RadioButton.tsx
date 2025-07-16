@@ -9,6 +9,7 @@ export type RadioButtonProps = {
   label: string;
   items: { label: string; value: string; }[];
   required: boolean;
+  displayName?: string;
 };
 
 export const RadioButtonInner: ComponentConfig<RadioButtonProps> = {
@@ -28,11 +29,13 @@ export const RadioButtonInner: ComponentConfig<RadioButtonProps> = {
         { label: 'Required', value: true },
       ],
     },
+    displayName: { type: 'text', label: 'Display name' },
   },
   defaultProps: {
     label: 'Label',
     items: [],
     required: false,
+    displayName: ''
   },
   render: ({ id, label, puck, items, required }) => {
     const { errors, defaultValues } = puck?.metadata;

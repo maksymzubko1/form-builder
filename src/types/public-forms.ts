@@ -25,11 +25,27 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
   };
   fields.forEach(f => {
     if (f.type === 'Input') {
-      const base = z.string('Field is required');
-      if (f.required) {
-        shape[f.id] = base.min(1, 'Field is required');
+      if (f.validate === 'email') {
+        const base = z.email('Incorrect email');
+        if (f.required) {
+          shape[f.id] = base.min(1, 'Field is required');
+        } else {
+          shape[f.id] = base.optional().nullable();
+        }
+      } else if (f.validate === 'phone') {
+        const base = z.e164('Incorrect phone number');
+        if (f.required) {
+          shape[f.id] = base.min(1, 'Field is required');
+        } else {
+          shape[f.id] = base.optional().nullable();
+        }
       } else {
-        shape[f.id] = base.optional().nullable();
+        const base = z.string('Field is required');
+        if (f.required) {
+          shape[f.id] = base.min(1, 'Field is required');
+        } else {
+          shape[f.id] = base.optional().nullable();
+        }
       }
     } else if (f.type === 'Textarea') {
       const base = z.string('Field is required');
@@ -63,14 +79,28 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
   };
   fields.forEach(f => {
     if (f.type === 'Input') {
-      if (f.required) {
-        shape[f.id] = z.object({ value: z.string().min(1, "Field is required") });
+      if (f.validate === 'email') {
+        if (f.required) {
+          shape[f.id] = z.object({ value: z.email('Incorrect email').min(1, 'Field is required') });
+        } else {
+          shape[f.id] = z.object({ value: z.email('Incorrect email').optional().nullable() });
+        }
+      } else if (f.validate === 'phone') {
+        if (f.required) {
+          shape[f.id] = z.object({ value: z.e164('Incorrect phone number').min(1, 'Field is required') });
+        } else {
+          shape[f.id] = z.object({ value: z.e164('Incorrect phone number').optional().nullable() });
+        }
       } else {
-        shape[f.id] = z.object({ value: z.string().optional().nullable() });
+        if (f.required) {
+          shape[f.id] = z.object({ value: z.string().min(1, 'Field is required') });
+        } else {
+          shape[f.id] = z.object({ value: z.string().optional().nullable() });
+        }
       }
     } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
       if (f.required) {
-        shape[f.id] = z.object({ value: z.string().min(1, "Field is required") });
+        shape[f.id] = z.object({ value: z.string().min(1, 'Field is required') });
       } else {
         shape[f.id] = z.object({ value: z.string().optional().nullable() });
       }

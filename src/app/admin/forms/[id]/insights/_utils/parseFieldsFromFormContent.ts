@@ -15,7 +15,7 @@ export function parseFieldsFromFormContent(content: unknown): FieldDescriptor[] 
     if (InteractiveItems.includes(node.type) && node.props?.id) {
       fields.push({
         id: node.props.id,
-        label: node.props.label || node.props.placeholder || node.props.id,
+        label: node.props.displayName || node.props.label || node.props.placeholder || node.props.id,
         type: node.type,
       });
     }

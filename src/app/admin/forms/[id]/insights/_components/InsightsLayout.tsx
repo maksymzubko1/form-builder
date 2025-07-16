@@ -35,7 +35,7 @@ export function InsightsLayout({ formId }: { formId: string }) {
         .map(field => {
           const answers: TopAnswer[] = getTopAnswers(field.id, field.type);
           if (!answers.length) return null;
-          return <TopAnswers key={field.id} title={`Top answers for "${field.label} [${field.id}]"`}
+          return <TopAnswers key={field.id} title={`Top answers for "${field.label}"`}
                              answers={answers} />;
         })}
     </section>
