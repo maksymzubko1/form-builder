@@ -15,7 +15,6 @@ export default function HomePage() {
       <Button tabIndex={0} asChild>
         <Link href={ROUTES.ADMIN}>Get started</Link>
       </Button>
-      {/* TODO: auth buttons and etc... */}
     </div>
   );
 }

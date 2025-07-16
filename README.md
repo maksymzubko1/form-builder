@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+TODO:
+- validate all fields requirements before publish (Puck editor)
+- use displayName for export in csv and insights (create unique name generator [name-[index?]]) 
+- all API routes 500 handlers
+- custom 404 page for form
+- custom 404 page for admin layout
+- custom 404 page for user layout
+- AI
+- revalidate all TS in project
+- sort submissions by date
+
 ## Getting Started
 
 First, run the development server:

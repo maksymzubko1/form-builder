@@ -13,6 +13,7 @@ import { CopyFormButton } from '@/app/admin/forms/_components/actions/CopyFormBu
 import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
 import { DeleteFormAction } from '@/app/admin/forms/_components/actions/DeleteFormAction';
+import React from 'react';
 
 export const formsColumns: ColumnDef<FormListItem>[] = [
   {
@@ -65,6 +66,11 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
             <DropdownMenuItem asChild>
               <Link className="w-full flex cursor-pointer" href={ROUTES.FORM(form.id)} target="_blank">
                 View
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_PREVIEW(form.id)}>
+                Preview
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

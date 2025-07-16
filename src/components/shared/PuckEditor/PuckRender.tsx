@@ -9,8 +9,8 @@ const Render = dynamic(() =>
 
 type Props = {
   content: Data;
-  errors: FieldErrors<Record<string, unknown>>
-  defaultValues: Record<string, unknown>
+  errors?: FieldErrors<Record<string, unknown>>
+  defaultValues?: Record<string, unknown>
 }
 
 export default function PuckRender({ content, errors, defaultValues }: Props) {
