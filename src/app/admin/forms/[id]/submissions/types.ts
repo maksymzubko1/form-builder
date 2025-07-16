@@ -5,6 +5,7 @@ export const SubmissionsFilterSchema = z.object({
   from: z.string().optional(), // ISO Date
   to: z.string().optional(),   // ISO Date
   query: z.string().optional(),
+  order: z.string().optional(),
 });
 
 export type SubmissionsFilter = z.infer<typeof SubmissionsFilterSchema>;

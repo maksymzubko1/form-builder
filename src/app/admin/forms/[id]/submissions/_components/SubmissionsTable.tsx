@@ -130,7 +130,7 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
 
   return (
     <div>
-      <div className="flex items-center gap-4 mb-4">
+      <div className="flex items-end gap-4 mb-4">
         <SubmissionsFilterForm onChange={(f) => {
           setPage(1);
           setFilter(f);

@@ -18,6 +18,7 @@ export async function GET(
     from: url.searchParams.get('from') || undefined,
     to: url.searchParams.get('to') || undefined,
     query: url.searchParams.get('query') || undefined,
+    order: url.searchParams.get('order') || undefined,
   };
 
   const parse = SubmissionsFilterSchema.safeParse(filter);
@@ -29,16 +30,18 @@ export async function GET(
   const perPage = Number(url.searchParams.get('perPage') ?? 20);
 
   const where: Record<string, unknown> = { formId: (await params).id };
+  let orderBy: Record<string, 'asc' | 'desc'> = {submittedAt: 'desc'}
   if (filter.email) where.email = filter.email;
   if (filter.from || filter.to) where.submittedAt = {};
   if (filter.from) where.submittedAt.gte = new Date(filter.from);
   if (filter.to) where.submittedAt.lte = new Date(filter.to);
+  if (filter.order) orderBy = {[filter.order.split('_')[0]]: filter.order.split('_')[1]};
 
   const [total, submissions] = await Promise.all([
     prisma.formSubmission.count({ where }),
     prisma.formSubmission.findMany({
       where,
-      orderBy: { submittedAt: 'desc' },
+      orderBy,
       skip: (page - 1) * perPage,
       take: perPage,
     }),
