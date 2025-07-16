@@ -14,6 +14,7 @@ import { Pagination } from '@/components/shared/Pagination';
 import DeleteModal, { DeleteTarget } from './DeleteModal';
 import { useModal } from '@/lib/hooks/useModal';
 import { toast } from 'sonner';
+import { prepareSubmissions } from '@/lib/submission';
 
 interface SubmissionsTableProps {
   formId: string;
@@ -49,14 +50,7 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
       const res = await fetch(`${API_ROUTES.FORM_SUBMISSIONS(formId)}?${params}`);
       if (res.ok) {
         const json = await res.json();
-        const parsedData = json.data.map((item) => {
-          const data = Object.entries(item.data).reduce((previousValue, [key, value]) => {
-            previousValue[key] = value.value;
-            return previousValue;
-          }, {});
-
-          return { ...item, data };
-        });
+        const parsedData = json.data.map((item) => ({ ...item, data: prepareSubmissions(item.data) }));
         setSubmissions(parsedData ?? []);
         setTotal(json.total ?? 0);
       } else {

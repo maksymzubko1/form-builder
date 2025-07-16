@@ -1,3 +1,5 @@
+import { Badge } from '@/components/ui/badge';
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Loader from '@/components/ui/loader';
 
 interface StatsTilesProps {
@@ -11,27 +13,44 @@ interface StatsTilesProps {
 
 export function StatsTiles({ total, week, today, viewsCount, conversion, loading }: StatsTilesProps) {
   return (
-    <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-      <div className="bg-card p-4 rounded-xl shadow flex flex-col items-center">
-        <div className="text-2xl font-bold">{loading ? <Loader size="m" /> : total}</div>
-        <div className="text-muted-foreground text-sm">Total submissions</div>
-      </div>
-      <div className="bg-card p-4 rounded-xl shadow flex flex-col items-center">
-        <div className="text-2xl font-bold">{loading ? <Loader size="m" /> : week}</div>
-        <div className="text-muted-foreground text-sm">This week</div>
-      </div>
-      <div className="bg-card p-4 rounded-xl shadow flex flex-col items-center">
-        <div className="text-2xl font-bold">{loading ? <Loader size="m" /> : today}</div>
-        <div className="text-muted-foreground text-sm">Today</div>
-      </div>
-      <div className="bg-card p-4 rounded-xl shadow flex flex-col items-center">
-        <div className="text-2xl font-bold">{loading ? <Loader size="m" /> : viewsCount}</div>
-        <div className="text-muted-foreground text-sm">Form views</div>
-        <div className="text-primary text-lg font-bold mt-1">
-          {(viewsCount && !loading) ? `${conversion}%` : '—'} <span
-          className="text-xs text-muted-foreground ml-1">conversion</span>
-        </div>
-      </div>
+    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Total Submissions</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            {loading ? <Loader className="place-content-start" size="l" /> : total}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>This Week</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            {loading ? <Loader className="place-content-start" size="l" /> : week}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Today</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            {loading ? <Loader className="place-content-start" size="l" /> : today}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Form views</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            {loading ? <Loader className="place-content-start" size="l" /> : viewsCount}
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              Conversion {(viewsCount && !loading) ? `${conversion}%` : '—'}
+            </Badge>
+          </CardAction>
+        </CardHeader>
+      </Card>
     </div>
   );
 }

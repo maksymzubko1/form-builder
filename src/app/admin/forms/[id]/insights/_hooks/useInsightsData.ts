@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { fetchSubmissionsStats, fetchFormContent } from '../_utils/api';
 import { parseFieldsFromFormContent } from '../_utils/parseFieldsFromFormContent';
 import { Submission, ChartPoint, TopAnswer, Fields } from '../types';
+import { prepareSubmissions } from '@/lib/submission';
 
 export function useInsightsData(formId: string, from?: string, to?: string) {
   const [data, setData] = useState<Submission[]>([]);
@@ -16,12 +17,14 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
       fetchSubmissionsStats(formId, from, to),
       fetchFormContent(formId),
     ]).then(([subs, formContent]) => {
-      setData(subs.data || []);
+      console.log(subs.data);
+      setData(subs.data?.map(item => ({ ...item, data: prepareSubmissions(item.data) })) || []);
       setTotalViews(subs.totalViews);
       setFields(parseFieldsFromFormContent(formContent));
     }).finally(() => setLoading(false));
   }, [formId, from, to]);
 
+  console.log(fields);
   const chartData: ChartPoint[] = useMemo(() => {
     const counts: Record<string, number> = {};
     data.forEach((s) => {
@@ -44,7 +47,7 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
     const stats: Record<string, number> = {};
     data.forEach((s) => {
       if (type === 'FileInput') return;
-      const v = s.data?.[key]?.value;
+      const v = s.data?.[key];
       if (Array.isArray(v)) {
         v.forEach(val => {
           if (val) stats[val] = (stats[val] || 0) + 1;

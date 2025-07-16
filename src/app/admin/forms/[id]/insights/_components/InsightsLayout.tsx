@@ -25,19 +25,24 @@ export function InsightsLayout({ formId }: { formId: string }) {
   } = useInsightsData(formId, from, to);
 
   return (
-    <section>
+    <section className="flex flex-col gap-4">
       <h1 className="text-2xl font-bold mb-6">Form Insights</h1>
       <DateRangeFilter from={from} to={to} setFrom={setFrom} setTo={setTo} />
-      <StatsTiles loading={loading} total={total} week={week} today={today} viewsCount={viewsCount} conversion={conversion} />
-      <InsightsChart data={chartData} loading={loading}  />
+      <StatsTiles loading={loading} total={total} week={week} today={today} viewsCount={viewsCount}
+                  conversion={conversion} />
+      <InsightsChart data={chartData} loading={loading}
+                     dateRange={{ from: from as string, to: to as string }} />
 
-      {fields
-        .map(field => {
-          const answers: TopAnswer[] = getTopAnswers(field.id, field.type);
-          if (!answers.length) return null;
-          return <TopAnswers key={field.id} title={`Top answers for "${field.label}"`}
-                             answers={answers} />;
-        })}
+      <div
+        className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 lg:grid-cols-2 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+        {fields
+          .map(field => {
+            const answers: TopAnswer[] = getTopAnswers(field.label as string, field.type as string);
+            if (!answers.length) return null;
+            return <TopAnswers key={field.id as string} title={`Top answers for "${field.label}"`}
+                               answers={answers} />;
+          })}
+      </div>
     </section>
   );
 }

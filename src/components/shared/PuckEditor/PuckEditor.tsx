@@ -20,7 +20,7 @@ type Props = {
 
 export default function PuckEditorForm({ content, onPublish, isEditing = false, formProps, isLoading }: Props) {
   return (
-    <div className="rounded-2xl overflow-hidden">
+    <div className="rounded-2xl overflow-hidden dark [&>div]:!overflow-x-hidden">
       <Puck
         config={puckConfig}
         data={content}

@@ -2,7 +2,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 TODO:
 - validate all fields requirements before publish (Puck editor)
-- use displayName for export in csv and insights (create unique name generator [name-[index?]]) 
 - all API routes 500 handlers
 - custom 404 page for form
 - custom 404 page for admin layout

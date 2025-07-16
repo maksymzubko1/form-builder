@@ -60,7 +60,7 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
 
   return (
     <header
-      className={`col-span-3 w-full flex flex-wrap gap-16 pb-[16px] pt-[16px] pr-[24px] pl-[24px] bg-white text-black items-center border-b-2 border-b-[#ddd]`}
+      className={`col-span-3 w-full flex flex-wrap gap-16 pb-[16px] pt-[16px] pr-[24px] pl-[24px] dark bg-muted items-center border-b-2 border-b-[#ddd]`}
       onClick={() => dispatch({ type: 'setUi', ui: { itemSelector: null } })}
     >
       <div className="flex gap-8 justify-between w-full">
@@ -73,7 +73,7 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
                   variant={rightSideBarVisible ? 'secondary' : 'ghost'}>
             <PanelRight className="size-6" size={16} />
           </Button>
-          <Button onClick={toggleMode} variant="secondary">
+          <Button onClick={toggleMode}>
             Switch to {previewMode === 'edit' ? 'interactive' : 'edit'}
           </Button>
         </div>

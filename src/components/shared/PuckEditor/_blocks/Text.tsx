@@ -48,19 +48,15 @@ const TextInner: ComponentConfig<TextProps> = {
     size: 'm',
     color: 'default',
   },
-  render: ({ align, color, text, size, maxWidth, puck }) => {
-    const isRender = puck.metadata.isRender;
-
+  render: ({ align, color, text, size, maxWidth }) => {
     return (
       <Section maxWidth={maxWidth}>
         <span
-          className=""
+          className="flex w-full"
           style={{
             color:
-              color === 'default' ? (isRender ? 'inherit' : 'black') : 'var(--puck-color-grey-05)',
-            display: 'flex',
+              color === 'default' ? 'inherit' : 'var(--puck-color-grey-08)',
             textAlign: align,
-            width: '100%',
             fontSize: size === 'm' ? '20px' : '16px',
             fontWeight: 400,
             maxWidth,

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { parseAsync } from 'json2csv';
+import { prepareSubmissions } from '@/lib/submission';
 
 export async function GET(
   req: Request,
@@ -16,10 +17,7 @@ export async function GET(
     id: s.id,
     email: s.email,
     submittedAt: s.submittedAt,
-    ...Object.entries(s.data).reduce((previousValue, [key, value]) => {
-      previousValue[key] = value.value;
-      return previousValue;
-    }, {}),
+    ...prepareSubmissions(s.data),
   }));
 
   if (!data.length) {
