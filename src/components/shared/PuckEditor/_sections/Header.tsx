@@ -53,6 +53,7 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
     });
   };
 
+  // TODO: validate all fields requirements before publish
   const publish = () => {
     onPublish(get().appState.data);
   };

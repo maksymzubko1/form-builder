@@ -8,6 +8,7 @@ export type CheckboxProps = {
   label: string;
   description?: string;
   required: boolean;
+  displayName?: string;
 };
 
 export const CheckboxInner: ComponentConfig<CheckboxProps> = {
@@ -21,11 +22,13 @@ export const CheckboxInner: ComponentConfig<CheckboxProps> = {
         { label: 'Required', value: true },
       ],
     },
+    displayName: { type: 'text', label: 'Display name' },
   },
   defaultProps: {
     label: 'Label',
     description: '',
     required: false,
+    displayName: '',
   },
   render: ({ id, label, puck, description, required }) => {
     const { errors, defaultValues } = puck?.metadata;
@@ -36,7 +39,8 @@ export const CheckboxInner: ComponentConfig<CheckboxProps> = {
       <Section>
         <div className="flex flex-col mb-4">
           <div className="flex items-start gap-3">
-            <_Checkbox defaultChecked={defaultValue} name={id} aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined}
+            <_Checkbox defaultChecked={defaultValue} name={id} aria-invalid={!!error}
+                       aria-describedby={error ? `${id}-error` : undefined}
                        tabIndex={puck.isEditing ? -1 : undefined} id={id} />
             <div className="grid gap-2">
               <Label htmlFor={id} className={`${error ? 'text-destructive' : ''}`}>

@@ -8,6 +8,7 @@ export type TextareaProps = {
   placeholder: string;
   label: string;
   required: boolean;
+  displayName?: string;
 };
 
 const TextareaInner: ComponentConfig<TextareaProps> = {
@@ -21,11 +22,13 @@ const TextareaInner: ComponentConfig<TextareaProps> = {
         { label: 'Required', value: true },
       ],
     },
+    displayName: { type: 'text', label: 'Display name' },
   },
   defaultProps: {
     placeholder: 'Placeholder',
     label: 'Label',
     required: false,
+    displayName: ''
   },
   render: ({ id, label, puck, placeholder, required }) => {
     const { errors, defaultValues } = puck?.metadata;
