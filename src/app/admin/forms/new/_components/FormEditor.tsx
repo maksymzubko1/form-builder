@@ -80,8 +80,6 @@ export function FormEditor() {
       </Form>
 
       <div className="flex flex-col">
-        <label className={`block text-sm ${errors.content ? 'text-destructive' : ''} font-medium mb-3`}>Form
-          Content</label>
         <div className="error mb-2 flex flex-col">
           {errors.title && <span className="text-destructive text-sm">{errors.title.message}</span>}
           {errors.description && <span className="text-destructive text-sm">{errors.description.message}</span>}

@@ -37,7 +37,6 @@ export default async function PreviewFormPage({ params }: PreviewFormProps) {
           <ArrowLeft /> Back to form
         </Link>
       </Button>
-      <h1 className="text-2xl font-bold mb-6">Preview form (DEMO)</h1>
       <PreviewForm form={initialForm} />
     </section>
   );
