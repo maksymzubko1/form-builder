@@ -10,9 +10,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useSidebar } from '@/components/ui/sidebar';
+import { useEffect } from 'react';
 
 export default function ChangePasswordForm() {
   const { data: session } = useSession();
+  const { setPageTitle } = useSidebar();
 
   const form = useForm<TChangePasswordForm>({
     resolver: zodResolver(ChangePasswordSchema),
@@ -41,11 +44,14 @@ export default function ChangePasswordForm() {
     }
   };
 
+  useEffect(() => {
+    setPageTitle('Profile');
+  }, [setPageTitle]);
+
   if (!session) return <div>Loading your profile...</div>;
 
   return (
     <div className="max-w-md mx-auto mt-12 space-y-4">
-      <h1 className="text-2xl font-bold">Profile</h1>
       <div>Email: {session.user.email}</div>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">

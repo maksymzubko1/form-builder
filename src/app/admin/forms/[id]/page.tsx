@@ -24,10 +24,5 @@ export default async function EditFormPage({ params }: Props) {
   const initialForm = await getFormData((await params).id);
   if (!initialForm) return notFound();
 
-  return (
-    <section>
-      <h1 className="text-2xl font-bold mb-6">Edit Form</h1>
-      <FormEditor initialForm={initialForm} />
-    </section>
-  );
+  return (<FormEditor initialForm={initialForm} />);
 }

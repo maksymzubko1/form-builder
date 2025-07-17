@@ -15,6 +15,7 @@ import DeleteModal, { DeleteTarget } from './DeleteModal';
 import { useModal } from '@/lib/hooks/useModal';
 import { toast } from 'sonner';
 import { prepareSubmissions } from '@/lib/submission';
+import { useSidebar } from '@/components/ui/sidebar';
 
 interface SubmissionsTableProps {
   formId: string;
@@ -23,6 +24,7 @@ interface SubmissionsTableProps {
 const DEFAULT_PER_PAGE = 10;
 
 export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) => {
+  const {setPageTitle} = useSidebar();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [filter, setFilter] = useState<SubmissionsFilter>({});
@@ -62,6 +64,10 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setPageTitle('Form submissions');
+  }, [setPageTitle]);
 
   useEffect(() => {
     loadSubmissions(filter, page, perPage);

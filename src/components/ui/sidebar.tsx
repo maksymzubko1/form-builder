@@ -40,6 +40,8 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  pageTitle?: string
+  setPageTitle: (title: string) => void
 }
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null)
@@ -87,6 +89,10 @@ function SidebarProvider({
     },
     [setOpenProp, open]
   )
+  const [pageTitle, setPageTitle] = React.useState("")
+  const changePageTitle = React.useCallback((title: string) => {
+    setPageTitle(title);
+  }, [])
 
   // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
@@ -122,8 +128,10 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      pageTitle,
+      setPageTitle: changePageTitle
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, changePageTitle, pageTitle]
   )
 
   return (

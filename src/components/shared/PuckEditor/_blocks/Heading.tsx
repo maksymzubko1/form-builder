@@ -64,9 +64,7 @@ const HeadingInternal: ComponentConfig<HeadingProps> = {
       padding: "8px",
     },
   },
-  render: ({ align, text, size, level, puck }) => {
-    const isRender = puck.metadata.isRender;
-
+  render: ({ align, text, size, level }) => {
     return (
       <Section>
         <_Heading size={size} rank={level}>
