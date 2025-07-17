@@ -5,12 +5,20 @@ import PuckRender from '@/components/shared/PuckEditor/PuckRender';
 import { Input } from '@/components/ui/input';
 import { FormType } from '@/types/forms';
 import { Label } from '@/components/ui/label';
+import { useSidebar } from '@/components/ui/sidebar';
+import { useEffect } from 'react';
 
 type Props = {
   form: FormType & { id: string; isPublished: boolean };
 }
 
 export function PreviewForm({ form }: Props) {
+  const { setPageTitle } = useSidebar();
+
+  useEffect(() => {
+    setPageTitle('Preview form (DEMO)');
+  }, [setPageTitle]);
+
   return (
     <form noValidate
           className="dark max-w-[1280px] w-full md:mx-auto md:my-12 p-6 bg-muted md:rounded shadow space-y-6 flex flex-col">

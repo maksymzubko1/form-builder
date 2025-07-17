@@ -4,15 +4,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormSchema, FormType } from '@/types/forms';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Form } from '@/components/ui/form';
 import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
 import { Data } from '@measured/puck';
 import { Button } from '@/components/ui/button';
 import { API_ROUTES, ROUTES } from '@/constants/routes';
+import { useSidebar } from '@/components/ui/sidebar';
 
 export function FormEditor() {
+  const { setPageTitle } = useSidebar();
   const router = useRouter();
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
@@ -49,12 +51,16 @@ export function FormEditor() {
 
   const onPublish = (data: Data) => {
     setValue('content', data);
-    setValue('title', data.root.props?.title)
-    setValue('emailNotification', data.root.props?.emailNotification)
-    setValue('description', data.root.props?.description)
+    setValue('title', data.root.props?.title);
+    setValue('emailNotification', data.root.props?.emailNotification);
+    setValue('description', data.root.props?.description);
 
     submitButtonRef.current?.click();
   };
+
+  useEffect(() => {
+    setPageTitle('Create Form');
+  }, [setPageTitle]);
 
   return (
     <div className="flex flex-col gap-4">

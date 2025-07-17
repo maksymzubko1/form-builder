@@ -11,10 +11,12 @@ import { useRouter } from 'next/navigation';
 import { Pagination } from '@/components/shared/Pagination';
 import { useModal } from '@/lib/hooks/useModal';
 import { DeleteFormDialog } from '@/app/admin/forms/_components/actions/DeleteFormDialog';
+import { useSidebar } from '@/components/ui/sidebar';
 
 const LIMIT = 20;
 
 export function FormsTable(): JSX.Element {
+  const {setPageTitle} = useSidebar();
   const [forms, setForms] = useState<FormListItem[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,6 +45,10 @@ export function FormsTable(): JSX.Element {
     setTotal(data.total || 0);
     setLoading(false);
   };
+
+  useEffect(() => {
+    setPageTitle('My Forms');
+  }, [setPageTitle]);
 
   useEffect(() => {
     fetchForms();

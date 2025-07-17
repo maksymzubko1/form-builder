@@ -1,37 +1,45 @@
 'use client';
 
+
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar';
+import { JSX } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ROUTES } from '@/constants/routes';
 
-const NAV = [
-  { href: ROUTES.ADMIN_FORMS, label: 'My Forms' },
-  // { href: ROUTES.ADMIN_RESULTS, label: 'Results' },
-  { href: ROUTES.ADMIN_PROFILE, label: 'My Profile' },
-];
-
-type Props = {
-  onClose: () => void;
-}
-
-export default function AdminNav({ onClose }: Props) {
+export function AdminNav({
+                           items,
+                         }: {
+  items: {
+    title: string
+    url: string
+    icon?: JSX.Element;
+  }[]
+}) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col gap-2 mt-4 mb-4 p-2" onClick={onClose}>
-      {NAV.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={`rounded px-2 py-1 font-medium ${
-            pathname === item.href
-              ? 'bg-blue-100 text-blue-700'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          {item.label}
-        </Link>
-      ))}
-    </nav>
+    <SidebarGroup>
+      <SidebarGroupContent className="flex flex-col gap-2">
+        <SidebarMenu>
+          {items.map((item) => (
+            <SidebarMenuItem key={item.title} aria-selected={pathname === item.url}>
+              <SidebarMenuButton tooltip={item.title} asChild
+                                 className={pathname === item.url ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear' : ''}>
+                <Link href={item.url}>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 }

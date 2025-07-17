@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FormSchema, FormType } from '@/types/forms';
 import { toast } from 'sonner';
@@ -10,12 +10,14 @@ import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
 import { Data } from '@measured/puck';
 import { Form } from '@/components/ui/form';
 import { API_ROUTES } from '@/constants/routes';
+import { useSidebar } from '@/components/ui/sidebar';
 
 interface FormEditorProps {
   initialForm: FormType & { id: string; isPublished: boolean };
 }
 
 export function FormEditor({ initialForm }: FormEditorProps) {
+  const {setPageTitle} = useSidebar()
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
 
@@ -64,6 +66,10 @@ export function FormEditor({ initialForm }: FormEditorProps) {
 
     submitButtonRef.current?.click();
   };
+
+  useEffect(() => {
+    setPageTitle('Edit Form');
+  }, [setPageTitle]);
 
   return (
     <div className="flex flex-col gap-4">
