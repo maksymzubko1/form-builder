@@ -25,10 +25,13 @@ export async function GET(_req: Request, { params }: GetProps): Promise<NextResp
     }));
 
     if (!data.length) {
-      data = [{
-        id: '-1', email: '',
-        submittedAt: new Date(),
-      }];
+      data = [
+        {
+          id: '-1',
+          email: '',
+          submittedAt: new Date(),
+        },
+      ];
     }
 
     let csv = await parseAsync(data);

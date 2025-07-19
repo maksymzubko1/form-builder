@@ -19,7 +19,8 @@ export async function POST(req: Request, { params }: PostProps) {
 
     const { password } = body;
     const userId = await consumeToken(token, 'reset');
-    if (!userId) return NextResponse.json({ error: ETokenResetCode.INVALID_TOKEN }, { status: 400 });
+    if (!userId)
+      return NextResponse.json({ error: ETokenResetCode.INVALID_TOKEN }, { status: 400 });
 
     const passwordHash = await hash(password, 10);
     await prisma.user.update({

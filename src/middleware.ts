@@ -3,12 +3,7 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
 import { ROUTES } from '@/constants/routes';
 
-const AUTH_PAGES = [
-  ROUTES.LOGIN,
-  ROUTES.REGISTER,
-  ROUTES.RESET,
-  ROUTES.VERIFY,
-];
+const AUTH_PAGES = [ROUTES.LOGIN, ROUTES.REGISTER, ROUTES.RESET, ROUTES.VERIFY];
 
 export default async function middleware(req: NextRequestWithAuth, event: NextFetchEvent) {
   const { pathname } = req.nextUrl;
@@ -40,6 +35,6 @@ export const config = {
     '/verify',
     '/reset-password/(.*)',
     '/verify/(.*)',
-    '/admin/:path*'
+    '/admin/:path*',
   ],
 };

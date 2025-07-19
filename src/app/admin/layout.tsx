@@ -11,10 +11,10 @@ import { SiteHeader } from '@/app/_components/SiteHeader';
 export const metadata = {
   title: {
     default: 'Admin Panel',
-    template: '%s | Admin Panel'
+    template: '%s | Admin Panel',
   },
   description: 'Manage your forms, submissions, and AI assistant in the admin dashboard.',
-  robots: 'noindex'
+  robots: 'noindex',
 };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
@@ -28,8 +28,8 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     <SidebarProvider
       style={
         {
-          "--sidebar-width": "calc(var(--spacing) * 52)",
-          "--header-height": "calc(var(--spacing) * 12)",
+          '--sidebar-width': 'calc(var(--spacing) * 52)',
+          '--header-height': 'calc(var(--spacing) * 12)',
         } as React.CSSProperties
       }
     >
@@ -38,9 +38,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <SiteHeader />
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 px-4 md:gap-6 md:py-6 md:mx-6">
-              {children}
-            </div>
+            <div className="flex flex-col gap-4 py-4 px-4 md:gap-6 md:py-6 md:mx-6">{children}</div>
           </div>
         </div>
       </SidebarInset>

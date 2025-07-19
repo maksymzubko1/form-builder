@@ -5,11 +5,18 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { EmailSchema, EmailType } from '@/types/forms';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 
 export function EmailStep() {
-  const {push} = useRouter();
+  const { push } = useRouter();
   const form = useForm<EmailType>({
     resolver: zodResolver(EmailSchema),
     defaultValues: {
@@ -20,8 +27,8 @@ export function EmailStep() {
   const { handleSubmit, control } = form;
 
   const onSubmit = (data: EmailType) => {
-    push(`?email=${data.email}`)
-  }
+    push(`?email=${data.email}`);
+  };
 
   return (
     <Form {...form}>
@@ -44,7 +51,9 @@ export function EmailStep() {
           )}
         />
 
-        <Button type="submit" className="w-full">Continue</Button>
+        <Button type="submit" className="w-full">
+          Continue
+        </Button>
       </form>
     </Form>
   );

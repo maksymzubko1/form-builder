@@ -24,7 +24,9 @@ export const FileInner: ComponentConfig<FileProps> = {
   fields: {
     label: { type: 'text', label: 'Label' },
     fileType: {
-      type: 'select', label: 'Accept', options: [
+      type: 'select',
+      label: 'Accept',
+      options: [
         { label: 'All files', value: 'all' },
         { label: 'Only images', value: 'images' },
         { label: 'Only video', value: 'videos' },
@@ -32,7 +34,9 @@ export const FileInner: ComponentConfig<FileProps> = {
       ],
     },
     required: {
-      type: 'radio', label: 'Required', options: [
+      type: 'radio',
+      label: 'Required',
+      options: [
         { label: 'Not required', value: false },
         { label: 'Required', value: true },
       ],
@@ -51,21 +55,38 @@ export const FileInner: ComponentConfig<FileProps> = {
     const error = errors?.[id];
     const accept = ACCEPT_PRESETS[fileType] || '';
 
-    const selectedFields = document.querySelector('[data-selected-fields]')
-      ?.getAttribute('data-selected-fields')?.split(',') || [];
+    const selectedFields =
+      document
+        .querySelector('[data-selected-fields]')
+        ?.getAttribute('data-selected-fields')
+        ?.split(',') || [];
     const isSelected = puck.isEditing && selectedFields.includes(id);
 
     return (
       <Section className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}>
-        {isSelected && <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">AI</span>}
+        {isSelected && (
+          <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">
+            AI
+          </span>
+        )}
         <div className="grid w-full items-center mb-4">
           <Label htmlFor={id} className={`${error ? 'text-destructive' : ''} mb-3`}>
-            {label}{required ? <span className="text-destructive">*</span> : ''}
+            {label}
+            {required ? <span className="text-destructive">*</span> : ''}
           </Label>
-          <_Input aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined} name={id}
-                  tabIndex={puck.isEditing ? -1 : undefined} accept={accept} id={id} type="file" />
+          <_Input
+            aria-invalid={!!error}
+            aria-describedby={error ? `${id}-error` : undefined}
+            name={id}
+            tabIndex={puck.isEditing ? -1 : undefined}
+            accept={accept}
+            id={id}
+            type="file"
+          />
           {defaultValue && (
-            <Link href={defaultValue} className="text-blue-500 mt-1 mb-2" target="_blank">Previous file</Link>
+            <Link href={defaultValue} className="text-blue-500 mt-1 mb-2" target="_blank">
+              Previous file
+            </Link>
           )}
           {fileType !== 'all' && (
             <p className="text-xs text-muted-foreground mt-1">

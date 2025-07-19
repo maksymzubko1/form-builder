@@ -5,7 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterForm as TRegisterForm, RegisterSchema, ERegisterResponse } from '@/types/register';
 import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -22,7 +29,11 @@ export default function RegisterForm() {
     },
   });
 
-  const { handleSubmit, control, formState: { isSubmitting } } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
     try {
@@ -73,8 +84,14 @@ export default function RegisterForm() {
           )}
         />
         <div className="flex justify-center text-sm">
-          <Button tabIndex={2} type="submit" className="justify-self-center-safe w-full"
-                  disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Register'}</Button>
+          <Button
+            tabIndex={2}
+            type="submit"
+            className="justify-self-center-safe w-full"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Loading...' : 'Register'}
+          </Button>
         </div>
         <div className="text-sm text-center">
           Already have an account?{' '}

@@ -57,13 +57,22 @@ const FlexInternal: ComponentConfig<FlexProps> = {
     items: [],
   },
   render: ({ justifyContent, direction, gap, wrap, items: Items, id, puck }) => {
-    const selectedFields = document.querySelector('[data-selected-fields]')
-      ?.getAttribute('data-selected-fields')?.split(',') || [];
+    const selectedFields =
+      document
+        .querySelector('[data-selected-fields]')
+        ?.getAttribute('data-selected-fields')
+        ?.split(',') || [];
     const isSelected = puck.isEditing && selectedFields.includes(id);
 
     return (
-      <Section className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''} h-full`}>
-        {isSelected && <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">AI</span>}
+      <Section
+        className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''} h-full`}
+      >
+        {isSelected && (
+          <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">
+            AI
+          </span>
+        )}
         <Items
           style={{
             display: 'flex',

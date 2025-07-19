@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, ReactNode } from "react";
+import { CSSProperties, forwardRef, ReactNode } from 'react';
 import { ComponentConfig, DefaultComponentProps, ObjectField } from '@measured/puck';
 import { spacingOptions } from '@/components/shared/PuckEditor/options';
 
@@ -20,32 +20,32 @@ type LayoutProps = WithLayout<{
 }>;
 
 export const layoutField: ObjectField<LayoutFieldProps> = {
-  type: "object",
+  type: 'object',
   objectFields: {
     spanCol: {
-      label: "Grid Columns",
-      type: "number",
+      label: 'Grid Columns',
+      type: 'number',
       min: 1,
       max: 12,
     },
     spanRow: {
-      label: "Grid Rows",
-      type: "number",
+      label: 'Grid Rows',
+      type: 'number',
       min: 1,
       max: 12,
     },
     grow: {
-      label: "Flex Grow",
-      type: "radio",
+      label: 'Flex Grow',
+      type: 'radio',
       options: [
-        { label: "true", value: true },
-        { label: "false", value: false },
+        { label: 'true', value: true },
+        { label: 'false', value: false },
       ],
     },
     padding: {
-      type: "select",
-      label: "Vertical Padding",
-      options: [{ label: "0px", value: "0px" }, ...spacingOptions],
+      type: 'select',
+      label: 'Vertical Padding',
+      options: [{ label: '0px', value: '0px' }, ...spacingOptions],
     },
   },
 };
@@ -64,7 +64,7 @@ const Layout = forwardRef<HTMLDivElement, LayoutProps>(
             : undefined,
           paddingTop: layout?.padding,
           paddingBottom: layout?.padding,
-          flex: layout?.grow ? "1 1 0" : undefined,
+          flex: layout?.grow ? '1 1 0' : undefined,
           ...style,
         }}
         ref={ref}
@@ -72,17 +72,15 @@ const Layout = forwardRef<HTMLDivElement, LayoutProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 
-Layout.displayName = "Layout";
+Layout.displayName = 'Layout';
 
 export { Layout };
 
-export function withLayout<
-  Props extends DefaultComponentProps = DefaultComponentProps
->(
-  componentConfig: ComponentConfig<Props>
+export function withLayout<Props extends DefaultComponentProps = DefaultComponentProps>(
+  componentConfig: ComponentConfig<Props>,
 ): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
   return {
     ...(componentConfig as unknown),
@@ -95,13 +93,13 @@ export function withLayout<
       layout: {
         spanCol: 1,
         spanRow: 1,
-        padding: "0px",
+        padding: '0px',
         grow: false,
         ...componentConfig.defaultProps?.layout,
       },
     },
     resolveFields: (_, params) => {
-      if (params.parent?.type === "Grid") {
+      if (params.parent?.type === 'Grid') {
         return {
           ...componentConfig.fields,
           layout: {
@@ -114,7 +112,7 @@ export function withLayout<
           },
         };
       }
-      if (params.parent?.type === "Flex") {
+      if (params.parent?.type === 'Flex') {
         return {
           ...componentConfig.fields,
           layout: {
@@ -139,10 +137,7 @@ export function withLayout<
     },
     inline: true,
     render: (props) => (
-      <Layout
-        layout={props.layout as LayoutFieldProps}
-        ref={props.puck.dragRef}
-      >
+      <Layout layout={props.layout as LayoutFieldProps} ref={props.puck.dragRef}>
         {componentConfig.render(props)}
       </Layout>
     ),

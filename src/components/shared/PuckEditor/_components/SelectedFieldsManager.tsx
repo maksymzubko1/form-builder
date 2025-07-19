@@ -24,11 +24,12 @@ const SelectedFieldsManager = () => {
       });
     } else {
       // validate fields
-      const fieldsFromFormContentMap = Object
-        .fromEntries(parseFieldsFromFormContent(appState.data, false).map(item => [item.id, item]));
+      const fieldsFromFormContentMap = Object.fromEntries(
+        parseFieldsFromFormContent(appState.data, false).map((item) => [item.id, item]),
+      );
 
       const validated = selectedFields.filter((item) => item.props.id in fieldsFromFormContentMap);
-      if(validated.length !== selectedFields.length) {
+      if (validated.length !== selectedFields.length) {
         dispatch({
           type: 'setData',
           data: (previous) => ({
@@ -41,7 +42,7 @@ const SelectedFieldsManager = () => {
     // eslint-disable-next-line
   }, [appState.data.root, appState.data.content]);
 
-  return <></>
+  return <></>;
 };
 
 export default SelectedFieldsManager;

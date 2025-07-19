@@ -49,28 +49,33 @@ const TextInner: ComponentConfig<TextProps> = {
     color: 'default',
   },
   render: ({ align, color, text, size, puck, id, maxWidth }) => {
-    const selectedFields = document.querySelector('[data-selected-fields]')
-      ?.getAttribute('data-selected-fields')?.split(',') || [];
+    const selectedFields =
+      document
+        .querySelector('[data-selected-fields]')
+        ?.getAttribute('data-selected-fields')
+        ?.split(',') || [];
     const isSelected = puck.isEditing && selectedFields.includes(id);
 
     return (
-      <Section maxWidth={maxWidth} className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}>
-        {isSelected && <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">AI</span>}
+      <Section
+        maxWidth={maxWidth}
+        className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}
+      >
+        {isSelected && (
+          <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">
+            AI
+          </span>
+        )}
         <span
           className="flex w-full"
           style={{
-            color:
-              color === 'default' ? 'inherit' : 'var(--puck-color-grey-08)',
+            color: color === 'default' ? 'inherit' : 'var(--puck-color-grey-08)',
             textAlign: align,
             fontSize: size === 'm' ? '20px' : '16px',
             fontWeight: 400,
             maxWidth,
             justifyContent:
-              align === 'center'
-                ? 'center'
-                : align === 'right'
-                  ? 'flex-end'
-                  : 'flex-start',
+              align === 'center' ? 'center' : align === 'right' ? 'flex-end' : 'flex-start',
           }}
         >
           {text}

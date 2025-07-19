@@ -15,7 +15,9 @@ export const metadata: Metadata = {
 
 async function getFormData(formId: string) {
   const cookie = (await cookies()).toString();
-  const res = await fetch(`${process.env.NEXTAUTH_URL}${API_ROUTES.FORMS}/${formId}`, { headers: { cookie } });
+  const res = await fetch(`${process.env.NEXTAUTH_URL}${API_ROUTES.FORMS}/${formId}`, {
+    headers: { cookie },
+  });
   if (!res.ok) return null;
   const json = await res.json();
   return json.form;

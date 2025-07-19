@@ -31,7 +31,13 @@ export function FormEditor({ initialForm }: FormEditorProps) {
     },
   });
 
-  const { setValue, handleSubmit, getValues, formState: { errors, isSubmitting }, reset } = form;
+  const {
+    setValue,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting },
+    reset,
+  } = form;
   const { content } = getValues();
 
   const onSubmit = async (data: FormType) => {
@@ -76,9 +82,14 @@ export function FormEditor({ initialForm }: FormEditorProps) {
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
           <div className="flex gap-2">
-            <Button ref={submitButtonRef} style={{ display: 'none' }} className="hidden" type="submit"
-                    disabled={isSubmitting}
-                    aria-busy={isSubmitting}>
+            <Button
+              ref={submitButtonRef}
+              style={{ display: 'none' }}
+              className="hidden"
+              type="submit"
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
+            >
               {isSubmitting ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
@@ -88,12 +99,20 @@ export function FormEditor({ initialForm }: FormEditorProps) {
       <div className="flex flex-col">
         <div className="error mb-2 flex flex-col">
           {errors.title && <span className="text-destructive text-sm">{errors.title.message}</span>}
-          {errors.description && <span className="text-destructive text-sm">{errors.description.message}</span>}
-          {errors.content && <span className="text-destructive text-sm">{errors.content.message}</span>}
+          {errors.description && (
+            <span className="text-destructive text-sm">{errors.description.message}</span>
+          )}
+          {errors.content && (
+            <span className="text-destructive text-sm">{errors.content.message}</span>
+          )}
         </div>
-        <PuckEditorForm isLoading={loading} content={content} onPublish={onPublish} isEditing
-                        formProps={{ id: initialForm.id, isPublished: initialForm.isPublished }} />
-
+        <PuckEditorForm
+          isLoading={loading}
+          content={content}
+          onPublish={onPublish}
+          isEditing
+          formProps={{ id: initialForm.id, isPublished: initialForm.isPublished }}
+        />
       </div>
     </div>
   );

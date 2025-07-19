@@ -4,7 +4,8 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter,
+  AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
@@ -19,15 +20,13 @@ interface Props {
   onClose: () => void;
 }
 
-const DeleteModal = ({deleteTarget, onDelete, open, onClose}: Props) => {
+const DeleteModal = ({ deleteTarget, onDelete, open, onClose }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {deleteTarget?.type === 'all'
-              ? 'Delete all submissions?'
-              : 'Delete this submission?'}
+            {deleteTarget?.type === 'all' ? 'Delete all submissions?' : 'Delete this submission?'}
           </AlertDialogTitle>
           <AlertDialogDescription>
             {deleteTarget?.type === 'all'

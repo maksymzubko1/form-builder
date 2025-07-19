@@ -2,12 +2,18 @@ import { ComponentData } from '@measured/puck';
 
 export function prepareSubmissions(submissions: Record<string, ComponentData>) {
   const submissionKeys = [] as string[];
-  return Object.entries(submissions).reduce((previousValue, [key, value]) => {
-    const name = getUniqueName(value?.displayName as string || value.type as string || key, submissionKeys);
-    submissionKeys.push(name);
-    previousValue[name] = value.value;
-    return previousValue;
-  }, {} as Record<string, unknown>);
+  return Object.entries(submissions).reduce(
+    (previousValue, [key, value]) => {
+      const name = getUniqueName(
+        (value?.displayName as string) || (value.type as string) || key,
+        submissionKeys,
+      );
+      submissionKeys.push(name);
+      previousValue[name] = value.value;
+      return previousValue;
+    },
+    {} as Record<string, unknown>,
+  );
 }
 
 export function getUniqueName(name: string, keys: string[]) {

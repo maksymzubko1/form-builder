@@ -7,7 +7,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SearchInput } from '@/components/shared/SearchInput';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 type Order = 'submittedAt_desc' | 'submittedAt_asc';
 
@@ -62,7 +68,7 @@ export const SubmissionsFilterForm: FC<SubmissionsFilterFormProps> = ({ onChange
             onChange={(e: ChangeEvent<HTMLInputElement>) => setTo(e.target.value)}
           />
         </div>
-        <Select value={order} onValueChange={v => setOrder(v as typeof order)}>
+        <Select value={order} onValueChange={(v) => setOrder(v as typeof order)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Order" />
           </SelectTrigger>

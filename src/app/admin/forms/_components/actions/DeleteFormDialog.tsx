@@ -22,12 +22,7 @@ interface DeleteFormDialogProps {
   onClose?: () => void;
 }
 
-export function DeleteFormDialog({
-                                   formId,
-                                   open,
-                                   onClose,
-                                   onDone,
-                                 }: DeleteFormDialogProps) {
+export function DeleteFormDialog({ formId, open, onClose, onDone }: DeleteFormDialogProps) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {

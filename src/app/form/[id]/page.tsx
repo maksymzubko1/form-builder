@@ -13,14 +13,16 @@ export const metadata: Metadata = {
 };
 
 async function getForm(id: string) {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}${API_ROUTES.PUBLIC_FORMS}/${id}`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXTAUTH_URL}${API_ROUTES.PUBLIC_FORMS}/${id}`, {
+    cache: 'no-store',
+  });
   if (!res.ok) return null;
   const data = await res.json();
   return data.form;
 }
 
 export default async function PublicFormPage({ params, searchParams }: FormProps) {
-  const { status, email} = await searchParams;
+  const { status, email } = await searchParams;
   const form = await getForm((await params).id);
   if (!form) return notFound();
 
@@ -28,8 +30,8 @@ export default async function PublicFormPage({ params, searchParams }: FormProps
     return <FormSubmitSuccess type={status} />;
   }
 
-  if(!email || !email.length) {
-    return <EmailStep />
+  if (!email || !email.length) {
+    return <EmailStep />;
   }
 
   return <PublicForm form={form} email={email} />;

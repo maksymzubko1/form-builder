@@ -44,11 +44,15 @@ export async function POST(req: NextRequest, { params }: PostProps) {
       },
     });
 
-    const prepared = Object
-      .entries(rest as Record<string, {
-        label?: string,
-        value: string
-      }>).map(([key, value]) => ({ label: value?.label || key, value: value.value }));
+    const prepared = Object.entries(
+      rest as Record<
+        string,
+        {
+          label?: string;
+          value: string;
+        }
+      >,
+    ).map(([key, value]) => ({ label: value?.label || key, value: value.value }));
 
     if (form?.notifyOnSubmission && form.user?.email) {
       await sendNewSubmissionEmail({

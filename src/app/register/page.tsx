@@ -15,7 +15,5 @@ export default async function RegisterPage({ searchParams }: TRegisterPageParams
     return <RegisterSuccess />;
   }
 
-  return (
-    <RegisterForm />
-  );
+  return <RegisterForm />;
 }

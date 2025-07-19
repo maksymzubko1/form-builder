@@ -11,7 +11,14 @@ interface StatsTilesProps {
   loading: boolean;
 }
 
-export function StatsTiles({ total, week, today, viewsCount, conversion, loading }: StatsTilesProps) {
+export function StatsTiles({
+  total,
+  week,
+  today,
+  viewsCount,
+  conversion,
+  loading,
+}: StatsTilesProps) {
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="@container/card">
@@ -46,7 +53,7 @@ export function StatsTiles({ total, week, today, viewsCount, conversion, loading
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
-              Conversion {(viewsCount && !loading) ? `${conversion}%` : '—'}
+              Conversion {viewsCount && !loading ? `${conversion}%` : '—'}
             </Badge>
           </CardAction>
         </CardHeader>

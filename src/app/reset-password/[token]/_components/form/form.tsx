@@ -2,11 +2,22 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResetTokenForm as TResetTokenForm, ResetTokenSchema, ETokenReset } from '@/types/reset-password';
+import {
+  ResetTokenForm as TResetTokenForm,
+  ResetTokenSchema,
+  ETokenReset,
+} from '@/types/reset-password';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -22,7 +33,11 @@ export default function ResetTokenForm() {
     },
   });
 
-  const { handleSubmit, control, formState: { isSubmitting } } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (data: z.infer<typeof ResetTokenSchema>) => {
     try {
@@ -32,8 +47,7 @@ export default function ResetTokenForm() {
         headers: { 'Content-Type': 'application/json' },
       });
       if (res.ok) {
-        toast.success('Password updated!\n' +
-          'Redirecting to login page...');
+        toast.success('Password updated!\n' + 'Redirecting to login page...');
         setTimeout(() => router.push(`${ROUTES.LOGIN}`), 1500);
       } else {
         const json = await res.json();
@@ -62,8 +76,14 @@ export default function ResetTokenForm() {
           )}
         />
         <div className="flex justify-center text-sm">
-          <Button tabIndex={1} type="submit" className="justify-self-center-safe w-full"
-                  disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Save'}</Button>
+          <Button
+            tabIndex={1}
+            type="submit"
+            className="justify-self-center-safe w-full"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Loading...' : 'Save'}
+          </Button>
         </div>
       </form>
     </Form>

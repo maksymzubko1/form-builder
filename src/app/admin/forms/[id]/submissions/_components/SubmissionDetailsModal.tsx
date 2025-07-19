@@ -1,8 +1,8 @@
 'use client';
 
-import type { FC } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import type { FC } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { Submission } from '@/types/submissions';
 
 interface SubmissionDetailsModalProps {
@@ -10,7 +10,10 @@ interface SubmissionDetailsModalProps {
   onClose: () => void;
 }
 
-export const SubmissionDetailsModal: FC<SubmissionDetailsModalProps> = ({ submission, onClose }) => {
+export const SubmissionDetailsModal: FC<SubmissionDetailsModalProps> = ({
+  submission,
+  onClose,
+}) => {
   return (
     <Dialog open onOpenChange={onClose}>
       <DialogContent>

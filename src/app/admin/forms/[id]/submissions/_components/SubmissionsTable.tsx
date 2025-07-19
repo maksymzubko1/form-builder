@@ -24,7 +24,7 @@ interface SubmissionsTableProps {
 const DEFAULT_PER_PAGE = 10;
 
 export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) => {
-  const {setPageTitle} = useSidebar();
+  const { setPageTitle } = useSidebar();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [filter, setFilter] = useState<SubmissionsFilter>({});
@@ -52,7 +52,10 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
       const res = await fetch(`${API_ROUTES.FORM_SUBMISSIONS(formId)}?${params}`);
       if (res.ok) {
         const json = await res.json();
-        const parsedData = json.data.map((item) => ({ ...item, data: prepareSubmissions(item.data) }));
+        const parsedData = json.data.map((item) => ({
+          ...item,
+          data: prepareSubmissions(item.data),
+        }));
         setSubmissions(parsedData ?? []);
         setTotal(json.total ?? 0);
       } else {
@@ -92,7 +95,9 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
     toast.info('Deleting in progress...');
     if (deleteTarget.type === 'one') {
       try {
-        const res = await fetch(API_ROUTES.FORM_SUBMISSION(formId, deleteTarget.id), { method: 'DELETE' });
+        const res = await fetch(API_ROUTES.FORM_SUBMISSION(formId, deleteTarget.id), {
+          method: 'DELETE',
+        });
         if (res.ok) {
           toast.success('Submission deleted successfully.');
         } else {
@@ -131,10 +136,12 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
   return (
     <div>
       <div className="flex items-end gap-4 mb-4">
-        <SubmissionsFilterForm onChange={(f) => {
-          setPage(1);
-          setFilter(f);
-        }} />
+        <SubmissionsFilterForm
+          onChange={(f) => {
+            setPage(1);
+            setFilter(f);
+          }}
+        />
         <ExportButton formId={formId} />
         <Button variant="destructive" className="ml-auto" onClick={handleClearAll}>
           Clear All
@@ -147,11 +154,18 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
         emptyLabel="No submissions"
         meta={tableMeta}
       />
-      {totalPages > 1 && <Pagination total={total} page={page} limit={perPage} onPageChange={handleChangePage} />}
+      {totalPages > 1 && (
+        <Pagination total={total} page={page} limit={perPage} onPageChange={handleChangePage} />
+      )}
       {selected && (
         <SubmissionDetailsModal submission={selected} onClose={() => setSelected(null)} />
       )}
-      <DeleteModal open={open} onClose={hide} deleteTarget={deleteTarget} onDelete={confirmDelete} />
+      <DeleteModal
+        open={open}
+        onClose={hide}
+        deleteTarget={deleteTarget}
+        onDelete={confirmDelete}
+      />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { EResetPasswordStatus, TResetPasswordProps } from './types';
 export const metadata = {
   title: 'Reset Password',
   description: 'Forgot your password? Enter your email to reset it.',
-  robots: 'noindex'
+  robots: 'noindex',
 };
 
 export default async function ResetPage({ searchParams }: TResetPasswordProps) {
@@ -15,7 +15,5 @@ export default async function ResetPage({ searchParams }: TResetPasswordProps) {
     return <ResetSuccess />;
   }
 
-  return (
-    <ResetForm />
-  );
+  return <ResetForm />;
 }

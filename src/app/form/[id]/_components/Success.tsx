@@ -3,8 +3,8 @@
 import { Button } from '@/components/ui/button';
 
 type Props = {
-  type: 'draft' | 'sent'
-}
+  type: 'draft' | 'sent';
+};
 
 export function FormSubmitSuccess({ type }: Props) {
   if (type === 'sent') {
@@ -17,7 +17,7 @@ export function FormSubmitSuccess({ type }: Props) {
   }
 
   const onBack = () => {
-    if(typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {
       window.history.back();
     }
   };
@@ -26,8 +26,12 @@ export function FormSubmitSuccess({ type }: Props) {
     return (
       <div className="max-w-sm mx-auto pt-16">
         <h2 className="text-xl font-bold mb-2">Your data successfully saved</h2>
-        <p>A draft was saved. Next time, you can easily continue to fill the form, using your email.</p>
-        <Button tabIndex={0} className="mt-4" onClick={onBack}>Back to form</Button>
+        <p>
+          A draft was saved. Next time, you can easily continue to fill the form, using your email.
+        </p>
+        <Button tabIndex={0} className="mt-4" onClick={onBack}>
+          Back to form
+        </Button>
       </div>
     );
   }

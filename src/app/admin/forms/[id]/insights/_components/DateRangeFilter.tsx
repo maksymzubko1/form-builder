@@ -15,13 +15,21 @@ export function DateRangeFilter({ from, to, setFrom, setTo }: DateRangeFilterPro
     <div className="flex gap-2 mb-4 items-center">
       <div className="grid max-w-xs items-center gap-3">
         <Label htmlFor="from">From</Label>
-        <Input type="date" value={from || ''}
-               onChange={e => setFrom(e.target.value)} className="w-[240px]" />
+        <Input
+          type="date"
+          value={from || ''}
+          onChange={(e) => setFrom(e.target.value)}
+          className="w-[240px]"
+        />
       </div>
       <div className="grid max-w-xs items-center gap-3">
         <Label htmlFor="from">To</Label>
-        <Input type="date" value={to || ''}
-               onChange={e => setTo(e.target.value)} className="w-[240px]" />
+        <Input
+          type="date"
+          value={to || ''}
+          onChange={(e) => setTo(e.target.value)}
+          className="w-[240px]"
+        />
       </div>
     </div>
   );

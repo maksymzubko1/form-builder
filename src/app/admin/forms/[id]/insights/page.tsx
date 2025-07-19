@@ -10,9 +10,7 @@ export const metadata = {
   robots: 'noindex',
 };
 
-type InsightsPageProps =
-  { params: Promise<{ id: string }> }
-
+type InsightsPageProps = { params: Promise<{ id: string }> };
 
 export default async function InsightsPage({ params }: InsightsPageProps) {
   const { id } = await params;

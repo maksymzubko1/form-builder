@@ -12,7 +12,11 @@ const usePuck = createUsePuck<UserConfig>();
 const ActionBarGroup = ({ label, children }: Props) => {
   const selectedItem = usePuck((s) => s.selectedItem);
   const data = usePuck((s) => s.appState.data.root);
-  const isItemSelected = selectedItem && (data.props?.selectedItems as ComponentData[])?.find((s) => s.props.id === selectedItem.props.id);
+  const isItemSelected =
+    selectedItem &&
+    (data.props?.selectedItems as ComponentData[])?.find(
+      (s) => s.props.id === selectedItem.props.id,
+    );
   const dispatch = usePuck((s) => s.dispatch);
 
   const handleClick = () => {
@@ -21,7 +25,7 @@ const ActionBarGroup = ({ label, children }: Props) => {
       data: (previous) => {
         const prevSelectedItems = (previous.root.props?.selectedItems as ComponentData[]) || [];
         const selectedItems = isItemSelected
-          ? [...prevSelectedItems.filter(item => item.props.id !== selectedItem.props.id)]
+          ? [...prevSelectedItems.filter((item) => item.props.id !== selectedItem.props.id)]
           : [...prevSelectedItems, selectedItem];
 
         return {
@@ -36,9 +40,7 @@ const ActionBarGroup = ({ label, children }: Props) => {
     <ActionBar label={label}>
       <ActionBar.Group>{children}</ActionBar.Group>
       <ActionBar.Action onClick={handleClick}>
-        <span className={isItemSelected ? 'text-blue-500' : ''}>
-          AI
-        </span>
+        <span className={isItemSelected ? 'text-blue-500' : ''}>AI</span>
       </ActionBar.Action>
     </ActionBar>
   );

@@ -3,13 +3,7 @@
 import * as React from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -25,7 +19,7 @@ interface InsightsChartProps {
   dateRange: {
     from?: string;
     to?: string;
-  }
+  };
 }
 
 const chartConfig = {
@@ -45,25 +39,27 @@ export function InsightsChart({ data, loading, dateRange }: InsightsChartProps) 
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-6">
           <CardTitle>Total Submissions</CardTitle>
           <CardDescription>
-            {
-              dateRange.from ? new Date(dateRange.from).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-              }) : 'Any'} - {
-              dateRange.to ? new Date(dateRange.to).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-              }) : 'Any'
-            }
+            {dateRange.from
+              ? new Date(dateRange.from).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                })
+              : 'Any'}{' '}
+            -{' '}
+            {dateRange.to
+              ? new Date(dateRange.to).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                })
+              : 'Any'}
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          {loading ? <ChartSkeleton /> :
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+          {loading ? (
+            <ChartSkeleton />
+          ) : (
             <LineChart
               accessibilityLayer
               data={data}
@@ -109,7 +105,8 @@ export function InsightsChart({ data, loading, dateRange }: InsightsChartProps) 
                 strokeWidth={2}
                 dot={false}
               />
-            </LineChart>}
+            </LineChart>
+          )}
         </ChartContainer>
       </CardContent>
     </Card>

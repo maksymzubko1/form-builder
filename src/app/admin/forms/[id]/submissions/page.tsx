@@ -28,4 +28,4 @@ export default async function SubmissionsPage({ params }: SubmissionsPageProps) 
       <SubmissionsTable formId={id} />
     </div>
   );
-};
+}

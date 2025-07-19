@@ -1,9 +1,8 @@
 export const metadata = {
   title: 'Dashboard',
   description: 'Your personal dashboard for managing smart forms and analyzing results.',
-  robots: 'noindex'
+  robots: 'noindex',
 };
-
 
 export default function AdminHomePage() {
   return (

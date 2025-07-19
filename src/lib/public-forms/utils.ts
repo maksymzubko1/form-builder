@@ -16,7 +16,7 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
   const shape: z.ZodTypeAny = {
     email: emailSchema,
   };
-  fields.forEach(f => {
+  fields.forEach((f) => {
     if (f.type === 'Input') {
       if (f.validate === 'email') {
         const base = z.email('Incorrect email');
@@ -47,7 +47,12 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
       } else {
         shape[f.id] = base.optional().nullable();
       }
-    } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
+    } else if (
+      f.type === 'Textarea' ||
+      f.type === 'Checkbox' ||
+      f.type == 'Select' ||
+      f.type === 'RadioButton'
+    ) {
       const base = z.string('Field is required');
       if (f.required) {
         shape[f.id] = base.min(1, 'Field is required');
@@ -70,7 +75,7 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
   const shape: z.ZodTypeAny = {
     email: emailSchema,
   };
-  fields.forEach(f => {
+  fields.forEach((f) => {
     if (f.type === 'Input') {
       if (f.validate === 'email') {
         if (f.required) {
@@ -80,7 +85,9 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
         }
       } else if (f.validate === 'phone') {
         if (f.required) {
-          shape[f.id] = z.object({ value: z.e164('Incorrect phone number').min(1, 'Field is required') });
+          shape[f.id] = z.object({
+            value: z.e164('Incorrect phone number').min(1, 'Field is required'),
+          });
         } else {
           shape[f.id] = z.object({ value: z.e164('Incorrect phone number').optional().nullable() });
         }
@@ -91,7 +98,12 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
           shape[f.id] = z.object({ value: z.string().optional().nullable() });
         }
       }
-    } else if (f.type === 'Textarea' || f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
+    } else if (
+      f.type === 'Textarea' ||
+      f.type === 'Checkbox' ||
+      f.type == 'Select' ||
+      f.type === 'RadioButton'
+    ) {
       if (f.required) {
         shape[f.id] = z.object({ value: z.string().min(1, 'Field is required') });
       } else {
@@ -126,37 +138,48 @@ function fileSchemaByAccept(accept: string, forServer = false) {
   const type = ACCEPT_PRESETS[accept];
 
   if (!type || type === '') {
-    return z.object({
-      name: z.string(),
-      type: z.string(),
-      size: z.number().max(MAX_FILE_SIZE),
-    }, { error: 'Field is required' });
+    return z.object(
+      {
+        name: z.string(),
+        type: z.string(),
+        size: z.number().max(MAX_FILE_SIZE),
+      },
+      { error: 'Field is required' },
+    );
   }
 
   if (type.endsWith('/*')) {
     const prefix = type.replace('/*', '/');
-    return z.object({
-      name: z.string(),
-      type: z.string().regex(new RegExp(`^${prefix}`), `Unsupported file type`),
-      size: z.number().max(MAX_FILE_SIZE),
-    }, { error: 'Field is required' });
+    return z.object(
+      {
+        name: z.string(),
+        type: z.string().regex(new RegExp(`^${prefix}`), `Unsupported file type`),
+        size: z.number().max(MAX_FILE_SIZE),
+      },
+      { error: 'Field is required' },
+    );
   }
 
   if (type.startsWith('.')) {
-    const allowed = type.split(',').map(x => x.trim());
-    return z.object({
-      name: z.string().refine(
-        (val) => allowed.some(ext => val.endsWith(ext)),
-        { message: `Unsupported file type` },
-      ),
-      type: z.string(),
-      size: z.number().max(MAX_FILE_SIZE),
-    }, { error: 'Field is required' });
+    const allowed = type.split(',').map((x) => x.trim());
+    return z.object(
+      {
+        name: z.string().refine((val) => allowed.some((ext) => val.endsWith(ext)), {
+          message: `Unsupported file type`,
+        }),
+        type: z.string(),
+        size: z.number().max(MAX_FILE_SIZE),
+      },
+      { error: 'Field is required' },
+    );
   }
 
-  return z.object({
-    name: z.string(),
-    type: z.string().regex(new RegExp(`^${type.replace('*', '.+')}$`), `Unsupported file type`),
-    size: z.number().max(MAX_FILE_SIZE),
-  }, { error: 'Field is required' });
+  return z.object(
+    {
+      name: z.string(),
+      type: z.string().regex(new RegExp(`^${type.replace('*', '.+')}$`), `Unsupported file type`),
+      size: z.number().max(MAX_FILE_SIZE),
+    },
+    { error: 'Field is required' },
+  );
 }

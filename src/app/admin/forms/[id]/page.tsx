@@ -14,7 +14,9 @@ type Props = { params: Promise<{ id: string }> };
 
 async function getFormData(formId: string) {
   const cookie = (await cookies()).toString();
-  const res = await fetch(`${process.env.NEXTAUTH_URL}${API_ROUTES.FORMS}/${formId}`, { headers: { cookie } });
+  const res = await fetch(`${process.env.NEXTAUTH_URL}${API_ROUTES.FORMS}/${formId}`, {
+    headers: { cookie },
+  });
   if (!res.ok) return null;
   const json = await res.json();
   return json.form;
@@ -24,5 +26,5 @@ export default async function EditFormPage({ params }: Props) {
   const initialForm = await getFormData((await params).id);
   if (!initialForm) return notFound();
 
-  return (<FormEditor initialForm={initialForm} />);
+  return <FormEditor initialForm={initialForm} />;
 }

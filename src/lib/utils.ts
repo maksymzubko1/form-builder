@@ -1,23 +1,25 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-export type Value = string | {
-  _isFile: boolean,
-  name: string,
-  size: number,
-  type: string,
-}
+export type Value =
+  | string
+  | {
+      _isFile: boolean;
+      name: string;
+      size: number;
+      type: string;
+    };
 
 export function formDataToJson(formData: FormData) {
   const obj: Record<string, Value> = {};
 
   for (const [key, value] of formData.entries()) {
     if (value instanceof File) {
-      if (value.name === "" && value.size === 0) {
+      if (value.name === '' && value.size === 0) {
         // skip empty files
         continue;
       }
@@ -35,4 +37,3 @@ export function formDataToJson(formData: FormData) {
 
   return obj;
 }
-

@@ -18,7 +18,9 @@ export function TopAnswers({ title, answers }: TopAnswersProps) {
         <ul className="space-y-1">
           {answers.map((ans, idx) => (
             <li key={ans.label} className="flex justify-between">
-              <span>{idx+1}. {ans.label}</span>
+              <span>
+                {idx + 1}. {ans.label}
+              </span>
               <span className="font-bold">{ans.count}</span>
             </li>
           ))}
