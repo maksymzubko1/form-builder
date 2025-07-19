@@ -44,4 +44,6 @@ export const API_ROUTES = {
   FORM_SUBMISSION: (formId: string, submissionId: string) =>
     `/api/forms/${formId}/submissions/${submissionId}`,
   FORM_SUBMISSIONS_EXPORT: (formId: string) => `/api/forms/${formId}/submissions/export`,
+
+  AI: `/api/ai`
 };

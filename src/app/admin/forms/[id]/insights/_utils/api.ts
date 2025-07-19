@@ -1,4 +1,5 @@
 import { API_ROUTES } from '@/constants/routes';
+import { Data } from '@measured/puck';
 
 export async function fetchSubmissionsStats(formId: string, from?: string, to?: string) {
   const params = new URLSearchParams();
@@ -12,5 +13,5 @@ export async function fetchSubmissionsStats(formId: string, from?: string, to?: 
 export async function fetchFormContent(formId: string) {
   const res = await fetch(`${API_ROUTES.FORMS}/${formId}`);
   const json = await res.json();
-  return json.form?.content;
+  return json.form?.content as Data;
 }

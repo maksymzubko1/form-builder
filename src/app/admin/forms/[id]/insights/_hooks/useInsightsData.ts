@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
 import { fetchSubmissionsStats, fetchFormContent } from '../_utils/api';
-import { parseFieldsFromFormContent } from '../_utils/parseFieldsFromFormContent';
 import { Submission, ChartPoint, TopAnswer, Fields } from '../types';
-import { prepareSubmissions } from '@/lib/submission';
+import { prepareSubmissions } from '@/lib/submissions/utils';
+import { parseFieldsFromFormContent } from '@/lib/puck-editor/utils';
 
 export function useInsightsData(formId: string, from?: string, to?: string) {
   const [data, setData] = useState<Submission[]>([]);
@@ -17,14 +17,12 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
       fetchSubmissionsStats(formId, from, to),
       fetchFormContent(formId),
     ]).then(([subs, formContent]) => {
-      console.log(subs.data);
       setData(subs.data?.map(item => ({ ...item, data: prepareSubmissions(item.data) })) || []);
       setTotalViews(subs.totalViews);
       setFields(parseFieldsFromFormContent(formContent));
     }).finally(() => setLoading(false));
   }, [formId, from, to]);
 
-  console.log(fields);
   const chartData: ChartPoint[] = useMemo(() => {
     const counts: Record<string, number> = {};
     data.forEach((s) => {

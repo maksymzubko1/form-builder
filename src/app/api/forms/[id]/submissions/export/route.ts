@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { parseAsync } from 'json2csv';
-import { prepareSubmissions } from '@/lib/submission';
+import { prepareSubmissions } from '@/lib/submissions/utils';
 
 export async function GET(
   req: Request,

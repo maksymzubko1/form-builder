@@ -6,7 +6,7 @@ import { CheckboxProps } from './_blocks/Checkbox';
 import { TextProps } from './_blocks/Text';
 import { FlexProps } from './_blocks/Flex';
 import { SelectProps } from './_blocks/Select';
-import { RadioButtonProps } from './_blocks/RadioButton';
+import { RadioGroupProps } from './_blocks/RadioGroup';
 import { HeadingProps } from './_blocks/Heading';
 import { SpaceProps } from './_blocks/Space';
 import { FileProps } from './_blocks/FileInput';
@@ -21,7 +21,7 @@ export type Props = {
   Text: TextProps;
   Flex: FlexProps;
   Select: SelectProps;
-  RadioButton: RadioButtonProps;
+  RadioGroup: RadioGroupProps;
   Heading: HeadingProps;
   Space: SpaceProps;
   FileInput: FileProps;

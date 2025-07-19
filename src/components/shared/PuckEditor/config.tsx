@@ -6,7 +6,7 @@ import { Textarea } from './_blocks/Textarea';
 import { Checkbox } from './_blocks/Checkbox';
 import { Select } from './_blocks/Select';
 import { Flex } from './_blocks/Flex';
-import { RadioButton } from './_blocks/RadioButton';
+import { RadioGroup } from './_blocks/RadioGroup';
 import { Heading } from './_blocks/Heading';
 import { Space } from './_blocks/Space';
 import { File as FileInput } from './_blocks/FileInput';
@@ -14,7 +14,7 @@ import { File as FileInput } from './_blocks/FileInput';
 import { UserConfig } from './types';
 
 export const InteractiveItems = [
-  'Textarea', 'Input', 'FileInput', 'Select', 'RadioButton', 'Checkbox'
+  'Textarea', 'Input', 'FileInput', 'Select', 'RadioGroup', 'Checkbox'
 ]
 
 export const puckConfig: UserConfig = {
@@ -34,7 +34,7 @@ export const puckConfig: UserConfig = {
     },
     interactive: {
       title: 'Interactive',
-      components: ['Select', 'RadioButton', 'Checkbox']
+      components: ['Select', 'RadioGroup', 'Checkbox']
     }
   },
   components: {
@@ -44,7 +44,7 @@ export const puckConfig: UserConfig = {
     Input,
     Flex,
     Select,
-    RadioButton,
+    RadioGroup,
     Heading,
     Space,
     FileInput

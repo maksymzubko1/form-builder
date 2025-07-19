@@ -33,13 +33,19 @@ export const Space: ComponentConfig<SpaceProps> = {
     size: "24px",
   },
   inline: true,
-  render: ({ size, direction, puck }) => {
+  render: ({ size, direction, puck,id }) => {
+    const selectedFields = document.querySelector('[data-selected-fields]')
+      ?.getAttribute('data-selected-fields')?.split(',') || []
+    const isSelected = puck.isEditing && selectedFields.includes(id);
+
     return (
       <div
-        className={variants[direction] || ""}
+        className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''} ${variants[direction]}`}
         ref={puck.dragRef}
         style={{ "--size": size } as unknown}
-      />
+      >
+        {isSelected && <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">AI</span>}
+      </div>
     );
   },
 };

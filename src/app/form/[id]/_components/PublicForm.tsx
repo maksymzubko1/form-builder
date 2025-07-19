@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import { extractFields, makeFormSchema } from '@/types/public-forms';
+import { extractFields, makeFormSchema } from '@/lib/public-forms/utils';
 import { EFromStatus } from '@/app/form/[id]/types';
 import Loader from '@/components/ui/loader';
 import { validateAndPrepareData } from '@/app/form/[id]/utils';

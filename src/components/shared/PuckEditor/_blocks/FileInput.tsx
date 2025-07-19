@@ -43,7 +43,7 @@ export const FileInner: ComponentConfig<FileProps> = {
     label: 'Upload file',
     fileType: 'all',
     required: false,
-    displayName: ''
+    displayName: '',
   },
   render: ({ id, label, puck, fileType, required }) => {
     const { errors, defaultValues } = puck?.metadata;
@@ -51,8 +51,13 @@ export const FileInner: ComponentConfig<FileProps> = {
     const error = errors?.[id];
     const accept = ACCEPT_PRESETS[fileType] || '';
 
+    const selectedFields = document.querySelector('[data-selected-fields]')
+      ?.getAttribute('data-selected-fields')?.split(',') || [];
+    const isSelected = puck.isEditing && selectedFields.includes(id);
+
     return (
-      <Section>
+      <Section className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}>
+        {isSelected && <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">AI</span>}
         <div className="grid w-full items-center mb-4">
           <Label htmlFor={id} className={`${error ? 'text-destructive' : ''} mb-3`}>
             {label}{required ? <span className="text-destructive">*</span> : ''}

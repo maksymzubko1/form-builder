@@ -35,8 +35,13 @@ export const CheckboxInner: ComponentConfig<CheckboxProps> = {
     const defaultValue = defaultValues?.[id] === 'on';
     const error = errors?.[id];
 
+    const selectedFields = document.querySelector('[data-selected-fields]')
+      ?.getAttribute('data-selected-fields')?.split(',') || [];
+    const isSelected = puck.isEditing && selectedFields.includes(id);
+
     return (
-      <Section>
+      <Section className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}>
+        {isSelected && <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">AI</span>}
         <div className="flex flex-col mb-4">
           <div className="flex items-start gap-3">
             <_Checkbox defaultChecked={defaultValue} name={id} aria-invalid={!!error}
