@@ -3,19 +3,16 @@ import { toast } from 'sonner';
 import { formDataToJson, Value } from '@/lib/utils';
 import { FormFieldDef } from '@/types/public-forms';
 import { InteractiveItems } from '@/components/shared/PuckEditor/config';
+import { TResponse } from '@/types/general';
+import { ZodType } from 'zod';
+import { FieldValues, Path, UseFormSetError } from 'react-hook-form';
 
 export type UploadFilesProps = { json: Value[]; data: FormData };
 
 export async function uploadFiles(
   filesToUpload: UploadFilesProps,
   allFields: FormFieldDef[],
-): Promise<Record<
-  string,
-  {
-    url: string;
-    isFile: boolean;
-  }
-> | null> {
+): Promise<Record<string, { value: string }> | null> {
   let presignedLinks = [];
 
   if (!filesToUpload.json.length) return null;
@@ -63,11 +60,11 @@ export async function uploadFiles(
       acc[item.key] = obj;
       return acc;
     },
-    {} as Record<string, { url: string; isFile: boolean }>,
+    {} as Record<string, { value: string }>,
   );
 }
 
-export const validateAndPrepareData = async ({
+export const validateAndPrepareData = async <T extends FieldValues>({
   data,
   schema,
   setError,
@@ -77,17 +74,17 @@ export const validateAndPrepareData = async ({
 }: {
   allFields: FormFieldDef[];
   data: FormData;
-  schema: unknown;
-  setError: (props: unknown, settings: unknown) => void;
+  schema: ZodType;
+  setError: UseFormSetError<T>;
   needValidate: boolean;
-  state: unknown;
+  state: Record<string, unknown>;
 }) => {
   const formatedFormData = formDataToJson(data) as Record<string, Value>;
 
   if (needValidate) {
     const parse = schema.safeParse(formatedFormData);
     if (!parse.success) {
-      parse.error.issues.map((err) => setError(err.path[0] as string, { message: err.message }));
+      parse.error.issues.map((err) => setError(err.path[0] as Path<T>, { message: err.message }));
       return;
     }
   }
@@ -106,7 +103,12 @@ export const validateAndPrepareData = async ({
     if (field.type === 'FileInput') {
       const file = data.get(rest.id) as File | undefined;
       if (file && file.size > 0) {
-        const jsonFile = formatedFormData[rest.id];
+        const jsonFile = formatedFormData[rest.id] as {
+          _isFile: boolean;
+          name: string;
+          size: number;
+          type: string;
+        };
         filesToUpload['json'].push({ key: rest.id, ...jsonFile });
         filesToUpload['data'].set(rest.id, file as File);
       } else {
@@ -125,3 +127,72 @@ export const validateAndPrepareData = async ({
   const uploadedFiles = await uploadFiles(filesToUpload, allFields);
   return { ...payloadData, ...(uploadedFiles ?? {}) };
 };
+
+export async function requestFormDraft(
+  formId: string,
+  email: string,
+): Promise<TResponse<Record<string, string | null> | null>> {
+  const res = await fetch(
+    `${API_ROUTES.PUBLIC_FORMS_DRAFT(formId)}?email=${encodeURIComponent(email)}`,
+  );
+  if (res.ok) {
+    const json = await res.json();
+    if (!json.draft) return { status: 'success', data: null };
+
+    const parsedData = Object.entries(
+      json.draft as {
+        [key: string]: { value: string | null };
+      },
+    ).reduce(
+      (previousValue, [key, value]) => {
+        previousValue[key] = value.value;
+        return previousValue;
+      },
+      {} as Record<string, string | null>,
+    );
+
+    return { status: 'success', data: parsedData };
+  } else {
+    const json = await res.json();
+    return { status: 'error', error: json?.error || 'Failed to retrieve data' };
+  }
+}
+
+export async function requestSubmitForm(
+  formId: string,
+  payload: {
+    [p: string]: unknown;
+  },
+  fields: FormFieldDef[],
+): Promise<TResponse<boolean>> {
+  const res = await fetch(`${API_ROUTES.PUBLIC_FORMS}/${formId}/submit`, {
+    method: 'POST',
+    body: JSON.stringify({ data: payload, fields }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (res.ok) {
+    return { status: 'success', data: true };
+  } else {
+    const json = await res.json();
+    return { status: 'error', data: json?.error || 'Failed to retrieve data' };
+  }
+}
+
+export async function requestDraftCreate(
+  formId: string,
+  payload: {
+    [p: string]: unknown;
+  },
+): Promise<TResponse<boolean>> {
+  const res = await fetch(API_ROUTES.PUBLIC_FORMS_DRAFT(formId), {
+    method: 'POST',
+    body: JSON.stringify({ email: payload.email, data: payload }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (res.ok) {
+    return { status: 'success', data: true };
+  } else {
+    const json = await res.json();
+    return { status: 'error', data: json?.error || 'Failed to create draft' };
+  }
+}

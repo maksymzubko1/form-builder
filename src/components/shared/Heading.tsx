@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 
 export type HeadingProps = {
   children: ReactNode;
@@ -17,7 +17,7 @@ const variants = {
 };
 
 export const Heading = ({ children, rank, size = 'm' }: HeadingProps) => {
-  const Tag: unknown = rank ? `h${rank}` : 'span';
+  const Tag = (rank ? `h${rank}` : 'span') as keyof JSX.IntrinsicElements;
 
   return <Tag className={variants[size]}>{children}</Tag>;
 };

@@ -7,7 +7,7 @@ import AIChatPanel from '@/components/shared/PuckEditor/_components/AIChatPanel'
 import { deleteItems, updateItems } from '@/lib/puck-editor/utils';
 import { Button } from '@/components/ui/button';
 import { Bot } from 'lucide-react';
-import { API_ROUTES } from '@/constants/routes';
+import { requestInitialMessages } from '@/lib/ai/getInitialMessages';
 
 const usePuck = createUsePuck<UserConfig>();
 
@@ -30,10 +30,9 @@ const PuckAI = ({ formId }: Props) => {
     for (const patch of patches) {
       if (patch.action === 'update') {
         const patchMap = Object.fromEntries(patch.result.map((p) => [p.props.id, p]));
-        const updated = updateItems(data, patchMap);
-        data = updated;
+        data = updateItems(data, patchMap);
       } else if (patch.action === 'add') {
-        data = [...data, ...patch.result];
+        data = [...data, ...(patch.result as unknown as ComponentData[])];
       } else if (patch.action === 'delete') {
         const idSet = new Set(patch.result.map((p) => p.props.id));
         data = deleteItems(data, idSet);
@@ -52,15 +51,15 @@ const PuckAI = ({ formId }: Props) => {
     const getInitialMessages = async () => {
       setLoadInitialMessages(true);
       try {
-        const res = await fetch(`${API_ROUTES.AI}?formId=${formId}`);
-        if (res.ok) {
-          const data = await res.json();
-          setInitialMessages(data?.messages || []);
+        const res = await requestInitialMessages(formId as string);
+
+        if (res.status === 'success') {
+          setInitialMessages(res.data?.messages || []);
         } else {
           console.log('Failed to get intitial messages');
         }
-      } catch (e) {
-        console.log('Failed to get intitial messages', e.message);
+      } catch (e: unknown) {
+        console.log('Failed to get intitial messages', e);
       } finally {
         setLoadInitialMessages(false);
       }

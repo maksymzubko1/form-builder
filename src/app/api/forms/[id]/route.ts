@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/api/auth/[...nextauth]/options';
 import { prisma } from '@/lib/prisma';
-import { FormSchema } from '@/types/forms';
+import { FormSchema } from '@/types/forms/forms';
 
 interface GetProps {
   params: Promise<{ id: string }>;
@@ -59,7 +59,14 @@ export async function PATCH(req: NextRequest, { params }: PatchProps) {
     const updated = await prisma.form.update({
       where: { id },
       data: { ...rest, notifyOnSubmission: emailNotification, updatedAt: new Date() },
-      select: { id: true, title: true, description: true, isPublished: true, updatedAt: true },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        isPublished: true,
+        updatedAt: true,
+        content: true,
+      },
     });
 
     return NextResponse.json({ form: updated });

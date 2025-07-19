@@ -47,7 +47,8 @@ export default function LoginForm() {
           ELoginResponseTypes[res.error as keyof typeof ELoginResponseTypes] || 'Unknown error',
         );
       } else router.push(ROUTES.ADMIN);
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     }
   };

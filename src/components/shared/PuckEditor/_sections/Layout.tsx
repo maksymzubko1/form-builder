@@ -1,5 +1,5 @@
 import { CSSProperties, forwardRef, ReactNode } from 'react';
-import { ComponentConfig, DefaultComponentProps, ObjectField } from '@measured/puck';
+import { ComponentConfig, DefaultComponentProps, Fields, ObjectField } from '@measured/puck';
 import { spacingOptions } from '@/components/shared/PuckEditor/options';
 
 type LayoutFieldProps = {
@@ -83,11 +83,11 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
   componentConfig: ComponentConfig<Props>,
 ): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
   return {
-    ...(componentConfig as unknown),
+    ...componentConfig,
     fields: {
       ...componentConfig.fields,
       layout: layoutField,
-    },
+    } as Fields<Props & { layout?: LayoutFieldProps }>,
     defaultProps: {
       ...componentConfig.defaultProps,
       layout: {
@@ -97,7 +97,7 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
         grow: false,
         ...componentConfig.defaultProps?.layout,
       },
-    },
+    } as Props & { layout?: LayoutFieldProps },
     resolveFields: (_, params) => {
       if (params.parent?.type === 'Grid') {
         return {
@@ -110,7 +110,7 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
               padding: layoutField.objectFields.padding,
             },
           },
-        };
+        } as Fields<Props & { layout?: LayoutFieldProps }>;
       }
       if (params.parent?.type === 'Flex') {
         return {
@@ -122,7 +122,7 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
               padding: layoutField.objectFields.padding,
             },
           },
-        };
+        } as Fields<Props & { layout?: LayoutFieldProps }>;
       }
 
       return {
@@ -133,7 +133,7 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
             padding: layoutField.objectFields.padding,
           },
         },
-      };
+      } as Fields<Props & { layout?: LayoutFieldProps }>;
     },
     inline: true,
     render: (props) => (

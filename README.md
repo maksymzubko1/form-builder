@@ -129,7 +129,7 @@ npm run dev
 
 ## ☑ TODO
 1. [ ] Validate all fields requirements before publish (Puck editor)
-2. [ ] Revalidate all TS in project
+2. [x] Revalidate all TS in project
 
 
 ## 💡 Credits & Links

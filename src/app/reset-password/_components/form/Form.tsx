@@ -4,8 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ResetForm as TResetForm, ResetSchema } from '@/types/reset-password';
 import { EResetPasswordStatus } from '@/app/reset-password/types';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
-import { z } from 'zod';
+import { ROUTES } from '@/constants/routes';
 import {
   Form,
   FormControl,
@@ -19,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { requestPasswordReset } from '@/app/reset-password/utils';
 
 export default function ResetForm() {
   const { push } = useRouter();
@@ -35,20 +35,17 @@ export default function ResetForm() {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: z.infer<typeof ResetSchema>) => {
+  const onSubmit = async (data: TResetForm) => {
     try {
-      const res = await fetch(API_ROUTES.RESET, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestPasswordReset(data);
+
+      if (res.status === 'success') {
         push(`${ROUTES.RESET}?status=${EResetPasswordStatus.SUCCESS}`);
       } else {
-        const json = await res.json();
-        toast.error(json.error || 'Unknown error');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     }
   };

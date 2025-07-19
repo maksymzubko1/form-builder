@@ -45,7 +45,7 @@ export const Space: ComponentConfig<SpaceProps> = {
       <div
         className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''} ${variants[direction]}`}
         ref={puck.dragRef}
-        style={{ '--size': size } as unknown}
+        style={{ '--size': size } as React.CSSProperties}
       >
         {isSelected && (
           <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">

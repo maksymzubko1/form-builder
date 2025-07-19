@@ -72,7 +72,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const messages = [...(aiChat?.messages || []), { role: 'user', content: prompt }];
+    const prevMessages =
+      (aiChat?.messages as {
+        role: 'user' | 'assistant';
+        content: string;
+      }[]) || [];
+    const messages = [...prevMessages, { role: 'user' as 'user' | 'assistant', content: prompt }];
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4.1-nano',

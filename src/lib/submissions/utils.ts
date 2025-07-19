@@ -1,6 +1,6 @@
-import { ComponentData } from '@measured/puck';
+import { SubmissionData } from '@/types/submissions';
 
-export function prepareSubmissions(submissions: Record<string, ComponentData>) {
+export function prepareSubmissions(submissions: SubmissionData) {
   const submissionKeys = [] as string[];
   return Object.entries(submissions).reduce(
     (previousValue, [key, value]) => {
@@ -12,7 +12,7 @@ export function prepareSubmissions(submissions: Record<string, ComponentData>) {
       previousValue[name] = value.value;
       return previousValue;
     },
-    {} as Record<string, unknown>,
+    {} as Record<string, string | null>,
   );
 }
 

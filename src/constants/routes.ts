@@ -18,7 +18,6 @@ export const ROUTES = {
     `/admin/forms/${formId}/submissions/${submissionId}`,
 
   ADMIN_FORM_INSIGHTS: (formId: string) => `/admin/forms/${formId}/insights`,
-  ADMIN_FORM_PREVIEW: (formId: string) => `/admin/forms/${formId}/preview`,
 };
 
 export const API_ROUTES = {

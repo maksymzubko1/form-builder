@@ -91,14 +91,6 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
           <DropdownMenuContent>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link
-                className="w-full flex cursor-pointer"
-                href={ROUTES.ADMIN_FORM_PREVIEW(form.id)}
-              >
-                Preview
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <PublishFormButton

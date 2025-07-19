@@ -22,7 +22,8 @@ const getGPTAnswer = (data: string): string | string[] => {
   try {
     const parsedData = JSON.parse(data) as GPTResponse;
     return parsedData?.map((content) => content?.message || '') || [];
-  } catch {
+  } catch (e: unknown) {
+    console.log(e);
     return 'Failed to get message';
   }
 };
@@ -96,7 +97,9 @@ export default function AIChatPanel({
     try {
       const patch = JSON.parse(aiText) as GPTResponse;
       if (patch) onResponse?.(patch);
-    } catch {}
+    } catch (e: unknown) {
+      console.log(e);
+    }
     setMessages((prev) => [...prev, { role: 'assistant', content: aiText }]);
     setLoading(false);
   };

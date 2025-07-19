@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/api/auth/[...nextauth]/options';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 interface PostProps {
   params: Promise<{ id: string }>;
@@ -26,7 +27,7 @@ export async function POST(_req: NextRequest, { params }: PostProps) {
         userId: session.user.id,
         title: form.title + ' (Copy)',
         description: form.description,
-        content: form.content,
+        content: form.content || Prisma.JsonNull,
         isPublished: false,
       },
     });

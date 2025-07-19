@@ -3,25 +3,13 @@ import { prisma } from '@/lib/prisma';
 import { SubmissionsFilterSchema } from '@/app/admin/forms/[id]/submissions/types';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { Submission } from '@/types/submissions';
 import { Prisma } from '@prisma/client';
 
 interface GetProps {
   params: Promise<{ id: string }>;
 }
 
-export async function GET(
-  req: Request,
-  { params }: GetProps,
-): Promise<
-  NextResponse<
-    | {
-        data: Submission[];
-        total: number;
-      }
-    | { error: string }
-  >
-> {
+export async function GET(req: Request, { params }: GetProps) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
