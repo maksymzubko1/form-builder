@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminFormsPage() {
-  return (<FormsTable />);
+  return <FormsTable />;
 }

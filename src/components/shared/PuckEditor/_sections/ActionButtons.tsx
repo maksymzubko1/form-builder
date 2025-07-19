@@ -3,7 +3,8 @@
 import React from 'react';
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -39,9 +40,7 @@ const ActionButtons = ({ formProps }: Props) => {
   const onDeleteCompleted = () => {
     router.push(`${ROUTES.ADMIN_FORMS}`);
   };
-  const onCopy = () => {
-
-  };
+  const onCopy = () => {};
 
   return (
     <>
@@ -55,12 +54,19 @@ const ActionButtons = ({ formProps }: Props) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link className="w-full flex cursor-pointer" href={ROUTES.FORM(formProps.id)} target="_blank">
+            <Link
+              className="w-full flex cursor-pointer"
+              href={ROUTES.FORM(formProps.id)}
+              target="_blank"
+            >
               View
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_PREVIEW(formProps.id)}>
+            <Link
+              className="w-full flex cursor-pointer"
+              href={ROUTES.ADMIN_FORM_PREVIEW(formProps.id)}
+            >
               Preview
             </Link>
           </DropdownMenuItem>
@@ -83,27 +89,34 @@ const ActionButtons = ({ formProps }: Props) => {
             />
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <DeleteFormAction
-              onClick={() => onDelete()}
-              size="default"
-              asDropdown
-            />
+            <DeleteFormAction onClick={() => onDelete()} size="default" asDropdown />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_SUBMISSIONS(formProps.id)}>
+            <Link
+              className="w-full flex cursor-pointer"
+              href={ROUTES.ADMIN_FORM_SUBMISSIONS(formProps.id)}
+            >
               Submissions
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_INSIGHTS(formProps.id)}>
+            <Link
+              className="w-full flex cursor-pointer"
+              href={ROUTES.ADMIN_FORM_INSIGHTS(formProps.id)}
+            >
               Insights
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DeleteFormDialog formId={formProps.id} onDone={onDeleteCompleted} open={open} onClose={hide} />
+      <DeleteFormDialog
+        formId={formProps.id}
+        onDone={onDeleteCompleted}
+        open={open}
+        onClose={hide}
+      />
     </>
   );
 };

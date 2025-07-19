@@ -3,21 +3,30 @@ import { getUniqueName } from '@/lib/submissions/utils';
 import { ComponentData, Data } from '@measured/puck';
 
 export type FieldDescriptor = {
-  id: string;      // "Input-xxxx"
-  label: string;   // Label
-  type: string;    // Input, Select, Checkbox, FileInput
+  id: string; // "Input-xxxx"
+  label: string; // Label
+  type: string; // Input, Select, Checkbox, FileInput
 };
 
-export function parseFieldsFromFormContent(content: Data, onlyInteractive = true): FieldDescriptor[] {
+export function parseFieldsFromFormContent(
+  content: Data,
+  onlyInteractive = true,
+): FieldDescriptor[] {
   const fields: FieldDescriptor[] = [];
 
   function walk(node: ComponentData) {
     if (!node) return;
 
-    if (((InteractiveItems.includes(node.type) && onlyInteractive) || !onlyInteractive) && node.props?.id) {
+    if (
+      ((InteractiveItems.includes(node.type) && onlyInteractive) || !onlyInteractive) &&
+      node.props?.id
+    ) {
       fields.push({
         id: node.props.id,
-        label: getUniqueName(node.props.displayName as string || node.type as string, fields.map(field => field.label)),
+        label: getUniqueName(
+          (node.props.displayName as string) || (node.type as string),
+          fields.map((field) => field.label),
+        ),
         type: node.type,
       });
     }
@@ -34,20 +43,26 @@ export function parseFieldsFromFormContent(content: Data, onlyInteractive = true
     content.content.forEach(walk);
   }
 
-  return Array.from(new Map(fields.map(f => [f.id, f])).values());
+  return Array.from(new Map(fields.map((f) => [f.id, f])).values());
 }
 
-export function updateItems(items: ComponentData[], patchMap: {
-  [id: string]: { props: { [key: string]: unknown } }
-}) {
-  return items.map(item => {
+export function updateItems(
+  items: ComponentData[],
+  patchMap: {
+    [id: string]: { props: { [key: string]: unknown } };
+  },
+) {
+  return items.map((item) => {
     const patched = patchMap[item.props.id];
     let updated = item;
     if (patched) {
       updated = { ...item, props: { ...item.props, ...patched.props } };
     }
     if (item.props?.items) {
-      updated = { ...updated, props: { ...item.props, items: updateItems(item.props?.items, patchMap) } };
+      updated = {
+        ...updated,
+        props: { ...item.props, items: updateItems(item.props?.items, patchMap) },
+      };
     }
     return updated;
   });
@@ -56,8 +71,8 @@ export function updateItems(items: ComponentData[], patchMap: {
 // Универсальная функция удаления по id
 export function deleteItems(items: ComponentData[], idSet: Set<string>) {
   return items
-    .filter(item => !idSet.has(item.props.id))
-    .map(item => {
+    .filter((item) => !idSet.has(item.props.id))
+    .map((item) => {
       let updated = item;
       if (item.props?.items) {
         updated = {
@@ -71,5 +86,3 @@ export function deleteItems(items: ComponentData[], idSet: Set<string>) {
       return updated;
     });
 }
-
-

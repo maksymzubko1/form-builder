@@ -6,7 +6,14 @@ import { LoginForm as TLoginForm, LoginSchema, ELoginResponseTypes } from '@/typ
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { ROUTES } from '@/constants/routes';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { z } from 'zod';
@@ -23,18 +30,23 @@ export default function LoginForm() {
     },
   });
 
-  const { handleSubmit, control, formState: { isSubmitting } } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
-    try{
+    try {
       const res = await signIn('credentials', {
         redirect: false,
         ...data,
       });
       if (res?.error) {
-        toast.error(ELoginResponseTypes[res.error as keyof typeof ELoginResponseTypes] || 'Unknown error')
-      }
-      else router.push(ROUTES.ADMIN);
+        toast.error(
+          ELoginResponseTypes[res.error as keyof typeof ELoginResponseTypes] || 'Unknown error',
+        );
+      } else router.push(ROUTES.ADMIN);
     } catch {
       toast.error('Network error. Please try again later.');
     }
@@ -70,10 +82,16 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button tabIndex={3} type="submit" className="w-full" disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Log in'}</Button>
+        <Button tabIndex={3} type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? 'Loading...' : 'Log in'}
+        </Button>
         <div className="flex justify-between text-sm">
-          <a tabIndex={4} href={ROUTES.RESET} className="text-blue-700 underline">Forgot your password?</a>
-          <a tabIndex={5} href={ROUTES.REGISTER} className="text-blue-700 underline">Registration</a>
+          <a tabIndex={4} href={ROUTES.RESET} className="text-blue-700 underline">
+            Forgot your password?
+          </a>
+          <a tabIndex={5} href={ROUTES.REGISTER} className="text-blue-700 underline">
+            Registration
+          </a>
         </div>
       </form>
     </Form>

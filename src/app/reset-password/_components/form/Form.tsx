@@ -6,7 +6,14 @@ import { ResetForm as TResetForm, ResetSchema } from '@/types/reset-password';
 import { EResetPasswordStatus } from '@/app/reset-password/types';
 import { API_ROUTES, ROUTES } from '@/constants/routes';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -22,7 +29,11 @@ export default function ResetForm() {
     },
   });
 
-  const { handleSubmit, control, formState: { isSubmitting } } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (data: z.infer<typeof ResetSchema>) => {
     try {
@@ -37,7 +48,7 @@ export default function ResetForm() {
         const json = await res.json();
         toast.error(json.error || 'Unknown error');
       }
-    } catch{
+    } catch {
       toast.error('Network error. Please try again later.');
     }
   };
@@ -60,12 +71,18 @@ export default function ResetForm() {
           )}
         />
         <div className="flex justify-between text-sm">
-          <Button tabIndex={2} variant="outline" className="min-w-1/3"
-                  disabled={isSubmitting} asChild>
+          <Button
+            tabIndex={2}
+            variant="outline"
+            className="min-w-1/3"
+            disabled={isSubmitting}
+            asChild
+          >
             <Link href={ROUTES.LOGIN}>Back to login</Link>
           </Button>
-          <Button tabIndex={1} type="submit" className="min-w-1/3"
-                  disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Recover'}</Button>
+          <Button tabIndex={1} type="submit" className="min-w-1/3" disabled={isSubmitting}>
+            {isSubmitting ? 'Loading...' : 'Recover'}
+          </Button>
         </div>
       </form>
     </Form>

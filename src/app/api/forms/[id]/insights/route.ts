@@ -10,10 +10,18 @@ interface GetProps {
   params: Promise<{ id: string }>;
 }
 
-export async function GET(req: Request, { params }: GetProps): Promise<NextResponse<{
-  data: Submission[];
-  total: number
-} | { error: string }>> {
+export async function GET(
+  req: Request,
+  { params }: GetProps,
+): Promise<
+  NextResponse<
+    | {
+        data: Submission[];
+        total: number;
+      }
+    | { error: string }
+  >
+> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

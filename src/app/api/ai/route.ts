@@ -59,7 +59,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: parse.error.issues[0].message }, { status: 400 });
     }
 
-    const { prompt, formId, context: { context, selectedFields } } = body;
+    const {
+      prompt,
+      formId,
+      context: { context, selectedFields },
+    } = body;
 
     const aiChat = await prisma.aiChatSession.findFirst({
       where: {
@@ -74,7 +78,8 @@ export async function POST(req: NextRequest) {
       model: 'gpt-4.1-nano',
       messages: [
         {
-          role: 'system', content: `
+          role: 'system',
+          content: `
 You are an AI assistant for a web-based form builder. You help users generate, update, or delete form components (fields, sections, etc.) by returning clear JSON instructions.
 
 VERY IMPORTANT RULES:

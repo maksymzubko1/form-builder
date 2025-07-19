@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 export enum ERegisterResponseCode {
-  FIELDS_REQUIRED = "FieldsRequired",
-  USER_EXIST = "UserExist",
+  FIELDS_REQUIRED = 'FieldsRequired',
+  USER_EXIST = 'UserExist',
 }
 
 export enum ERegisterResponse {
   FieldsRequired = 'Email and password required',
-  UserExist = "User is already exist"
+  UserExist = 'User is already exist',
 }
 
 export const RegisterSchema = z.object({

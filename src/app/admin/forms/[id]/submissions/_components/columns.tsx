@@ -1,27 +1,27 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import type { ColumnDef } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem
-} from "@/components/ui/dropdown-menu";
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
 import { Submission } from '@/types/submissions';
 
 export const submissionsColumns: ColumnDef<Submission>[] = [
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: 'email',
+    header: 'Email',
   },
   {
-    accessorKey: "submittedAt",
-    header: "Date",
+    accessorKey: 'submittedAt',
+    header: 'Date',
     cell: ({ row }) => new Date(row.original.submittedAt).toLocaleString(),
   },
   {
-    id: "actions",
-    header: "",
+    id: 'actions',
+    header: '',
     cell: ({ row, table }) => {
       const submission = row.original;
       const { setSelected, handleDelete } = table.options.meta as {
@@ -36,12 +36,8 @@ export const submissionsColumns: ColumnDef<Submission>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => setSelected(submission)}>
-              View
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(submission.id)}>
-              Delete
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelected(submission)}>View</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(submission.id)}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

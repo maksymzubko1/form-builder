@@ -7,15 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 function getFastCommands(selectedFields: ComponentData[]) {
-  if (selectedFields.length === 1) return [
-    'Suggest label for this field',
-    'Make this field required',
-    'Suggest validation rules',
-  ];
-  if (selectedFields.length > 1) return [
-    'Group selected fields',
-    'Suggest improvements for these fields',
-  ];
+  if (selectedFields.length === 1)
+    return ['Suggest label for this field', 'Make this field required', 'Suggest validation rules'];
+  if (selectedFields.length > 1)
+    return ['Group selected fields', 'Suggest improvements for these fields'];
   return [
     'Suggest improvements for the form',
     'Add consent checkbox',
@@ -25,7 +20,7 @@ function getFastCommands(selectedFields: ComponentData[]) {
 
 const getGPTAnswer = (data: string): string | string[] => {
   try {
-    const parsedData = (JSON.parse(data) as GPTResponse)
+    const parsedData = JSON.parse(data) as GPTResponse;
     return parsedData?.map((content) => content?.message || '') || [];
   } catch {
     return 'Failed to get message';
@@ -42,49 +37,67 @@ interface Props {
   initialMessages: Message[];
 }
 
-const MessageItem = ({ message, role }: { role: 'user' | 'assistant', message: string | string[] }) => {
+const MessageItem = ({
+  message,
+  role,
+}: {
+  role: 'user' | 'assistant';
+  message: string | string[];
+}) => {
   return (
     <div className={`flex items-start gap-2.5 ${role === 'user' ? 'flex-row-reverse' : ''}`}>
-      <span
-        className="rounded-[50%] border-[1px] border-gray-200 w-[30px] h-[30px] grid place-content-center shrink-0">{role === 'user' ? 'Y' : 'G'}</span>
+      <span className="rounded-[50%] border-[1px] border-gray-200 w-[30px] h-[30px] grid place-content-center shrink-0">
+        {role === 'user' ? 'Y' : 'G'}
+      </span>
       <div
-        className={`flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-card ${role === 'user' ? 'rounded-s-xl rounded-b-xl' : 'rounded-e-xl rounded-es-xl'} dark:bg-card`}>
+        className={`flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-card ${role === 'user' ? 'rounded-s-xl rounded-b-xl' : 'rounded-e-xl rounded-es-xl'} dark:bg-card`}
+      >
         <div className="flex items-center space-x-2 rtl:space-x-reverse">
-          <span className="text-sm font-semibold text-gray-900 dark:text-white">{role === 'user' ? 'You' : 'GPT'}</span>
+          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+            {role === 'user' ? 'You' : 'GPT'}
+          </span>
         </div>
-        {Array.isArray(message) ?
+        {Array.isArray(message) ? (
           message.map((msg, idx) => (
-            <p key={idx} className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{msg}</p>
+            <p key={idx} className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
+              {msg}
+            </p>
           ))
-          :
+        ) : (
           <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{message}</p>
-        }
+        )}
       </div>
     </div>
   );
 };
 
-export default function AIChatPanel({ initialMessages, formId, context, onClose, onResponse, open, selectedFields }: Props) {
+export default function AIChatPanel({
+  initialMessages,
+  formId,
+  context,
+  onClose,
+  onResponse,
+  open,
+  selectedFields,
+}: Props) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
   const send = async (text: string) => {
-    if(!formId) return;
+    if (!formId) return;
 
     setLoading(true);
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: text }]);
+    setMessages((prev) => [...prev, { role: 'user', content: text }]);
     const res = await askAi(text, { context, selectedFields }, formId);
     const aiText = res.message || 'Sorry. Try again';
 
     try {
       const patch = JSON.parse(aiText) as GPTResponse;
       if (patch) onResponse?.(patch);
-    } catch {
-
-    }
-    setMessages(prev => [...prev, { role: 'assistant', content: aiText }]);
+    } catch {}
+    setMessages((prev) => [...prev, { role: 'assistant', content: aiText }]);
     setLoading(false);
   };
 
@@ -102,14 +115,23 @@ export default function AIChatPanel({ initialMessages, formId, context, onClose,
 
   return (
     <aside
-      className={`fixed top-0 right-0 w-[350px] h-full bg-white z-[99999] border-l shadow-lg flex flex-col ${open ? '' : 'hidden'}`}>
-      <span onClick={onClose} className="absolute top-2 right-2 cursor-pointer"><XIcon /></span>
+      className={`fixed top-0 right-0 w-[350px] h-full bg-white z-[99999] border-l shadow-lg flex flex-col ${open ? '' : 'hidden'}`}
+    >
+      <span onClick={onClose} className="absolute top-2 right-2 cursor-pointer">
+        <XIcon />
+      </span>
       <div className="border-b-[1px] border-gray-200">
-        <span className="flex gap-2 pl-2 pr-10 py-3 text-xs items-center"><Info className="size-5" /> Only last 10 messages using for GPT context</span>
+        <span className="flex gap-2 pl-2 pr-10 py-3 text-xs items-center">
+          <Info className="size-5" /> Only last 10 messages using for GPT context
+        </span>
       </div>
       <div className="flex-1 overflow-y-auto p-4 gap-4 flex flex-col">
         {messages.map((m, i) => (
-          <MessageItem key={i} role={m.role} message={m.role === 'user' ? m.content : getGPTAnswer(m.content)} />
+          <MessageItem
+            key={i}
+            role={m.role}
+            message={m.role === 'user' ? m.content : getGPTAnswer(m.content)}
+          />
         ))}
         {loading && <div className="italic text-gray-400">Thinking...</div>}
       </div>
@@ -127,9 +149,14 @@ export default function AIChatPanel({ initialMessages, formId, context, onClose,
         </Button>
       </div>
       <div className="p-2 flex flex-wrap gap-2 border-t">
-        {getFastCommands(selectedFields).map(cmd => (
-          <Button key={cmd} variant="secondary" className="btn btn-sm " onClick={() => send(cmd)}
-                  disabled={loading}>
+        {getFastCommands(selectedFields).map((cmd) => (
+          <Button
+            key={cmd}
+            variant="secondary"
+            className="btn btn-sm "
+            onClick={() => send(cmd)}
+            disabled={loading}
+          >
             {cmd}
           </Button>
         ))}
@@ -138,6 +165,5 @@ export default function AIChatPanel({ initialMessages, formId, context, onClose,
         Please write your requests in <b>English</b> for the best AI results.
       </div>
     </aside>
-  )
-    ;
+  );
 }

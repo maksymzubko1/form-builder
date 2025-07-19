@@ -15,4 +15,4 @@ export type TopAnswer = {
   count: number;
 };
 
-export type Fields = Record<string, unknown>
+export type Fields = Record<string, unknown>;

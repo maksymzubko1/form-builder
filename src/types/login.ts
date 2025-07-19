@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
 export enum ELoginResponseCode {
-  USER_NOT_FOUND = "NotFound",
-  INVALID_PASSWORD = "IsNotValid",
-  EMAIL_NOT_VERIFIED = "NotVerified",
+  USER_NOT_FOUND = 'NotFound',
+  INVALID_PASSWORD = 'IsNotValid',
+  EMAIL_NOT_VERIFIED = 'NotVerified',
 }
 
 export enum ELoginResponseTypes {
-  NotFound = "User not found",
-  IsNotValid = "Incorrect password",
-  NotVerified = "Email is not verified",
+  NotFound = 'User not found',
+  IsNotValid = 'Incorrect password',
+  NotVerified = 'Email is not verified',
 }
 
 export const LoginSchema = z.object({

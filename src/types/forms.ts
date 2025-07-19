@@ -9,10 +9,12 @@ export const FormSchema = z.object({
   content: z
     .custom<Data>()
     .refine(
-      (val): val is Data => !(!val || Array.isArray(val.content) && val.content.length === 0),
+      (val): val is Data => !(!val || (Array.isArray(val.content) && val.content.length === 0)),
       { message: 'Form must have at least one component' },
-    ).refine(
-      (val): val is Data => val.content.filter(content => InteractiveItems.includes(content.type)).length !== 0,
+    )
+    .refine(
+      (val): val is Data =>
+        val.content.filter((content) => InteractiveItems.includes(content.type)).length !== 0,
       { message: 'Form must have at least interactive component' },
     ),
 });

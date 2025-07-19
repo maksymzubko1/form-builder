@@ -18,14 +18,14 @@ interface PublishFormButtonProps {
 }
 
 export function PublishFormButton({
-                                    formId,
-                                    isPublished,
-                                    size = 'default',
-                                    onDone,
-                                    loading,
-                                    setLoading,
-                                    asDropdown
-                                  }: PublishFormButtonProps) {
+  formId,
+  isPublished,
+  size = 'default',
+  onDone,
+  loading,
+  setLoading,
+  asDropdown,
+}: PublishFormButtonProps) {
   const [internalLoading, setInternalLoading] = useState(false);
   const busy = loading !== undefined ? loading : internalLoading;
 
@@ -52,7 +52,6 @@ export function PublishFormButton({
     }
   };
 
-
   if (asDropdown) {
     return (
       <button
@@ -62,7 +61,7 @@ export function PublishFormButton({
         aria-label={isPublished ? 'Unpublish form' : 'Publish form'}
         className="w-full flex"
       >
-        {isPublished ? "Unpublish" : "Publish"}
+        {isPublished ? 'Unpublish' : 'Publish'}
       </button>
     );
   }
@@ -76,17 +75,15 @@ export function PublishFormButton({
       disabled={busy}
       type="button"
     >
-      {busy ? <Loader /> : isPublished
-        ? <EyeOffIcon className="w-4 h-4" />
-        : <Eye className="w-4 h-4" />}
+      {busy ? (
+        <Loader />
+      ) : isPublished ? (
+        <EyeOffIcon className="w-4 h-4" />
+      ) : (
+        <Eye className="w-4 h-4" />
+      )}
       {size !== 'icon' && (
-        <span className="ml-2">
-          {busy
-            ? 'Wait...'
-            : isPublished
-              ? 'Unpublish'
-              : 'Publish'}
-        </span>
+        <span className="ml-2">{busy ? 'Wait...' : isPublished ? 'Unpublish' : 'Publish'}</span>
       )}
     </Button>
   );

@@ -6,7 +6,9 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { PublishFormButton } from '@/app/admin/forms/_components/actions/PublishFormButton';
 import { CopyFormButton } from '@/app/admin/forms/_components/actions/CopyFormButton';
@@ -53,9 +55,13 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
       return (
         <div className="flex items-center gap-2">
           <Button variant="secondary" asChild={form.isPublished} disabled={!form.isPublished}>
-            {form.isPublished ? <Link className="cursor-pointer" href={ROUTES.FORM(form.id)} target="_blank">
+            {form.isPublished ? (
+              <Link className="cursor-pointer" href={ROUTES.FORM(form.id)} target="_blank">
+                <Eye className="w-4 h-4" />
+              </Link>
+            ) : (
               <Eye className="w-4 h-4" />
-            </Link> : <Eye className="w-4 h-4" />}
+            )}
           </Button>
           <Button variant="secondary" onClick={() => onEdit(form)} className="">
             <EditIcon className="w-4 h-4" />
@@ -86,7 +92,10 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_PREVIEW(form.id)}>
+              <Link
+                className="w-full flex cursor-pointer"
+                href={ROUTES.ADMIN_FORM_PREVIEW(form.id)}
+              >
                 Preview
               </Link>
             </DropdownMenuItem>
@@ -109,20 +118,22 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
               />
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <DeleteFormAction
-                onClick={() => onDelete(form)}
-                size="default"
-                asDropdown
-              />
+              <DeleteFormAction onClick={() => onDelete(form)} size="default" asDropdown />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_SUBMISSIONS(form.id)}>
+              <Link
+                className="w-full flex cursor-pointer"
+                href={ROUTES.ADMIN_FORM_SUBMISSIONS(form.id)}
+              >
                 Submissions
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link className="w-full flex cursor-pointer" href={ROUTES.ADMIN_FORM_INSIGHTS(form.id)}>
+              <Link
+                className="w-full flex cursor-pointer"
+                href={ROUTES.ADMIN_FORM_INSIGHTS(form.id)}
+              >
                 Insights
               </Link>
             </DropdownMenuItem>

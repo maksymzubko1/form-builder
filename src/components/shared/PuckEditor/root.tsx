@@ -11,7 +11,9 @@ export const Root: RootConfig<RootProps> = {
     title: { type: 'text', label: 'Title' },
     description: { type: 'textarea', label: 'Description' },
     emailNotification: {
-      type: 'radio', label: 'Email notifications for new submissions', options: [
+      type: 'radio',
+      label: 'Email notifications for new submissions',
+      options: [
         { label: 'Disable', value: false },
         { label: 'Enable', value: true },
       ],

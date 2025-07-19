@@ -8,7 +8,7 @@ import { TResetTokenPageParams } from './types';
 export const metadata = {
   title: 'Set New Password',
   description: 'Set a new password for your account.',
-  robots: 'noindex'
+  robots: 'noindex',
 };
 
 export default async function ResetTokenPage({ params }: TResetTokenPageParams) {
@@ -26,7 +26,5 @@ export default async function ResetTokenPage({ params }: TResetTokenPageParams) 
     );
   }
 
-  return (
-    <ResetTokenForm />
-  );
+  return <ResetTokenForm />;
 }

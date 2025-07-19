@@ -24,9 +24,7 @@ export default async function VerifyTokenPage({ searchParams }: TVerifyProps) {
         <h2 className="text-xl font-bold mb-2">Email successfully verified!</h2>
         <p>You can close this page or click the button below.</p>
         <Button tabIndex={0} className="mt-4" asChild>
-          <Link href={ROUTES.LOGIN}>
-            Go to login
-          </Link>
+          <Link href={ROUTES.LOGIN}>Go to login</Link>
         </Button>
       </div>
     );
@@ -50,9 +48,7 @@ export default async function VerifyTokenPage({ searchParams }: TVerifyProps) {
         <h2 className="text-xl font-bold mb-2">Email verification failed!</h2>
         <p>Please try again or contact support.</p>
         <Button tabIndex={0} className="mt-4" asChild>
-          <Link href={ROUTES.LOGIN}>
-            Go to login
-          </Link>
+          <Link href={ROUTES.LOGIN}>Go to login</Link>
         </Button>
       </div>
     );

@@ -1,4 +1,4 @@
-import Root from './root'
+import Root from './root';
 
 import { Input } from './_blocks/Input';
 import { Text } from './_blocks/Text';
@@ -14,15 +14,20 @@ import { File as FileInput } from './_blocks/FileInput';
 import { UserConfig } from './types';
 
 export const InteractiveItems = [
-  'Textarea', 'Input', 'FileInput', 'Select', 'RadioGroup', 'Checkbox'
-]
+  'Textarea',
+  'Input',
+  'FileInput',
+  'Select',
+  'RadioGroup',
+  'Checkbox',
+];
 
 export const puckConfig: UserConfig = {
   root: Root,
   categories: {
     layout: {
       title: 'Layout blocks',
-      components: ['Flex', 'Space']
+      components: ['Flex', 'Space'],
     },
     typography: {
       title: 'Text blocks',
@@ -34,8 +39,8 @@ export const puckConfig: UserConfig = {
     },
     interactive: {
       title: 'Interactive',
-      components: ['Select', 'RadioGroup', 'Checkbox']
-    }
+      components: ['Select', 'RadioGroup', 'Checkbox'],
+    },
   },
   components: {
     Text,
@@ -47,6 +52,6 @@ export const puckConfig: UserConfig = {
     RadioGroup,
     Heading,
     Space,
-    FileInput
+    FileInput,
   },
 };

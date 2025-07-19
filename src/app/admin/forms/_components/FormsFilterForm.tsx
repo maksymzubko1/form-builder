@@ -1,6 +1,12 @@
 'use client';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import type { FC } from 'react';
 import { FormCreateButton } from '@/app/admin/forms/_components/actions/FormCreateButton';
 import { SearchInput } from '@/components/shared/SearchInput';
@@ -15,13 +21,13 @@ interface FormsFilterFormProps {
 }
 
 export const FormsFilterForm: FC<FormsFilterFormProps> = ({
-                                                            search,
-                                                            onSearchChange,
-                                                            status,
-                                                            onStatusChange,
-                                                            order,
-                                                            onOrderChange,
-                                                          }) => {
+  search,
+  onSearchChange,
+  status,
+  onStatusChange,
+  order,
+  onOrderChange,
+}) => {
   return (
     <div className="flex flex-wrap gap-2 items-center mb-6 justify-between">
       <div className="flex flex-wrap grow-1 gap-2 items-center">
@@ -32,7 +38,7 @@ export const FormsFilterForm: FC<FormsFilterFormProps> = ({
           onClear={() => onSearchChange('')}
           className="max-w-xs"
         />
-        <Select value={status} onValueChange={v => onStatusChange(v as typeof status)}>
+        <Select value={status} onValueChange={(v) => onStatusChange(v as typeof status)}>
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -42,7 +48,7 @@ export const FormsFilterForm: FC<FormsFilterFormProps> = ({
             <SelectItem value="draft">Draft</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={order} onValueChange={v => onOrderChange(v as typeof order)}>
+        <Select value={order} onValueChange={(v) => onOrderChange(v as typeof order)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Order" />
           </SelectTrigger>

@@ -1,8 +1,9 @@
 export enum ERegisterStatus {
   SUCCESS = 'success',
-  ERROR = 'error'
+  ERROR = 'error',
 }
 
 export type TRegisterPageParams = {
-  params: Promise<{ token: string | undefined }>, searchParams: Promise<{ status: ERegisterStatus | undefined }>
-}
+  params: Promise<{ token: string | undefined }>;
+  searchParams: Promise<{ status: ERegisterStatus | undefined }>;
+};

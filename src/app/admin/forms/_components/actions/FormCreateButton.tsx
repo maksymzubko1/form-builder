@@ -6,14 +6,8 @@ import { ROUTES } from '@/constants/routes';
 
 export function FormCreateButton() {
   return (
-    <Button
-      type="button"
-      aria-label="Create new form"
-      asChild
-    >
-      <Link href={ROUTES.ADMIN_FORMS_CREATE}>
-      + Create Form
-      </Link>
+    <Button type="button" aria-label="Create new form" asChild>
+      <Link href={ROUTES.ADMIN_FORMS_CREATE}>+ Create Form</Link>
     </Button>
   );
 }

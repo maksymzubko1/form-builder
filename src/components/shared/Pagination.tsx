@@ -8,8 +8,11 @@ import {
 } from '@/components/ui/pagination';
 
 type Props = {
-  page: number; total: number; limit: number; onPageChange: (page: number) => void;
-}
+  page: number;
+  total: number;
+  limit: number;
+  onPageChange: (page: number) => void;
+};
 
 export function Pagination({ page, total, limit, onPageChange }: Props) {
   const totalPages = Math.ceil(total / limit);
@@ -19,7 +22,8 @@ export function Pagination({ page, total, limit, onPageChange }: Props) {
     <_Pagination className="mt-4 flex justify-end">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious className="cursor-pointer"
+          <PaginationPrevious
+            className="cursor-pointer"
             onClick={() => onPageChange(Math.max(1, page - 1))}
             aria-disabled={page === 1}
           />
@@ -36,7 +40,8 @@ export function Pagination({ page, total, limit, onPageChange }: Props) {
           </PaginationItem>
         ))}
         <PaginationItem>
-          <PaginationNext className="cursor-pointer"
+          <PaginationNext
+            className="cursor-pointer"
             onClick={() => onPageChange(Math.min(totalPages, page + 1))}
             aria-disabled={page === totalPages}
           />

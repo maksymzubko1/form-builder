@@ -13,14 +13,13 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
   useEffect(() => {
     setLoading(true);
 
-    Promise.all([
-      fetchSubmissionsStats(formId, from, to),
-      fetchFormContent(formId),
-    ]).then(([subs, formContent]) => {
-      setData(subs.data?.map(item => ({ ...item, data: prepareSubmissions(item.data) })) || []);
-      setTotalViews(subs.totalViews);
-      setFields(parseFieldsFromFormContent(formContent));
-    }).finally(() => setLoading(false));
+    Promise.all([fetchSubmissionsStats(formId, from, to), fetchFormContent(formId)])
+      .then(([subs, formContent]) => {
+        setData(subs.data?.map((item) => ({ ...item, data: prepareSubmissions(item.data) })) || []);
+        setTotalViews(subs.totalViews);
+        setFields(parseFieldsFromFormContent(formContent));
+      })
+      .finally(() => setLoading(false));
   }, [formId, from, to]);
 
   const chartData: ChartPoint[] = useMemo(() => {
@@ -37,9 +36,7 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
   const week = data.filter((s) => s.submittedAt >= weekAgo).length;
   const todayCount = data.filter((s) => s.submittedAt.slice(0, 10) === today).length;
 
-  const conversion = totalViews
-    ? Math.round((data.length / totalViews) * 100)
-    : 0;
+  const conversion = totalViews ? Math.round((data.length / totalViews) * 100) : 0;
 
   const getTopAnswers = (key: string, type: string): TopAnswer[] => {
     const stats: Record<string, number> = {};
@@ -47,7 +44,7 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
       if (type === 'FileInput') return;
       const v = s.data?.[key];
       if (Array.isArray(v)) {
-        v.forEach(val => {
+        v.forEach((val) => {
           if (val) stats[val] = (stats[val] || 0) + 1;
         });
       } else if (v) {

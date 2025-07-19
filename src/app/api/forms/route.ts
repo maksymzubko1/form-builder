@@ -57,7 +57,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -80,7 +79,12 @@ export async function POST(req: NextRequest) {
         content,
       },
       select: {
-        id: true, title: true, description: true, isPublished: true, createdAt: true, updatedAt: true,
+        id: true,
+        title: true,
+        description: true,
+        isPublished: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 

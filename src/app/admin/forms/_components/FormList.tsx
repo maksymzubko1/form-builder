@@ -16,14 +16,16 @@ import { useSidebar } from '@/components/ui/sidebar';
 const LIMIT = 20;
 
 export function FormsTable(): JSX.Element {
-  const {setPageTitle} = useSidebar();
+  const { setPageTitle } = useSidebar();
   const [forms, setForms] = useState<FormListItem[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [rawSearch, setRawSearch] = useState<string>('');
   const search = useDebounce(rawSearch, 500);
   const [status, setStatus] = useState<'all' | 'published' | 'draft'>('all');
-  const [order, setOrder] = useState<'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc'>('createdAt_desc');
+  const [order, setOrder] = useState<
+    'createdAt_desc' | 'createdAt_asc' | 'updatedAt_desc' | 'updatedAt_asc'
+  >('createdAt_desc');
   const [page, setPage] = useState<number>(1);
   const { toggle, open, hide } = useModal(false);
   const [selectedItem, setSelectedItem] = useState<FormListItem | null>(null);
@@ -112,10 +114,18 @@ export function FormsTable(): JSX.Element {
         meta={tableMeta}
       />
 
-      {totalPages > 1 && <Pagination total={total} page={page} limit={LIMIT} onPageChange={onPageChange} />}
+      {totalPages > 1 && (
+        <Pagination total={total} page={page} limit={LIMIT} onPageChange={onPageChange} />
+      )}
 
-      {selectedItem &&
-        <DeleteFormDialog formId={selectedItem.id} onClose={hide} onDone={onDeleteCompleted} open={open} />}
+      {selectedItem && (
+        <DeleteFormDialog
+          formId={selectedItem.id}
+          onClose={hide}
+          onDone={onDeleteCompleted}
+          open={open}
+        />
+      )}
     </div>
   );
 }

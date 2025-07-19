@@ -2,11 +2,21 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangePasswordForm as TChangePasswordForm, ChangePasswordSchema } from '@/types/change-password';
+import {
+  ChangePasswordForm as TChangePasswordForm,
+  ChangePasswordSchema,
+} from '@/types/change-password';
 import { useSession } from 'next-auth/react';
 import { API_ROUTES } from '@/constants/routes';
 import z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -24,7 +34,11 @@ export default function ChangePasswordForm() {
     },
   });
 
-  const { handleSubmit, control, formState: { isSubmitting } } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = form;
 
   const onSubmit = async (data: z.infer<typeof ChangePasswordSchema>) => {
     try {
@@ -69,8 +83,14 @@ export default function ChangePasswordForm() {
             )}
           />
           <div className="flex justify-center text-sm">
-            <Button tabIndex={1} type="submit" className="justify-self-center-safe w-full"
-                    disabled={isSubmitting}>{isSubmitting ? 'Loading...' : 'Change password'}</Button>
+            <Button
+              tabIndex={1}
+              type="submit"
+              className="justify-self-center-safe w-full"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Loading...' : 'Change password'}
+            </Button>
           </div>
         </form>
       </Form>

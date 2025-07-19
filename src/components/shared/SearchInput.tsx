@@ -1,5 +1,5 @@
-import { XIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { XIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 type SearchInputProps = {
@@ -13,7 +13,7 @@ export function SearchInput({ value, onChange, onClear, ...props }: SearchInputP
         value={value}
         onChange={onChange}
         {...props}
-        placeholder={props?.placeholder ?? "Search by title..."}
+        placeholder={props?.placeholder ?? 'Search by title...'}
         className={cn('pr-8', props?.className)}
       />
       {value && (

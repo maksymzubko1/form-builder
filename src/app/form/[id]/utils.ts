@@ -6,10 +6,16 @@ import { InteractiveItems } from '@/components/shared/PuckEditor/config';
 
 export type UploadFilesProps = { json: Value[]; data: FormData };
 
-export async function uploadFiles(filesToUpload: UploadFilesProps, allFields: FormFieldDef[]): Promise<Record<string, {
-  url: string;
-  isFile: boolean
-}> | null> {
+export async function uploadFiles(
+  filesToUpload: UploadFilesProps,
+  allFields: FormFieldDef[],
+): Promise<Record<
+  string,
+  {
+    url: string;
+    isFile: boolean;
+  }
+> | null> {
   let presignedLinks = [];
 
   if (!filesToUpload.json.length) return null;
@@ -21,58 +27,67 @@ export async function uploadFiles(filesToUpload: UploadFilesProps, allFields: Fo
     headers: { 'Content-Type': 'application/json' },
   });
   if (resPresignedUrls.ok) {
-    presignedLinks = (await resPresignedUrls.json());
+    presignedLinks = await resPresignedUrls.json();
   } else {
     const json = await resPresignedUrls.json();
     toast.error(json.error || 'Failed to retrieve data');
   }
 
   // upload files
-  const uploadedFiles = await Promise.all(presignedLinks.map(async ({ _payloadKey, url }: {
-    _payloadKey: string,
-    url: string
-  }) => {
-    const file = filesToUpload.data.get(_payloadKey) as File | undefined;
-    if (!file) return null;
+  const uploadedFiles = (await Promise.all(
+    presignedLinks.map(async ({ _payloadKey, url }: { _payloadKey: string; url: string }) => {
+      const file = filesToUpload.data.get(_payloadKey) as File | undefined;
+      if (!file) return null;
 
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: { 'Content-Type': file.type },
-      body: file,
-    });
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      });
 
-    if (!res.ok) return null;
+      if (!res.ok) return null;
 
-    return { key: _payloadKey, url: url.split('?')[0] };
-  })) as { key: string; url: string }[];
+      return { key: _payloadKey, url: url.split('?')[0] };
+    }),
+  )) as { key: string; url: string }[];
 
-  return uploadedFiles.filter(Boolean).reduce((acc, item) => {
-    const fieldItem = allFields.find((field) => field.id === item.key);
-    let obj = { value: item.url };
-    if (fieldItem) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { layout, ...rest } = fieldItem;
-      obj = { ...obj, ...rest };
-    }
-    acc[item.key] = obj;
-    return acc;
-  }, {} as Record<string, { url: string; isFile: boolean }>);
+  return uploadedFiles.filter(Boolean).reduce(
+    (acc, item) => {
+      const fieldItem = allFields.find((field) => field.id === item.key);
+      let obj = { value: item.url };
+      if (fieldItem) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { layout, ...rest } = fieldItem;
+        obj = { ...obj, ...rest };
+      }
+      acc[item.key] = obj;
+      return acc;
+    },
+    {} as Record<string, { url: string; isFile: boolean }>,
+  );
 }
 
-export const validateAndPrepareData = async ({ data, schema, setError, needValidate, allFields, state }: {
-  allFields: FormFieldDef[]
-  data: FormData,
-  schema: unknown,
-  setError: (props: unknown, settings: unknown) => void,
-  needValidate: boolean
-  state: unknown
+export const validateAndPrepareData = async ({
+  data,
+  schema,
+  setError,
+  needValidate,
+  allFields,
+  state,
+}: {
+  allFields: FormFieldDef[];
+  data: FormData;
+  schema: unknown;
+  setError: (props: unknown, settings: unknown) => void;
+  needValidate: boolean;
+  state: unknown;
 }) => {
   const formatedFormData = formDataToJson(data) as Record<string, Value>;
 
   if (needValidate) {
     const parse = schema.safeParse(formatedFormData);
     if (!parse.success) {
-      parse.error.issues.map(err => setError(err.path[0] as string, { message: err.message }));
+      parse.error.issues.map((err) => setError(err.path[0] as string, { message: err.message }));
       return;
     }
   }
@@ -80,8 +95,7 @@ export const validateAndPrepareData = async ({ data, schema, setError, needValid
   const payloadData = { email: formatedFormData.email } as Record<string, unknown>;
   const filesToUpload = { json: [], data: new FormData() } as UploadFilesProps;
 
-  ;
-  allFields.forEach(field => {
+  allFields.forEach((field) => {
     if (!InteractiveItems.includes(field.type)) {
       return;
     }
@@ -97,7 +111,10 @@ export const validateAndPrepareData = async ({ data, schema, setError, needValid
         filesToUpload['data'].set(rest.id, file as File);
       } else {
         const prevFile = state[rest.id];
-        payloadData[rest.id] = { ...rest, value: prevFile && typeof prevFile === 'string' ? prevFile : null };
+        payloadData[rest.id] = {
+          ...rest,
+          value: prevFile && typeof prevFile === 'string' ? prevFile : null,
+        };
       }
     } else {
       const item = data.get(rest.id);
@@ -106,5 +123,5 @@ export const validateAndPrepareData = async ({ data, schema, setError, needValid
   });
 
   const uploadedFiles = await uploadFiles(filesToUpload, allFields);
-  return { ...payloadData, ...uploadedFiles ?? {} };
+  return { ...payloadData, ...(uploadedFiles ?? {}) };
 };

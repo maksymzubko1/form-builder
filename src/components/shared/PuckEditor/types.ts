@@ -1,6 +1,6 @@
 import { Config, Data } from '@measured/puck';
 
-import { InputProps } from "./_blocks/Input";
+import { InputProps } from './_blocks/Input';
 import { TextareaProps } from './_blocks/Textarea';
 import { CheckboxProps } from './_blocks/Checkbox';
 import { TextProps } from './_blocks/Text';
@@ -12,7 +12,7 @@ import { SpaceProps } from './_blocks/Space';
 import { FileProps } from './_blocks/FileInput';
 
 import { RootProps } from './root';
-export type { RootProps } from "./root";
+export type { RootProps } from './root';
 
 export type Props = {
   Input: InputProps;
@@ -30,7 +30,7 @@ export type Props = {
 export type UserConfig = Config<
   Props,
   RootProps,
-  "layout" | "typography" | "inputs" | "interactive"
+  'layout' | 'typography' | 'inputs' | 'interactive'
 >;
 
 export type UserData = Data<Props, RootProps>;

@@ -1,6 +1,5 @@
 'use client';
 
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -13,13 +12,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export function AdminNav({
-                           items,
-                         }: {
+  items,
+}: {
   items: {
-    title: string
-    url: string
+    title: string;
+    url: string;
     icon?: JSX.Element;
-  }[]
+  }[];
 }) {
   const pathname = usePathname();
 
@@ -29,8 +28,15 @@ export function AdminNav({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title} aria-selected={pathname === item.url}>
-              <SidebarMenuButton tooltip={item.title} asChild
-                                 className={pathname === item.url ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear' : ''}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                asChild
+                className={
+                  pathname === item.url
+                    ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear'
+                    : ''
+                }
+              >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

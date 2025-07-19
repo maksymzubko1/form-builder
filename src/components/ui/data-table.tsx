@@ -27,12 +27,12 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
-                                           columns,
-                                           data,
-                                           loading = false,
-                                           emptyLabel = 'No results.',
-                                           meta,
-                                         }: DataTableProps<TData, TValue>): JSX.Element {
+  columns,
+  data,
+  loading = false,
+  emptyLabel = 'No results.',
+  meta,
+}: DataTableProps<TData, TValue>): JSX.Element {
   const table = useReactTable({
     data,
     columns,

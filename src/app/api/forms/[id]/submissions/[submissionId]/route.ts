@@ -7,9 +7,17 @@ interface DeleteProps {
   params: Promise<{ id: string; submissionId: string }>;
 }
 
-export async function DELETE(_req: Request, { params }: DeleteProps): Promise<NextResponse<{ ok: boolean } | {
-  error: string
-}>> {
+export async function DELETE(
+  _req: Request,
+  { params }: DeleteProps,
+): Promise<
+  NextResponse<
+    | { ok: boolean }
+    | {
+        error: string;
+      }
+  >
+> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

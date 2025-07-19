@@ -5,7 +5,14 @@ import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Data } from '@measured/puck';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { z } from 'zod';
 import PuckRender from '@/components/shared/PuckEditor/PuckRender';
 import { Input } from '@/components/ui/input';
@@ -23,10 +30,10 @@ type Props = {
     id: string;
     title: string;
     description?: string;
-    content: Data
-  },
+    content: Data;
+  };
   email: string;
-}
+};
 
 export function PublicForm({ form, email }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,10 +51,14 @@ export function PublicForm({ form, email }: Props) {
   type FormType = z.infer<typeof schema>;
 
   const [defaultValues, setDefaultValues] = useState<Record<string, string>>({
-    email: email, ...fields.reduce((acc, field) => {
-      acc[field.id] = '';
-      return acc;
-    }, {} as Record<string, string>),
+    email: email,
+    ...fields.reduce(
+      (acc, field) => {
+        acc[field.id] = '';
+        return acc;
+      },
+      {} as Record<string, string>,
+    ),
   });
 
   const _form = useForm<FormType>({
@@ -57,13 +68,22 @@ export function PublicForm({ form, email }: Props) {
     defaultValues,
   });
 
-  const { clearErrors, getValues, reset, setError, control, formState: { errors, isSubmitting } } = _form;
+  const {
+    clearErrors,
+    getValues,
+    reset,
+    setError,
+    control,
+    formState: { errors, isSubmitting },
+  } = _form;
 
   useEffect(() => {
     const fetchDraftData = async () => {
       setFetchingDraft(true);
       try {
-        const res = await fetch(`${API_ROUTES.PUBLIC_FORMS_DRAFT(form.id)}?email=${encodeURIComponent(email)}`);
+        const res = await fetch(
+          `${API_ROUTES.PUBLIC_FORMS_DRAFT(form.id)}?email=${encodeURIComponent(email)}`,
+        );
         if (res.ok) {
           const json = await res.json();
           if (!json.draft) return;
@@ -73,7 +93,7 @@ export function PublicForm({ form, email }: Props) {
             return previousValue;
           }, {});
 
-          setDefaultValues(prev => ({ ...prev, ...parsedData, email }));
+          setDefaultValues((prev) => ({ ...prev, ...parsedData, email }));
           reset({ ...parsedData, email });
           toast.info('Found your saved progress. Continue filling the form.');
         } else {
@@ -171,13 +191,21 @@ export function PublicForm({ form, email }: Props) {
   };
 
   if (fetchingDraft) {
-    return <div className="text-center py-16"><Loader /> Loading your saved progress...</div>;
+    return (
+      <div className="text-center py-16">
+        <Loader /> Loading your saved progress...
+      </div>
+    );
   }
 
   return (
     <Form {..._form}>
-      <form ref={formRef} onSubmit={onSubmit} noValidate
-            className="dark max-w-[1280px] w-full md:mx-auto md:my-12 p-6 bg-muted md:rounded shadow space-y-6 flex flex-col">
+      <form
+        ref={formRef}
+        onSubmit={onSubmit}
+        noValidate
+        className="dark max-w-[1280px] w-full md:mx-auto md:my-12 p-6 bg-muted md:rounded shadow space-y-6 flex flex-col"
+      >
         <h1 className="text-2xl font-bold mb-4 ">{form.title}</h1>
         {form.description && <p className="text-muted-foreground mb-4">{form.description}</p>}
         <FormField
@@ -187,8 +215,14 @@ export function PublicForm({ form, email }: Props) {
             <FormItem className="pr-3 pl-3 pb-8 border-b-[1px]">
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input readOnly tabIndex={0} className="text-muted bg-muted" placeholder="user@gmail.com"
-                       autoFocus {...field} />
+                <Input
+                  readOnly
+                  tabIndex={0}
+                  className="text-muted bg-muted"
+                  placeholder="user@gmail.com"
+                  autoFocus
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -203,10 +237,10 @@ export function PublicForm({ form, email }: Props) {
             onClick={handleSaveDraft}
             disabled={isSubmitting || loadingDraft}
           >
-            {(isSubmitting || loadingDraft) ? 'Saving...' : 'Save and continue later'}
+            {isSubmitting || loadingDraft ? 'Saving...' : 'Save and continue later'}
           </Button>
           <Button type="submit" disabled={isSubmitting || loading}>
-            {(isSubmitting || loading) ? 'Submitting...' : 'Submit'}
+            {isSubmitting || loading ? 'Submitting...' : 'Submit'}
           </Button>
         </div>
       </form>

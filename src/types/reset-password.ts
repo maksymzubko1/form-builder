@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export enum ETokenResetCode {
-  INVALID_TOKEN = "InvalidToken",
+  INVALID_TOKEN = 'InvalidToken',
 }
 
 export enum ETokenReset {

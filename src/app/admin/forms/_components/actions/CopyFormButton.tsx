@@ -15,7 +15,12 @@ interface CopyFormButtonProps {
   onCopy?: () => void;
 }
 
-export function CopyFormButton({ formId, size = 'default', asDropdown, onCopy}: CopyFormButtonProps) {
+export function CopyFormButton({
+  formId,
+  size = 'default',
+  asDropdown,
+  onCopy,
+}: CopyFormButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

@@ -1,3 +1,3 @@
 export type TResetTokenPageParams = {
-  params: Promise<{ token: string | undefined }>
-}
+  params: Promise<{ token: string | undefined }>;
+};

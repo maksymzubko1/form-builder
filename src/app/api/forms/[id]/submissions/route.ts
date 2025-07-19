@@ -10,10 +10,18 @@ interface GetProps {
   params: Promise<{ id: string }>;
 }
 
-export async function GET(req: Request, { params }: GetProps): Promise<NextResponse<{
-  data: Submission[];
-  total: number
-} | { error: string }>> {
+export async function GET(
+  req: Request,
+  { params }: GetProps,
+): Promise<
+  NextResponse<
+    | {
+        data: Submission[];
+        total: number;
+      }
+    | { error: string }
+  >
+> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -44,7 +52,8 @@ export async function GET(req: Request, { params }: GetProps): Promise<NextRespo
       },
     };
     const orderBy: Prisma.FormSubmissionOrderByWithAggregationInput = filter.order
-      ? { [filter.order.split('_')[0]]: filter.order.split('_')[1] } : { submittedAt: 'desc' };
+      ? { [filter.order.split('_')[0]]: filter.order.split('_')[1] }
+      : { submittedAt: 'desc' };
 
     const [total, submissions] = await Promise.all([
       prisma.formSubmission.count({ where }),
@@ -67,9 +76,17 @@ interface DeleteProps {
   params: Promise<{ id: string }>;
 }
 
-export async function DELETE(_req: Request, { params }: DeleteProps): Promise<NextResponse<{ ok: boolean } | {
-  error: string
-}>> {
+export async function DELETE(
+  _req: Request,
+  { params }: DeleteProps,
+): Promise<
+  NextResponse<
+    | { ok: boolean }
+    | {
+        error: string;
+      }
+  >
+> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

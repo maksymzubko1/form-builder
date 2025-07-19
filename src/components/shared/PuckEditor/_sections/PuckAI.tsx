@@ -18,7 +18,8 @@ interface Props {
 const PuckAI = ({ formId }: Props) => {
   const context = usePuck((s) => s.appState.data.content);
   const dispatch = usePuck((s) => s.dispatch);
-  const selectedFields = usePuck((s) => s.appState.data.root.props?.selectedItems as ComponentData[]) || [];
+  const selectedFields =
+    usePuck((s) => s.appState.data.root.props?.selectedItems as ComponentData[]) || [];
   const [loadInitialMessages, setLoadInitialMessages] = useState<boolean>(true);
   const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const { open, toggle } = useModal();
@@ -28,15 +29,13 @@ const PuckAI = ({ formId }: Props) => {
 
     for (const patch of patches) {
       if (patch.action === 'update') {
-        const patchMap = Object.fromEntries(
-          patch.result.map(p => [p.props.id, p]),
-        );
+        const patchMap = Object.fromEntries(patch.result.map((p) => [p.props.id, p]));
         const updated = updateItems(data, patchMap);
         data = updated;
       } else if (patch.action === 'add') {
         data = [...data, ...patch.result];
       } else if (patch.action === 'delete') {
-        const idSet = new Set(patch.result.map(p => p.props.id));
+        const idSet = new Set(patch.result.map((p) => p.props.id));
         data = deleteItems(data, idSet);
       }
     }
@@ -76,10 +75,12 @@ const PuckAI = ({ formId }: Props) => {
     <div>
       <Button
         className="btn fixed bottom-2 right-2 rounded-[50%] bg-card p-5 z-[99999] w-[50px] h-[50px] grid place-content-center"
-        onClick={toggle} variant="secondary">
+        onClick={toggle}
+        variant="secondary"
+      >
         <Bot color={'white'} className="size-6" />
       </Button>
-      {!loadInitialMessages &&
+      {!loadInitialMessages && (
         <AIChatPanel
           formId={formId}
           initialMessages={initialMessages}
@@ -87,7 +88,9 @@ const PuckAI = ({ formId }: Props) => {
           open={open}
           onClose={toggle}
           onResponse={onResponse}
-          selectedFields={selectedFields} />}
+          selectedFields={selectedFields}
+        />
+      )}
     </div>
   );
 };

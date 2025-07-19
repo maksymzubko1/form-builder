@@ -1,25 +1,27 @@
 'use client';
 
-
 import {
   SidebarGroup,
-  SidebarGroupContent, SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import LogoutButton from '@/components/shared/LogoutButton';
 
-export function User({ session }: {
+export function User({
+  session,
+}: {
   session?: {
     user: {
-      email: string
-    }
-  }
+      email: string;
+    };
+  };
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{session?.user.email?.split("@")[0]}</SidebarGroupLabel>
+      <SidebarGroupLabel>{session?.user.email?.split('@')[0]}</SidebarGroupLabel>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="[&>button]:w-full">

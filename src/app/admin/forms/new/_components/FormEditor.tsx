@@ -24,7 +24,12 @@ export function FormEditor() {
     defaultValues: { title: '', description: '', emailNotification: false, content: {} },
   });
 
-  const { setValue, handleSubmit, getValues, formState: { isSubmitting, errors } } = form;
+  const {
+    setValue,
+    handleSubmit,
+    getValues,
+    formState: { isSubmitting, errors },
+  } = form;
   const { content } = getValues();
 
   const onSubmit = async (data: FormType) => {
@@ -82,8 +87,12 @@ export function FormEditor() {
       <div className="flex flex-col">
         <div className="error mb-2 flex flex-col">
           {errors.title && <span className="text-destructive text-sm">{errors.title.message}</span>}
-          {errors.description && <span className="text-destructive text-sm">{errors.description.message}</span>}
-          {errors.content && <span className="text-destructive text-sm">{errors.content.message}</span>}
+          {errors.description && (
+            <span className="text-destructive text-sm">{errors.description.message}</span>
+          )}
+          {errors.content && (
+            <span className="text-destructive text-sm">{errors.content.message}</span>
+          )}
         </div>
         <PuckEditorForm content={content} onPublish={onPublish} isLoading={loading} />
       </div>

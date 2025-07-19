@@ -10,16 +10,21 @@ import ActionButtons from '@/components/shared/PuckEditor/_sections/ActionButton
 const usePuck = createUsePuck<UserConfig>();
 
 type Props = {
-  onPublish: (data: Data) => void,
-  isEditing?: boolean,
+  onPublish: (data: Data) => void;
+  isEditing?: boolean;
   isLoading?: boolean;
   formProps?: {
     id: string;
     isPublished: boolean;
-  }
-}
+  };
+};
 
-export default function CustomHeader({ isLoading, onPublish, isEditing = false, formProps }: Props) {
+export default function CustomHeader({
+  isLoading,
+  onPublish,
+  isEditing = false,
+  formProps,
+}: Props) {
   const appState = usePuck((s) => s.appState);
   const dispatch = usePuck((s) => s.dispatch);
   const { previewMode, leftSideBarVisible, rightSideBarVisible } = usePuck((s) => s.appState.ui);
@@ -73,12 +78,20 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
       >
         <div className="flex gap-8 justify-between w-full">
           <div className="flex items-center">
-            <Button onClick={toggleModeLeftSidebar} title="Toggle left sidebar" aria-label="Toggle left sidebar"
-                    variant={leftSideBarVisible ? 'secondary' : 'ghost'}>
+            <Button
+              onClick={toggleModeLeftSidebar}
+              title="Toggle left sidebar"
+              aria-label="Toggle left sidebar"
+              variant={leftSideBarVisible ? 'secondary' : 'ghost'}
+            >
               <PanelLeft className="size-6" size={16} />
             </Button>
-            <Button onClick={toggleModeRightSidebar} title="Toggle right sidebar" aria-label="Toggle right sidebar"
-                    variant={rightSideBarVisible ? 'secondary' : 'ghost'}>
+            <Button
+              onClick={toggleModeRightSidebar}
+              title="Toggle right sidebar"
+              aria-label="Toggle right sidebar"
+              variant={rightSideBarVisible ? 'secondary' : 'ghost'}
+            >
               <PanelRight className="size-6" size={16} />
             </Button>
             <Button onClick={toggleMode} className="ml-2">
@@ -93,19 +106,18 @@ export default function CustomHeader({ isLoading, onPublish, isEditing = false, 
               <Redo className="size-6" size={16} />
             </Button>
             <Button onClick={publish} disabled={isLoading}>
-              {isLoading ?
-                <Loader /> :
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <>
                   <Globe size="14" /> {isEditing ? 'Save' : 'Publish'}
                 </>
-              }
+              )}
             </Button>
-            {isEditing && formProps && (
-              <ActionButtons formProps={formProps} />
-            )}
+            {isEditing && formProps && <ActionButtons formProps={formProps} />}
           </div>
         </div>
       </header>
     </>
   );
-};
+}

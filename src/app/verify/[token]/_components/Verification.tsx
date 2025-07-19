@@ -16,7 +16,9 @@ export default function VerifyToken({ token }: { token: string }) {
           push(`${ROUTES.VERIFY}?status=${EVerifyResponseStatus.SUCCESS}`);
         } else {
           const json = await res.json();
-          push(`${ROUTES.VERIFY}?status=${EVerifyResponseStatus[json.status.toUpperCase() as keyof typeof EVerifyResponseStatus] || EVerifyResponseStatus.ERROR}`);
+          push(
+            `${ROUTES.VERIFY}?status=${EVerifyResponseStatus[json.status.toUpperCase() as keyof typeof EVerifyResponseStatus] || EVerifyResponseStatus.ERROR}`,
+          );
         }
       } catch {
         push(`${ROUTES.VERIFY}/?status=${EVerifyResponseStatus.ERROR}`);

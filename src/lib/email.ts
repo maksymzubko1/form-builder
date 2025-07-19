@@ -13,19 +13,24 @@ type SendSubmissionMail = {
   submission: unknown;
   formTitle: string;
   submittedAt: string;
-}
+};
 
 type SendConfirmationParams = {
   to: string;
   confirmUrl: string;
-}
+};
 
 type SendResetParams = {
   to: string;
   resetUrl: string;
-}
+};
 
-export async function sendNewSubmissionEmail({ to, formTitle, submission, submittedAt }: SendSubmissionMail) {
+export async function sendNewSubmissionEmail({
+  to,
+  formTitle,
+  submission,
+  submittedAt,
+}: SendSubmissionMail) {
   if (!process.env.SENDGRID_SUBMISSION_TEMPLATE) {
     throw new Error('SENDGRID_SUBMISSION_TEMPLATE not set');
   }
@@ -42,7 +47,11 @@ export async function sendConfirmationMail({ to, confirmUrl }: SendConfirmationP
     throw new Error('SENDGRID_CONFIRMATION_TEMPLATE not set');
   }
 
-  await sendMail({ to, dynamicTemplateData: { confirmUrl }, templateId: process.env.SENDGRID_CONFIRMATION_TEMPLATE });
+  await sendMail({
+    to,
+    dynamicTemplateData: { confirmUrl },
+    templateId: process.env.SENDGRID_CONFIRMATION_TEMPLATE,
+  });
 }
 
 export async function sendResetMail({ to, resetUrl }: SendResetParams) {
@@ -50,7 +59,11 @@ export async function sendResetMail({ to, resetUrl }: SendResetParams) {
     throw new Error('SENDGRID_RESET_TEMPLATE not set');
   }
 
-  await sendMail({ to, dynamicTemplateData: { resetUrl }, templateId: process.env.SENDGRID_RESET_TEMPLATE });
+  await sendMail({
+    to,
+    dynamicTemplateData: { resetUrl },
+    templateId: process.env.SENDGRID_RESET_TEMPLATE,
+  });
 }
 
 async function sendMail({ to, templateId, dynamicTemplateData }: SendMailParams) {
