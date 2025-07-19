@@ -11,19 +11,19 @@ const s3 = new S3Client({
 });
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-
-  const files = body.files;
-
-  if (!Array.isArray(files) || files.length === 0) {
-    return NextResponse.json({ error: "Files is required (array)" }, { status: 400 });
-  }
-
-  const bucket = process.env.AWS_S3_BUCKET!;
-
   try {
+    const body = await req.json();
+
+    const files = body.files;
+
+    if (!Array.isArray(files) || files.length === 0) {
+      return NextResponse.json({ error: 'Files is required (array)' }, { status: 400 });
+    }
+
+    const bucket = process.env.AWS_S3_BUCKET!;
+
     const results = await Promise.all(
-      files.map(async ({ key: _payloadKey, name, type, folder = "" }) => {
+      files.map(async ({ key: _payloadKey, name, type, folder = '' }) => {
         const key = `${folder}${Date.now()}-${Math.random().toString(36).slice(2)}-${name}`;
         const command = new PutObjectCommand({
           Bucket: bucket,
@@ -32,10 +32,12 @@ export async function POST(req: NextRequest) {
         });
         const url = await getSignedUrl(s3, command, { expiresIn: 60 * 5 });
         return { url, _payloadKey, key, bucket };
-      })
+      }),
     );
     return NextResponse.json(results);
-  } catch (e) {
-    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][S3 presign][POST]', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

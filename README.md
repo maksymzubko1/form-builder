@@ -2,7 +2,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 TODO:
 - validate all fields requirements before publish (Puck editor)
-- all API routes 500 handlers
 - revalidate all TS in project
 
 ## Getting Started

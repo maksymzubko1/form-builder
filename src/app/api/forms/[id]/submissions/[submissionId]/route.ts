@@ -3,17 +3,26 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: Promise<{ id: string; submissionId: string }> },
-): Promise<NextResponse<{ ok: boolean } | { error: string }>> {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+interface DeleteProps {
+  params: Promise<{ id: string; submissionId: string }>;
+}
 
-  const { submissionId, id } = await params;
+export async function DELETE(_req: Request, { params }: DeleteProps): Promise<NextResponse<{ ok: boolean } | {
+  error: string
+}>> {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  await prisma.formSubmission.delete({
-    where: { id: submissionId, formId: id },
-  });
-  return NextResponse.json({ ok: true });
+    const { submissionId, id } = await params;
+
+    await prisma.formSubmission.delete({
+      where: { id: submissionId, formId: id },
+    });
+    return NextResponse.json({ ok: true });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][Submissions/[id]][DELETE]', message);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

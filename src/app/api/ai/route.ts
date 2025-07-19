@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const url = new URL(req.url);
-    const formId = url.searchParams.get('formId');
+    const formId = url.searchParams.get('formId') || undefined;
 
     if (!formId) {
       return NextResponse.json({ error: 'Form id required!' }, { status: 400 });
@@ -40,8 +40,9 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ messages });
   } catch (e: unknown) {
-    console.log(e);
-    return NextResponse.json({ error: e?.message || 'AI error' }, { status: 500 });
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][AI][GET]', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -194,7 +195,8 @@ Never put explanations or comments outside the JSON. Never output code blocks, o
 
     return NextResponse.json({ message });
   } catch (e: unknown) {
-    console.log(e);
-    return NextResponse.json({ error: e?.message || 'AI error' }, { status: 500 });
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][AI][POST]', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
