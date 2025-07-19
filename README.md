@@ -6,7 +6,6 @@ TODO:
 - custom 404 page for form
 - custom 404 page for admin layout
 - custom 404 page for user layout
-- AI
 - revalidate all TS in project
 
 ## Getting Started

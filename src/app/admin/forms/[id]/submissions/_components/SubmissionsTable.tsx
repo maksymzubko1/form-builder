@@ -14,7 +14,7 @@ import { Pagination } from '@/components/shared/Pagination';
 import DeleteModal, { DeleteTarget } from './DeleteModal';
 import { useModal } from '@/lib/hooks/useModal';
 import { toast } from 'sonner';
-import { prepareSubmissions } from '@/lib/submission';
+import { prepareSubmissions } from '@/lib/submissions/utils';
 import { useSidebar } from '@/components/ui/sidebar';
 
 interface SubmissionsTableProps {

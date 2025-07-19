@@ -17,7 +17,7 @@ interface FormEditorProps {
 }
 
 export function FormEditor({ initialForm }: FormEditorProps) {
-  const {setPageTitle} = useSidebar()
+  const { setPageTitle } = useSidebar();
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const [loading, setLoading] = useState(false);
 
@@ -61,7 +61,7 @@ export function FormEditor({ initialForm }: FormEditorProps) {
   const onPublish = (data: Data) => {
     setValue('content', data);
     setValue('title', data.root.props?.title);
-    setValue('emailNotification', data.root.props?.emailNotification)
+    setValue('emailNotification', data.root.props?.emailNotification);
     setValue('description', data.root.props?.description);
 
     submitButtonRef.current?.click();
@@ -93,6 +93,7 @@ export function FormEditor({ initialForm }: FormEditorProps) {
         </div>
         <PuckEditorForm isLoading={loading} content={content} onPublish={onPublish} isEditing
                         formProps={{ id: initialForm.id, isPublished: initialForm.isPublished }} />
+
       </div>
     </div>
   );

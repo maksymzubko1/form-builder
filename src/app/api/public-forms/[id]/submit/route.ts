@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { PayloadSchema } from './types';
-import { makeFormSchemaServer } from '@/types/public-forms';
+import { makeFormSchemaServer } from '@/lib/public-forms/utils';
 import { sendNewSubmissionEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

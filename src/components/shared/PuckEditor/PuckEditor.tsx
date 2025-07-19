@@ -6,6 +6,11 @@ const Puck = dynamic(() =>
 import '@measured/puck/puck.css';
 import CustomHeader from '@/components/shared/PuckEditor/_sections/Header';
 import { Data } from '@measured/puck';
+import ActionBarGroup from '@/components/shared/PuckEditor/_sections/ActionBarGroup';
+import React from 'react';
+import SelectedFieldsManager from '@/components/shared/PuckEditor/_components/SelectedFieldsManager';
+import PuckAI from '@/components/shared/PuckEditor/_sections/PuckAI';
+import Preview from '@/components/shared/PuckEditor/_sections/Preview';
 
 type Props = {
   content: Data;
@@ -24,9 +29,21 @@ export default function PuckEditorForm({ content, onPublish, isEditing = false, 
       <Puck
         config={puckConfig}
         data={content}
-        renderHeader={() => {
-          return <CustomHeader isLoading={isLoading} onPublish={onPublish} isEditing={isEditing}
-                               formProps={formProps} />;
+        overrides={{
+          actionBar: ({ children, label }) =>
+            <ActionBarGroup label={label}>{children}</ActionBarGroup>,
+          header: () =>
+            <CustomHeader isLoading={isLoading} onPublish={onPublish} isEditing={isEditing}
+                          formProps={formProps} />,
+          puck: ({ children }) => {
+            return <div>
+              {children}
+
+              <SelectedFieldsManager />
+              <PuckAI formId={formProps?.id}/>
+            </div>;
+          },
+          preview: ({ children }) => <Preview>{children}</Preview>,
         }}
         onPublish={onPublish}
       />
