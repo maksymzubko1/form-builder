@@ -3,9 +3,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 TODO:
 - validate all fields requirements before publish (Puck editor)
 - all API routes 500 handlers
-- custom 404 page for form
-- custom 404 page for admin layout
-- custom 404 page for user layout
 - revalidate all TS in project
 
 ## Getting Started
