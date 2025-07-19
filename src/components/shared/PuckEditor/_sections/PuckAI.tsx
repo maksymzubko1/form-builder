@@ -75,7 +75,7 @@ const PuckAI = ({ formId }: Props) => {
   return (
     <div>
       <Button
-        className="btn fixed bottom-0 right-0 rounded-[50%] bg-card p-5 z-[99999] w-[50px] h-[50px] grid place-content-center"
+        className="btn fixed bottom-2 right-2 rounded-[50%] bg-card p-5 z-[99999] w-[50px] h-[50px] grid place-content-center"
         onClick={toggle} variant="secondary">
         <Bot color={'white'} className="size-6" />
       </Button>
