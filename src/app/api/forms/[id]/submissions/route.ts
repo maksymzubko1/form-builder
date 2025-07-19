@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { SubmissionsFilterSchema } from '@/app/admin/forms/[id]/submissions/types';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { Submission } from '@/types/submissions';
 import { Prisma } from '@prisma/client';
 
