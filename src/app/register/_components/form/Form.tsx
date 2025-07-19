@@ -2,9 +2,8 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterForm as TRegisterForm, RegisterSchema, ERegisterResponse } from '@/types/register';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
-import { z } from 'zod';
+import { RegisterForm as TRegisterForm, RegisterSchema } from '@/types/register';
+import { ROUTES } from '@/constants/routes';
 import {
   Form,
   FormControl,
@@ -18,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { ERegisterStatus } from '@/app/register/types';
 import { useRouter } from 'next/navigation';
+import { requestRegister } from '@/app/register/utils';
 
 export default function RegisterForm() {
   const { push } = useRouter();
@@ -35,20 +35,17 @@ export default function RegisterForm() {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (data: TRegisterForm) => {
     try {
-      const res = await fetch(API_ROUTES.REGISTER, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestRegister(data);
+
+      if (res.status === 'success') {
         push(`${ROUTES.REGISTER}?status=${ERegisterStatus.SUCCESS}`);
       } else {
-        const json = await res.json();
-        toast.error(ERegisterResponse[json.error as keyof typeof ERegisterResponse] || json.error);
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     }
   };

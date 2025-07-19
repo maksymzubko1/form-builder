@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { parseAsync } from 'json2csv';
 import { prepareSubmissions } from '@/lib/submissions/utils';
 import { FormSubmission } from '@prisma/client';
-import { ComponentData } from '@measured/puck';
+import { SubmissionData } from '@/types/submissions';
 
 interface GetProps {
   params: Promise<{ id: string }>;
@@ -21,7 +21,7 @@ export async function GET(_req: Request, { params }: GetProps): Promise<NextResp
       id: s.id,
       email: s.email,
       submittedAt: s.submittedAt,
-      ...prepareSubmissions(s.data as Record<string, ComponentData>),
+      ...prepareSubmissions(s.data as SubmissionData),
     }));
 
     if (!data.length) {

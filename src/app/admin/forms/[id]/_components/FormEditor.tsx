@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { FormSchema, FormType } from '@/types/forms';
+import { FormSchema, FormType } from '@/types/forms/forms';
 import { toast } from 'sonner';
 import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
 import { Data } from '@measured/puck';
 import { Form } from '@/components/ui/form';
-import { API_ROUTES } from '@/constants/routes';
 import { useSidebar } from '@/components/ui/sidebar';
+import { requestUpdateForm } from '@/app/admin/forms/[id]/utils';
 
 interface FormEditorProps {
   initialForm: FormType & { id: string; isPublished: boolean };
@@ -44,20 +44,16 @@ export function FormEditor({ initialForm }: FormEditorProps) {
     try {
       setLoading(true);
       toast.info('Saving...');
-      const res = await fetch(`${API_ROUTES.FORMS}/${initialForm.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ ...data }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestUpdateForm(initialForm.id, data);
+
+      if (res.status === 'success') {
         toast.success('Form updated!');
-        const json = await res.json();
-        reset({ ...json.form, content: json.form.content || {} });
+        reset({ ...res.data?.form, content: res.data?.form.content || {} });
       } else {
-        const json = await res.json();
-        toast.error(json.error || 'Failed to update form');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     } finally {
       setLoading(false);

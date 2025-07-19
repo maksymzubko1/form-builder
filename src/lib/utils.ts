@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export type Value =
   | string
   | {
+      key?: string;
       _isFile: boolean;
       name: string;
       size: number;

@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { CopyIcon } from 'lucide-react';
 import { useState } from 'react';
 import Loader from '@/components/ui/loader';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/routes';
+import { requestCopyForm } from '@/app/admin/forms/utils';
 
 interface CopyFormButtonProps {
   formId: string;
@@ -28,16 +29,16 @@ export function CopyFormButton({
     try {
       toast.info('Coping...');
       setLoading(true);
-      const res = await fetch(`${API_ROUTES.FORMS}/${formId}/copy`, { method: 'POST' });
-      if (res.ok) {
-        const { form } = await res.json();
+      const res = await requestCopyForm(formId);
+      if (res.status === 'success') {
         toast.success('Form copied! Redirecting...');
-        router.push(`${ROUTES.ADMIN_FORMS}/${form.id}`);
+        router.push(`${ROUTES.ADMIN_FORMS}/${res.data?.id}`);
         onCopy?.();
       } else {
-        toast.error('Failed to copy form');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     } finally {
       setLoading(false);

@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import Loader from '@/components/ui/loader';
-import { API_ROUTES } from '@/constants/routes';
+import { requestDeleteForm } from '@/app/admin/forms/utils';
 
 interface DeleteFormDialogProps {
   formId: string;
@@ -28,15 +28,16 @@ export function DeleteFormDialog({ formId, open, onClose, onDone }: DeleteFormDi
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_ROUTES.FORMS}/${formId}`, { method: 'DELETE' });
+      const res = await requestDeleteForm(formId);
 
-      if (res.ok) {
+      if (res.status === 'success') {
         toast.success('Form deleted');
         onDone?.();
       } else {
         toast.error('Failed to delete form');
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     } finally {
       setLoading(false);

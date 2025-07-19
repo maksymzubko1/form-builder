@@ -16,13 +16,18 @@ import {
 import { z } from 'zod';
 import PuckRender from '@/components/shared/PuckEditor/PuckRender';
 import { Input } from '@/components/ui/input';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { extractFields, makeFormSchema } from '@/lib/public-forms/utils';
 import { EFromStatus } from '@/app/form/[id]/types';
 import Loader from '@/components/ui/loader';
-import { validateAndPrepareData } from '@/app/form/[id]/utils';
+import {
+  requestDraftCreate,
+  requestFormDraft,
+  requestSubmitForm,
+  validateAndPrepareData,
+} from '@/app/form/[id]/utils';
 import { useTrackFormView } from '@/app/form/[id]/_hooks/useTrackFormView';
 
 type Props = {
@@ -81,27 +86,20 @@ export function PublicForm({ form, email }: Props) {
     const fetchDraftData = async () => {
       setFetchingDraft(true);
       try {
-        const res = await fetch(
-          `${API_ROUTES.PUBLIC_FORMS_DRAFT(form.id)}?email=${encodeURIComponent(email)}`,
-        );
-        if (res.ok) {
-          const json = await res.json();
-          if (!json.draft) return;
+        const res = await requestFormDraft(form.id, email);
 
-          const parsedData = Object.entries(json.draft).reduce((previousValue, [key, value]) => {
-            previousValue[key] = value.value;
-            return previousValue;
-          }, {});
-
-          setDefaultValues((prev) => ({ ...prev, ...parsedData, email }));
-          reset({ ...parsedData, email });
+        if (res.status === 'success') {
+          if (res.data) {
+            setDefaultValues((prev) => ({ ...prev, ...res.data, email }));
+            reset({ ...res.data, email });
+          }
           toast.info('Found your saved progress. Continue filling the form.');
         } else {
-          const json = await res.json();
-          toast.error(json?.error || 'Unhandled error');
+          toast.error(res.error);
           reset({ email });
         }
-      } catch {
+      } catch (e: unknown) {
+        console.log(e);
         toast.error('Network Error');
       } finally {
         setFetchingDraft(false);
@@ -133,18 +131,15 @@ export function PublicForm({ form, email }: Props) {
         return;
       }
 
-      const res = await fetch(`${API_ROUTES.PUBLIC_FORMS}/${form.id}/submit`, {
-        method: 'POST',
-        body: JSON.stringify({ data: payload, fields }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestSubmitForm(form.id, payload, fields);
+
+      if (res.status === 'success') {
         push(`${ROUTES.FORM(form.id)}?status=${EFromStatus.SENT}`);
       } else {
-        const json = await res.json();
-        toast.error(json.error || 'Error submitting form');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Unhandled submitting form error');
     } finally {
       setLoading(false);
@@ -173,17 +168,15 @@ export function PublicForm({ form, email }: Props) {
         return;
       }
 
-      const res = await fetch(API_ROUTES.PUBLIC_FORMS_DRAFT(form.id), {
-        method: 'POST',
-        body: JSON.stringify({ email: payload.email, data: payload }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestDraftCreate(form.id, payload);
+
+      if (res.status === 'success') {
         push(`${ROUTES.FORM(form.id)}?status=${EFromStatus.DRAFT}`);
       } else {
-        toast.error('Failed to save draft');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Failed to save draft');
     } finally {
       setLoadingDraft(false);
@@ -222,6 +215,7 @@ export function PublicForm({ form, email }: Props) {
                   placeholder="user@gmail.com"
                   autoFocus
                   {...field}
+                  value={field.value as string}
                 />
               </FormControl>
               <FormMessage />

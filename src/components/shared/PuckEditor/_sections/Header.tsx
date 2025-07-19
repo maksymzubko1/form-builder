@@ -95,7 +95,7 @@ export default function CustomHeader({
               <PanelRight className="size-6" size={16} />
             </Button>
             <Button onClick={toggleMode} className="ml-2">
-              Switch to {previewMode === 'edit' ? 'interactive' : 'edit'}
+              Switch to {previewMode === 'edit' ? 'preview' : 'edit'}
             </Button>
           </div>
           <div className="gap-4 flex flex-wrap items-center">

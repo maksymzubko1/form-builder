@@ -6,7 +6,6 @@ import { submissionsColumns } from './columns';
 import { SubmissionsFilterForm } from './SubmissionsFilterForm';
 import { ExportButton } from './ExportButton';
 import { SubmissionDetailsModal } from './SubmissionDetailsModal';
-import { API_ROUTES } from '@/constants/routes';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Submission } from '@/types/submissions';
@@ -14,8 +13,11 @@ import { Pagination } from '@/components/shared/Pagination';
 import DeleteModal, { DeleteTarget } from './DeleteModal';
 import { useModal } from '@/lib/hooks/useModal';
 import { toast } from 'sonner';
-import { prepareSubmissions } from '@/lib/submissions/utils';
 import { useSidebar } from '@/components/ui/sidebar';
+import {
+  requestSubmissionsByParams,
+  requestSubmissionsDelete,
+} from '@/app/admin/forms/[id]/submissions/utils';
 
 interface SubmissionsTableProps {
   formId: string;
@@ -43,25 +45,21 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
     perPageValue: number = perPage,
   ): Promise<void> => {
     setLoading(true);
-    const params = new URLSearchParams({
-      ...filterValue,
-      page: pageValue.toString(),
-      perPage: perPageValue.toString(),
-    } as Record<string, string>);
     try {
-      const res = await fetch(`${API_ROUTES.FORM_SUBMISSIONS(formId)}?${params}`);
-      if (res.ok) {
-        const json = await res.json();
-        const parsedData = json.data.map((item) => ({
-          ...item,
-          data: prepareSubmissions(item.data),
-        }));
-        setSubmissions(parsedData ?? []);
-        setTotal(json.total ?? 0);
+      const res = await requestSubmissionsByParams(formId, {
+        ...filterValue,
+        page: pageValue.toString(),
+        perPage: perPageValue.toString(),
+      });
+
+      if (res.status === 'success') {
+        setSubmissions(res.data?.data ?? []);
+        setTotal(res.data?.total ?? 0);
       } else {
-        toast.error('Failed to load submissions');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Failed to load submissions');
     } finally {
       setLoading(false);
@@ -95,26 +93,28 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ formId }) =>
     toast.info('Deleting in progress...');
     if (deleteTarget.type === 'one') {
       try {
-        const res = await fetch(API_ROUTES.FORM_SUBMISSION(formId, deleteTarget.id), {
-          method: 'DELETE',
-        });
-        if (res.ok) {
+        const res = await requestSubmissionsDelete(formId, deleteTarget.id);
+
+        if (res.status === 'success') {
           toast.success('Submission deleted successfully.');
         } else {
           toast.error('Error deleting submission.');
         }
-      } catch {
+      } catch (e: unknown) {
+        console.log(e);
         toast.error('Error deleting submission.');
       }
     } else if (deleteTarget.type === 'all') {
       try {
-        const res = await fetch(API_ROUTES.FORM_SUBMISSIONS(formId), { method: 'DELETE' });
-        if (res.ok) {
+        const res = await requestSubmissionsDelete(formId);
+
+        if (res.status === 'success') {
           toast.success('Submissions deleted successfully.');
         } else {
           toast.error('Error deleting submissions.');
         }
-      } catch {
+      } catch (e: unknown) {
+        console.log(e);
         toast.error('Error deleting submissions.');
       }
     }

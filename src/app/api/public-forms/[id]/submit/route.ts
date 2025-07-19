@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, { params }: PostProps) {
 
     const form = await prisma.form.findUnique({
       where: { id },
-      select: { isPublished: true, notifyOnSubmission: true, user: true },
+      select: { isPublished: true, notifyOnSubmission: true, user: true, title: true },
     });
     if (!form || !form.isPublished) {
       return NextResponse.json({ error: 'Form not found or unpublished' }, { status: 400 });
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest, { params }: PostProps) {
     if (form?.notifyOnSubmission && form.user?.email) {
       await sendNewSubmissionEmail({
         to: form.user.email,
-        formTitle: form.title,
+        formTitle: form.title as string,
         submission: prepared,
         submittedAt: submission.submittedAt.toLocaleDateString(),
       });

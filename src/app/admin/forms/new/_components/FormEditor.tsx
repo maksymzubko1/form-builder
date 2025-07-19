@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormSchema, FormType } from '@/types/forms';
+import { FormSchema, FormType } from '@/types/forms/forms';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -10,8 +10,9 @@ import { Form } from '@/components/ui/form';
 import PuckEditorForm from '@/components/shared/PuckEditor/PuckEditor';
 import { Data } from '@measured/puck';
 import { Button } from '@/components/ui/button';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useSidebar } from '@/components/ui/sidebar';
+import { requestCreateForm } from '@/app/admin/forms/new/utils';
 
 export function FormEditor() {
   const { setPageTitle } = useSidebar();
@@ -35,19 +36,15 @@ export function FormEditor() {
   const onSubmit = async (data: FormType) => {
     try {
       setLoading(true);
-      const res = await fetch(API_ROUTES.FORMS, {
-        method: 'POST',
-        body: JSON.stringify({ ...data }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
-        const json = await res.json();
-        router.push(`${ROUTES.ADMIN_FORMS}/${json.form.id}`);
+      const res = await requestCreateForm(data);
+
+      if (res.status === 'success') {
+        router.push(`${ROUTES.ADMIN_FORMS}/${res.data?.form.id}`);
       } else {
-        const json = await res.json();
-        toast.error(json.error || 'Failed to create form');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     } finally {
       setLoading(false);

@@ -7,8 +7,6 @@ import {
   ChangePasswordSchema,
 } from '@/types/change-password';
 import { useSession } from 'next-auth/react';
-import { API_ROUTES } from '@/constants/routes';
-import z from 'zod';
 import {
   Form,
   FormControl,
@@ -22,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useEffect } from 'react';
+import { requestPasswordChange } from '@/app/admin/profile/utils';
 
 export default function ChangePasswordForm() {
   const { data: session } = useSession();
@@ -40,20 +39,17 @@ export default function ChangePasswordForm() {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: z.infer<typeof ChangePasswordSchema>) => {
+  const onSubmit = async (data: TChangePasswordForm) => {
     try {
-      const res = await fetch(API_ROUTES.CHANGE_PASSWORD, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestPasswordChange(data);
+
+      if (res.status === 'success') {
         toast.success('Password changed successfully.');
       } else {
-        const json = await res.json();
-        toast.error(json.message || 'Something went wrong');
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     }
   };

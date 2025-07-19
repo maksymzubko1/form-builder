@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { Eye, EyeOffIcon } from 'lucide-react';
 import Loader from '@/components/ui/loader';
-import { API_ROUTES } from '@/constants/routes';
+import { requestPublishForm } from '@/app/admin/forms/utils';
 
 interface PublishFormButtonProps {
   formId: string;
@@ -33,21 +33,19 @@ export function PublishFormButton({
     try {
       setLoading?.(true);
       setInternalLoading(true);
-      const res = await fetch(`${API_ROUTES.FORMS}/${formId}/publish`, {
-        method: 'POST',
-        body: JSON.stringify({ isPublished: !isPublished }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const res = await requestPublishForm(formId, isPublished);
+
       setLoading?.(false);
       setInternalLoading(false);
 
-      if (res.ok) {
+      if (res.status === 'success') {
         toast.success(isPublished ? 'Form unpublished' : 'Form published');
         onDone?.();
       } else {
         toast.error('Failed to change publish status');
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     }
   };

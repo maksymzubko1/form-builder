@@ -3,6 +3,7 @@ import { fetchSubmissionsStats, fetchFormContent } from '../_utils/api';
 import { Submission, ChartPoint, TopAnswer, Fields } from '../types';
 import { prepareSubmissions } from '@/lib/submissions/utils';
 import { parseFieldsFromFormContent } from '@/lib/puck-editor/utils';
+import { SubmissionData } from '@/types/submissions';
 
 export function useInsightsData(formId: string, from?: string, to?: string) {
   const [data, setData] = useState<Submission[]>([]);
@@ -15,7 +16,13 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
 
     Promise.all([fetchSubmissionsStats(formId, from, to), fetchFormContent(formId)])
       .then(([subs, formContent]) => {
-        setData(subs.data?.map((item) => ({ ...item, data: prepareSubmissions(item.data) })) || []);
+        console.log(subs);
+        setData(
+          subs.data?.map((item) => ({
+            ...item,
+            data: prepareSubmissions(item.data as unknown as SubmissionData),
+          })) || [],
+        );
         setTotalViews(subs.totalViews);
         setFields(parseFieldsFromFormContent(formContent));
       })

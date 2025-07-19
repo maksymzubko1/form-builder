@@ -2,14 +2,9 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  ResetTokenForm as TResetTokenForm,
-  ResetTokenSchema,
-  ETokenReset,
-} from '@/types/reset-password';
+import { ResetTokenForm as TResetTokenForm, ResetTokenSchema } from '@/types/reset-password';
 import { useParams, useRouter } from 'next/navigation';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
-import { z } from 'zod';
+import { ROUTES } from '@/constants/routes';
 import {
   Form,
   FormControl,
@@ -21,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { requestPasswordResetByToken } from '@/app/reset-password/[token]/utils';
 
 export default function ResetTokenForm() {
   const params = useParams<{ token: string }>();
@@ -39,21 +35,18 @@ export default function ResetTokenForm() {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: z.infer<typeof ResetTokenSchema>) => {
+  const onSubmit = async (data: TResetTokenForm) => {
     try {
-      const res = await fetch(API_ROUTES.RESET_TOKEN(params.token), {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (res.ok) {
+      const res = await requestPasswordResetByToken(params.token, data);
+
+      if (res.status === 'success') {
         toast.success('Password updated!\n' + 'Redirecting to login page...');
         setTimeout(() => router.push(`${ROUTES.LOGIN}`), 1500);
       } else {
-        const json = await res.json();
-        toast.error(ETokenReset[json.error as keyof typeof ETokenReset] || json.error);
+        toast.error(res.error);
       }
-    } catch {
+    } catch (e: unknown) {
+      console.log(e);
       toast.error('Network error. Please try again later.');
     }
   };

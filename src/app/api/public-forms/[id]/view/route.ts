@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { EmailSchema } from '@/types/forms';
+import { EmailSchema } from '@/types/forms/forms';
 
 interface PostProps {
   params: Promise<{ id: string }>;

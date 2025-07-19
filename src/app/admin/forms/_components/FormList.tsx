@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo, JSX } from 'react';
 import { formsColumns } from './columns';
 import type { FormListItem } from '@/app/admin/forms/types';
 import { DataTable } from '@/components/ui/data-table';
-import { API_ROUTES, ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/routes';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import { FormsFilterForm } from './FormsFilterForm';
 import { useRouter } from 'next/navigation';
@@ -12,6 +12,7 @@ import { Pagination } from '@/components/shared/Pagination';
 import { useModal } from '@/lib/hooks/useModal';
 import { DeleteFormDialog } from '@/app/admin/forms/_components/actions/DeleteFormDialog';
 import { useSidebar } from '@/components/ui/sidebar';
+import { requestFormsByParams } from '@/app/admin/forms/utils';
 
 const LIMIT = 20;
 
@@ -34,17 +35,12 @@ export function FormsTable(): JSX.Element {
 
   const fetchForms = async (): Promise<void> => {
     setLoading(true);
-    const params = new URLSearchParams({
-      ...(search && { search }),
-      ...(status !== 'all' && { status }),
-      ...(order && { order }),
-      page: String(page),
-      limit: String(LIMIT),
-    });
-    const res = await fetch(`${API_ROUTES.FORMS}?${params.toString()}`);
-    const data = await res.json();
-    setForms(data.forms || []);
-    setTotal(data.total || 0);
+    const res = await requestFormsByParams({ status, order, page, limit: LIMIT, search });
+    if (res.status === 'success') {
+      setForms(res.data?.forms || []);
+      setTotal(res.data?.total || 0);
+    }
+
     setLoading(false);
   };
 

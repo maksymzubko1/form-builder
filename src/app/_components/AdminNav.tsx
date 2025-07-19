@@ -7,7 +7,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { JSX } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -17,7 +16,7 @@ export function AdminNav({
   items: {
     title: string;
     url: string;
-    icon?: JSX.Element;
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   }[];
 }) {
   const pathname = usePathname();

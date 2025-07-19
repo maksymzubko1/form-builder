@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/api/auth/[...nextauth]/route';
+import { authOptions } from '@/api/auth/[...nextauth]/options';
 import { AIRequest } from '@/types/ai';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -72,7 +72,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const messages = [...(aiChat?.messages || []), { role: 'user', content: prompt }];
+    const prevMessages =
+      (aiChat?.messages as {
+        role: 'user' | 'assistant';
+        content: string;
+      }[]) || [];
+    const messages = [...prevMessages, { role: 'user' as 'user' | 'assistant', content: prompt }];
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-4.1-nano',

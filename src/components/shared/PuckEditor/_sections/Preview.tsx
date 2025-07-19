@@ -3,7 +3,11 @@ import { UserConfig } from '@/components/shared/PuckEditor/types';
 
 const usePuck = createUsePuck<UserConfig>();
 
-const Preview = ({ children }) => {
+interface Props {
+  children?: React.ReactNode;
+}
+
+const Preview = ({ children }: Props) => {
   const selectedFields =
     usePuck((s) => s.appState.data.root.props?.selectedItems as ComponentData[]) || [];
 

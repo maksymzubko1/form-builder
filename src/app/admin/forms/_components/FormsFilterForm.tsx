@@ -34,7 +34,7 @@ export const FormsFilterForm: FC<FormsFilterFormProps> = ({
         <SearchInput
           placeholder="Search forms..."
           value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
           onClear={() => onSearchChange('')}
           className="max-w-xs"
         />
