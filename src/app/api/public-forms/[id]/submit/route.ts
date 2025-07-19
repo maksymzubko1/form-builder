@@ -4,7 +4,11 @@ import { PayloadSchema } from './types';
 import { makeFormSchemaServer } from '@/lib/public-forms/utils';
 import { sendNewSubmissionEmail } from '@/lib/email';
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+interface PostProps {
+  params: Promise<{ id: string }>;
+}
+
+export async function POST(req: NextRequest, { params }: PostProps) {
   try {
     const body = await req.json();
     const id = (await params).id;
@@ -41,20 +45,24 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     });
 
     const prepared = Object
-      .entries(rest).map(([key, value]) => ({ label: value?.label || key, value: value.value }));
+      .entries(rest as Record<string, {
+        label?: string,
+        value: string
+      }>).map(([key, value]) => ({ label: value?.label || key, value: value.value }));
 
     if (form?.notifyOnSubmission && form.user?.email) {
       await sendNewSubmissionEmail({
         to: form.user.email,
         formTitle: form.title,
         submission: prepared,
-        submittedAt: submission.submittedAt.toLocaleDateString()
+        submittedAt: submission.submittedAt.toLocaleDateString(),
       });
     }
 
     return NextResponse.json({ success: true });
-  } catch(error: unknown) {
-    console.log(`[Submit Public Form]: ${error?.message}`);
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][Public forms/[id]/submit][POST]', message);
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }

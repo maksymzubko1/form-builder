@@ -2,39 +2,51 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { parseAsync } from 'json2csv';
 import { prepareSubmissions } from '@/lib/submissions/utils';
+import { FormSubmission } from '@prisma/client';
+import { ComponentData } from '@measured/puck';
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> },
-): Promise<NextResponse> {
-  const { id } = await params;
-  const submissions = await prisma.formSubmission.findMany({
-    where: { formId: id },
-    orderBy: { submittedAt: 'desc' },
-  });
+interface GetProps {
+  params: Promise<{ id: string }>;
+}
 
-  let data = submissions.map((s) => ({
-    id: s.id,
-    email: s.email,
-    submittedAt: s.submittedAt,
-    ...prepareSubmissions(s.data),
-  }));
+export async function GET(_req: Request, { params }: GetProps): Promise<NextResponse> {
+  try {
+    const { id } = await params;
+    const submissions: FormSubmission[] = await prisma.formSubmission.findMany({
+      where: { formId: id },
+      orderBy: { submittedAt: 'desc' },
+    });
 
-  if (!data.length) {
-    data = { id: '-1', email: '' };
+    let data = submissions.map((s) => ({
+      id: s.id,
+      email: s.email,
+      submittedAt: s.submittedAt,
+      ...prepareSubmissions(s.data as Record<string, ComponentData>),
+    }));
+
+    if (!data.length) {
+      data = [{
+        id: '-1', email: '',
+        submittedAt: new Date(),
+      }];
+    }
+
+    let csv = await parseAsync(data);
+
+    if (!data.length) {
+      csv += '\n# No data found\n';
+    }
+
+    return new NextResponse(csv, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename="submissions-${id}-${new Date().valueOf()}.csv"`,
+      },
+    });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][Submissions/export][GET]', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  let csv = await parseAsync(data);
-
-  if (!data.length) {
-    csv += '\n# No data found\n';
-  }
-
-  return new NextResponse(csv, {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/csv',
-      'Content-Disposition': `attachment; filename="submissions-${id}-${new Date().valueOf()}.csv"`,
-    },
-  });
 }

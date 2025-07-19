@@ -1,4 +1,6 @@
-export function prepareSubmissions(submissions: Record<string, unknown>) {
+import { ComponentData } from '@measured/puck';
+
+export function prepareSubmissions(submissions: Record<string, ComponentData>) {
   const submissionKeys = [] as string[];
   return Object.entries(submissions).reduce((previousValue, [key, value]) => {
     const name = getUniqueName(value?.displayName as string || value.type as string || key, submissionKeys);

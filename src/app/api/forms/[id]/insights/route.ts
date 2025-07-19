@@ -4,53 +4,63 @@ import { SubmissionsFilterSchema } from '@/app/admin/forms/[id]/submissions/type
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { Submission } from '@/types/submissions';
+import { Prisma } from '@prisma/client';
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> },
-): Promise<NextResponse<{ data: Submission[]; total: number } | { error: string }>> {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+interface GetProps {
+  params: Promise<{ id: string }>;
+}
 
-  const url = new URL(req.url);
-  const filter = {
-    email: url.searchParams.get('email') || undefined,
-    from: url.searchParams.get('from') || undefined,
-    to: url.searchParams.get('to') || undefined,
-    query: url.searchParams.get('query') || undefined,
-  };
+export async function GET(req: Request, { params }: GetProps): Promise<NextResponse<{
+  data: Submission[];
+  total: number
+} | { error: string }>> {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const parse = SubmissionsFilterSchema.safeParse(filter);
-  if (!parse.success) {
-    return NextResponse.json({ error: parse.error.issues[0].message }, { status: 400 });
-  }
+    const url = new URL(req.url);
+    const filter = {
+      email: url.searchParams.get('email') || undefined,
+      from: url.searchParams.get('from') || undefined,
+      to: url.searchParams.get('to') || undefined,
+    };
 
-  const where: Record<string, unknown> = { formId: (await params).id };
-  const whereFormView: Record<string, unknown> = { formId: (await params).id };
-  if (filter.email) {
-    where.email = filter.email;
-    whereFormView.viewerEmail = filter.email;
-  }
-  if (filter.from || filter.to) {
-    where.submittedAt = {};
-    whereFormView.viewedAt = {};
-  }
-  if (filter.from) {
-    where.submittedAt.gte = new Date(filter.from);
-    whereFormView.viewedAt.gte = new Date(filter.from);
-  }
-  if (filter.to) {
-    where.submittedAt.lte = new Date(filter.to);
-    whereFormView.viewedAt.lte = new Date(filter.to);
-  }
+    const parse = SubmissionsFilterSchema.safeParse(filter);
+    if (!parse.success) {
+      return NextResponse.json({ error: parse.error.issues[0].message }, { status: 400 });
+    }
 
-  const [total, submissions, totalViews] = await Promise.all([
-    prisma.formSubmission.count({ where: { formId: (await params).id } }),
-    prisma.formSubmission.findMany({
-      where,
-      orderBy: { submittedAt: 'asc' },
-    }),
-    prisma.formView.count({ where: whereFormView }),
-  ]);
-  return NextResponse.json({ data: submissions, total, totalViews });
+    const id = (await params).id;
+
+    const where: Prisma.FormSubmissionWhereInput = {
+      formId: id,
+      email: filter.email,
+      submittedAt: {
+        gte: filter.from,
+        lte: filter.to,
+      },
+    };
+    const whereFormView: Prisma.FormViewWhereInput = {
+      formId: id,
+      viewerEmail: filter.email,
+      viewedAt: {
+        gte: filter.from,
+        lte: filter.to,
+      },
+    };
+
+    const [total, submissions, totalViews] = await Promise.all([
+      prisma.formSubmission.count({ where: { formId: (await params).id } }),
+      prisma.formSubmission.findMany({
+        where,
+        orderBy: { submittedAt: 'asc' },
+      }),
+      prisma.formView.count({ where: whereFormView }),
+    ]);
+    return NextResponse.json({ data: submissions, total, totalViews });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unhandled error';
+    console.log('[API][Forms/[id]/insights][GET]', message);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
