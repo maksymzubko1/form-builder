@@ -34,7 +34,7 @@ export async function GET(_req: Request, { params }: GetProps): Promise<NextResp
       ];
     }
 
-    let csv = await parseAsync(data);
+    let csv = await parseAsync(data, { defaultValue: 'null' });
 
     if (!data.length) {
       csv += '\n# No data found\n';

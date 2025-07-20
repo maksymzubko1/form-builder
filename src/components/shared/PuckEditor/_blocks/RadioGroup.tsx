@@ -70,7 +70,7 @@ export const RadioGroupInner: ComponentConfig<RadioGroupProps> = {
             {required ? <span className="text-destructive">*</span> : ''}
           </Label>
           <_RadioGroup
-            defaultValue={defaultValue}
+            defaultValue={defaultValue?.length ? defaultValue : undefined}
             aria-invalid={!!error}
             name={id}
             aria-describedby={error ? `${id}-error` : undefined}

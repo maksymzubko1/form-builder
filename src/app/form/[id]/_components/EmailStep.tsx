@@ -33,7 +33,7 @@ export function EmailStep() {
   return (
     <Form {...form}>
       <form
-        className="max-w-md mx-auto my-12 p-6 bg-muted rounded shadow flex flex-col gap-6"
+        className="max-w-md mx-auto w-[98vw] md:w-full my-12 p-6 bg-muted rounded shadow flex flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-2xl font-bold">Enter your email</h1>

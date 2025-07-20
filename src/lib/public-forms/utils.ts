@@ -23,7 +23,7 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
       if (f.validate === 'email') {
         const base = z.email('Incorrect email');
         if (f.required) {
-          shape['test'] = base.min(1, 'Field is required');
+          shape[f.id] = base.min(1, 'Field is required');
         } else {
           shape[f.id] = base.optional().nullable();
         }
@@ -34,6 +34,13 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
         } else {
           shape[f.id] = base.optional().nullable();
         }
+      } else if (f.validate === 'number') {
+        const base = z.string('This field is required').regex(/^\d+$/g, 'Not a number');
+        if (!f.required) {
+          shape[f.id] = base.optional().nullable();
+        } else {
+          shape[f.id] = base.min(1, 'Field is required');
+        }
       } else {
         const base = z.string('Field is required');
         if (f.required) {
@@ -41,13 +48,6 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
         } else {
           shape[f.id] = base.optional().nullable();
         }
-      }
-    } else if (f.type === 'Textarea') {
-      const base = z.string('Field is required');
-      if (f.required) {
-        shape[f.id] = base.min(1, 'Field is required');
-      } else {
-        shape[f.id] = base.optional().nullable();
       }
     } else if (
       f.type === 'Textarea' ||
@@ -92,6 +92,19 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
           });
         } else {
           shape[f.id] = z.object({ value: z.e164('Incorrect phone number').optional().nullable() });
+        }
+      } else if (f.validate === 'number') {
+        if (!f.required) {
+          shape[f.id] = z.object({
+            value: z.string().regex(/^\d+$/g, 'Not a number').optional().nullable(),
+          });
+        } else {
+          shape[f.id] = z.object({
+            value: z
+              .string('This field is required')
+              .regex(/^\d+$/g, 'Not a number')
+              .min(1, 'Field is required'),
+          });
         }
       } else {
         if (f.required) {

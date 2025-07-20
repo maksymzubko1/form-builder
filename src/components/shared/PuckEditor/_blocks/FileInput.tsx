@@ -83,7 +83,7 @@ export const FileInner: ComponentConfig<FileProps> = {
             id={id}
             type="file"
           />
-          {defaultValue && (
+          {defaultValue?.length && (
             <Link href={defaultValue} className="text-blue-500 mt-1 mb-2" target="_blank">
               Previous file
             </Link>
