@@ -3,7 +3,7 @@
 import { ComponentData, Data } from '@measured/puck';
 import { emailSchema } from '@/app/form/[id]/types';
 import z from 'zod';
-import { FormFieldDef } from '@/types/public-forms';
+import { FormFieldDef } from '@/types/forms/public-forms';
 
 export function extractFields(data: Data): FormFieldDef[] {
   if (!data || !Array.isArray(data.content)) return [];

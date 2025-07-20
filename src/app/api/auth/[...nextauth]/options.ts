@@ -2,7 +2,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/lib/prisma';
 import { type Session, SessionStrategy } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { ELoginResponseCode } from '@/types/login';
+import { ELoginResponseCode } from '@/types/auth/login';
 import { compare } from 'bcryptjs';
 import type { JWT } from 'next-auth/jwt';
 

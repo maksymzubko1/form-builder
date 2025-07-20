@@ -1,7 +1,7 @@
 import { API_ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
 import { formDataToJson, Value } from '@/lib/utils';
-import { FormFieldDef } from '@/types/public-forms';
+import { FormFieldDef } from '@/types/forms/public-forms';
 import { InteractiveItems } from '@/components/shared/PuckEditor/config';
 import { TResponse } from '@/types/general';
 import { ZodType } from 'zod';

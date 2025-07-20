@@ -65,7 +65,6 @@ export default function CustomHeader({
     });
   };
 
-  // TODO: validate all fields requirements before publish
   const publish = () => {
     onPublish(appState.data);
   };

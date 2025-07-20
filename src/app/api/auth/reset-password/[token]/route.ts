@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { consumeToken } from '@/lib/auth';
 import { hash } from 'bcryptjs';
 import { NextResponse } from 'next/server';
-import { ResetTokenSchema, ETokenResetCode } from '@/types/reset-password';
+import { ResetTokenSchema, ETokenResetCode } from '@/types/auth/reset-password';
 
 interface PostProps {
   params: Promise<{ token: string }>;

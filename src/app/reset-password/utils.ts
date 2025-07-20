@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@/constants/routes';
-import { ResetForm } from '@/types/reset-password';
+import { ResetForm } from '@/types/auth/reset-password';
 import { TResponse } from '@/types/general';
 
 export async function requestPasswordReset(data: ResetForm): Promise<TResponse<boolean>> {

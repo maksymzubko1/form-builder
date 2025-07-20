@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { Button } from '@/components/ui/button';
-import { EVerifyResponseStatus } from '@/types/verify';
+import { EVerifyResponseStatus } from '@/types/auth/verify';
 import { TVerifyProps } from './types';
 import Link from 'next/link';
 

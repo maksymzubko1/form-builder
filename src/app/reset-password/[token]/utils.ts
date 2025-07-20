@@ -1,4 +1,4 @@
-import { ETokenReset, ResetTokenForm } from '@/types/reset-password';
+import { ETokenReset, ResetTokenForm } from '@/types/auth/reset-password';
 import { TResponse } from '@/types/general';
 import { API_ROUTES } from '@/constants/routes';
 
