@@ -90,10 +90,10 @@ export function PublicForm({ form, email }: Props) {
 
         if (res.status === 'success') {
           if (res.data) {
+            toast.info('Found your saved progress. Continue filling the form.');
             setDefaultValues((prev) => ({ ...prev, ...res.data, email }));
             reset({ ...res.data, email });
           }
-          toast.info('Found your saved progress. Continue filling the form.');
         } else {
           toast.error(res.error);
           reset({ email });
@@ -197,7 +197,7 @@ export function PublicForm({ form, email }: Props) {
         ref={formRef}
         onSubmit={onSubmit}
         noValidate
-        className="dark max-w-[1280px] w-full md:mx-auto md:my-12 p-6 bg-muted md:rounded shadow space-y-6 flex flex-col"
+        className="dark max-w-[1280px] mt-1 mx-auto w-[98vw] md:w-full md:my-12 p-6 bg-muted md:rounded shadow space-y-6 flex flex-col"
       >
         <h1 className="text-2xl font-bold mb-4 ">{form.title}</h1>
         {form.description && <p className="text-muted-foreground mb-4">{form.description}</p>}

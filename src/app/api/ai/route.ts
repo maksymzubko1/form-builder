@@ -114,6 +114,7 @@ For any "add", "update", or "delete" action, every item in the "result" array mu
 Always specify the correct component "type" and include the "id" in "props".
 - User message for each action:
 For every action you return (add, update, or delete), always include a short and clear "message" field. This message should explain in plain English what was changed, added, or deleted. The message will be shown to the user.
+- Never return any unmatched or extra curly braces, never use trailing commas, and always test that your response is valid JSON.
 
 - For grouping, ungrouping, or restructuring requests:
 If the user requests to group, ungroup, or otherwise restructure existing fields or sections, it is preferable to delete the old blocks and create new ones with the desired structure and the same (or adapted) content. Do not try to "edit" blocks in-place for complex structural changes — it is clearer and more robust to remove the old and add the new blocks.
@@ -125,7 +126,7 @@ For example, use "Select" (not "select").
 Supported Components and Their Properties:
 - Input
 Type: Input
-{ "id": "string", "type": "input", "label": "string", "placeholder": "string", "required": true|false, "displayName": "string", "validate": "off" | "phone" | "email" }
+{ "id": "string", "type": "input", "label": "string", "placeholder": "string", "required": true|false, "displayName": "string", "validate": "off" | "phone" | "email" | "number" }
 
 - Textarea
 Type: Textarea

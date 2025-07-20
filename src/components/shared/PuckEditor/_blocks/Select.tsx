@@ -78,7 +78,7 @@ export const SelectInner: ComponentConfig<SelectProps> = {
             {label}
             {required ? <span className="text-destructive">*</span> : ''}
           </Label>
-          <_Select defaultValue={defaultValue} name={id}>
+          <_Select defaultValue={defaultValue?.length ? defaultValue : undefined} name={id}>
             <SelectTrigger
               aria-invalid={!!error}
               aria-describedby={error ? `${id}-error` : undefined}

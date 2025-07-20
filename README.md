@@ -128,8 +128,10 @@ npm run dev
 - For production: enable HTTPS, set proper CORS, and secure your email/AI providers
 
 ## ☑ TODO
-1. [ ] Validate all fields requirements before publish (Puck editor)
+1. [x] Validate all fields requirements before publish (Puck editor)
 2. [x] Revalidate all TS in project
+3. [ ] Dynamic GPT chat suggestions
+4. [ ] Ability to insert fields by index
 
 
 ## 💡 Credits & Links

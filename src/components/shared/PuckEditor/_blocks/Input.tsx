@@ -33,6 +33,7 @@ export const InputInner: ComponentConfig<InputProps> = {
         { label: 'Not validate', value: 'off' },
         { label: 'Phone', value: 'phone' },
         { label: 'Email', value: 'email' },
+        { label: 'Numeric', value: 'number' },
       ],
     },
   },
@@ -70,7 +71,7 @@ export const InputInner: ComponentConfig<InputProps> = {
           <_Input
             autoComplete={validate}
             tabIndex={puck.isEditing ? -1 : undefined}
-            defaultValue={defaultValue}
+            defaultValue={defaultValue?.length ? defaultValue : undefined}
             name={id}
             id={id}
             placeholder={placeholder}
