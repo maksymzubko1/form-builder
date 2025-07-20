@@ -52,7 +52,7 @@ export default function PuckEditorForm({
                 {children}
 
                 <SelectedFieldsManager />
-                <PuckAI formId={formProps?.id} />
+                <PuckAI formId={formProps?.id} isEditing={isEditing} />
               </div>
             );
           },

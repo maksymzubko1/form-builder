@@ -6,11 +6,11 @@ export const AIRequest = z.object({
     context: z.any().array(),
     selectedFields: z.any().array(),
   }),
-  formId: z.string().min(2),
+  formId: z.string().min(2).optional(),
 });
 export type AIRequestForm = z.infer<typeof AIRequest>;
 
 export const AIMessages = z.object({
   formId: z.string().min(2),
 });
-export type AIAIMessagesForm = z.infer<typeof AIMessages>;
+export type AIMessagesForm = z.infer<typeof AIMessages>;

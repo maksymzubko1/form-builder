@@ -7,7 +7,7 @@ export async function askAi(
     context: ComponentData[];
     selectedFields: ComponentData[];
   },
-  formId: string,
+  formId?: string,
 ) {
   const res = await fetch(`${API_ROUTES.AI}`, {
     method: 'POST',
