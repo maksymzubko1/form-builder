@@ -1,6 +1,6 @@
 import { TResponse } from '@/types/general';
 import { API_ROUTES } from '@/constants/routes';
-import { EVerifyResponseStatus } from '@/types/verify';
+import { EVerifyResponseStatus } from '@/types/auth/verify';
 
 export async function requestVerify(token: string): Promise<TResponse<boolean>> {
   const res = await fetch(`${API_ROUTES.VERIFY}/${token}`);

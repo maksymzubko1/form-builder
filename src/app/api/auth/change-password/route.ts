@@ -3,7 +3,7 @@ import { authOptions } from '@/api/auth/[...nextauth]/options';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { hash } from 'bcryptjs';
-import { ChangePasswordSchema } from '@/types/change-password';
+import { ChangePasswordSchema } from '@/types/auth/change-password';
 
 export async function POST(req: Request) {
   try {

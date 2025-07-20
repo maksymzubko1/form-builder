@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   ChangePasswordForm as TChangePasswordForm,
   ChangePasswordSchema,
-} from '@/types/change-password';
+} from '@/types/auth/change-password';
 import { useSession } from 'next-auth/react';
 import {
   Form,

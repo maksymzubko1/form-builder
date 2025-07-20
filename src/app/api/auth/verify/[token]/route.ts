@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { consumeToken } from '@/lib/auth';
 import { NextResponse } from 'next/server';
-import { EVerifyResponseStatus } from '@/types/verify';
+import { EVerifyResponseStatus } from '@/types/auth/verify';
 
 interface GetProps {
   params: Promise<{ token: string }>;

@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { sendConfirmationMail } from '@/lib/email';
 import { createToken } from '@/lib/auth';
 import { ROUTES } from '@/constants/routes';
-import { RegisterSchema, ERegisterResponseCode } from '@/types/register';
+import { RegisterSchema, ERegisterResponseCode } from '@/types/auth/register';
 
 export async function POST(req: Request) {
   try {

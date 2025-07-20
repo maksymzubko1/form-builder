@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@/constants/routes';
-import { ERegisterResponse, RegisterForm } from '@/types/register';
+import { ERegisterResponse, RegisterForm } from '@/types/auth/register';
 import { TResponse } from '@/types/general';
 
 export async function requestRegister(data: RegisterForm): Promise<TResponse<boolean>> {

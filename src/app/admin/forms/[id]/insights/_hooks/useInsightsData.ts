@@ -16,7 +16,6 @@ export function useInsightsData(formId: string, from?: string, to?: string) {
 
     Promise.all([fetchSubmissionsStats(formId, from, to), fetchFormContent(formId)])
       .then(([subs, formContent]) => {
-        console.log(subs);
         setData(
           subs.data?.map((item) => ({
             ...item,

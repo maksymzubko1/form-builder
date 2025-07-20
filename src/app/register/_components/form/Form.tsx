@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterForm as TRegisterForm, RegisterSchema } from '@/types/register';
+import { RegisterForm as TRegisterForm, RegisterSchema } from '@/types/auth/register';
 import { ROUTES } from '@/constants/routes';
 import {
   Form,

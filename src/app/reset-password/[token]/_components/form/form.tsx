@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ResetTokenForm as TResetTokenForm, ResetTokenSchema } from '@/types/reset-password';
+import { ResetTokenForm as TResetTokenForm, ResetTokenSchema } from '@/types/auth/reset-password';
 import { useParams, useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import {

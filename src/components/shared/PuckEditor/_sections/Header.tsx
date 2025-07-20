@@ -1,6 +1,6 @@
 'use client';
 
-import { createUsePuck, Data } from '@measured/puck';
+import { createUsePuck, Data, resolveAllData } from '@measured/puck';
 import { UserConfig } from '@/components/shared/PuckEditor/types';
 import { Button } from '@/components/ui/button';
 import { Globe, PanelLeft, PanelRight, Redo, Undo } from 'lucide-react';
@@ -30,6 +30,7 @@ export default function CustomHeader({
   const { previewMode, leftSideBarVisible, rightSideBarVisible } = usePuck((s) => s.appState.ui);
   const history = usePuck((s) => s.history);
 
+  const a = usePuck((s) => s);
   const toggleMode = () => {
     dispatch({
       type: 'setUi',
@@ -66,7 +67,10 @@ export default function CustomHeader({
   };
 
   // TODO: validate all fields requirements before publish
-  const publish = () => {
+  const publish = async () => {
+    console.log(a);
+    const updatedData = await resolveAllData(a.appState.data, a.config);
+    console.log(updatedData);
     onPublish(appState.data);
   };
 

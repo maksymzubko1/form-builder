@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
-import { EVerifyResponseStatus } from '@/types/verify';
+import { EVerifyResponseStatus } from '@/types/auth/verify';
 import { requestVerify } from '@/app/verify/[token]/utils';
 
 export default function VerifyToken({ token }: { token: string }) {

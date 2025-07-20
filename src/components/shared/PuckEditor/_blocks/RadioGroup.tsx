@@ -38,7 +38,10 @@ export const RadioGroupInner: ComponentConfig<RadioGroupProps> = {
   },
   defaultProps: {
     label: 'Label',
-    items: [],
+    items: [
+      { label: 'Title', value: 'value' },
+      { label: 'Title', value: 'value1' },
+    ],
     required: false,
     displayName: '',
   },

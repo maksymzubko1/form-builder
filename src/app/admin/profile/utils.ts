@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@/constants/routes';
-import { ChangePasswordForm as TChangePasswordForm } from '@/types/change-password';
+import { ChangePasswordForm as TChangePasswordForm } from '@/types/auth/change-password';
 import { TResponse } from '@/types/general';
 
 export async function requestPasswordChange(

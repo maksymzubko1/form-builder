@@ -47,7 +47,10 @@ export const SelectInner: ComponentConfig<SelectProps> = {
   defaultProps: {
     placeholder: 'Placeholder',
     label: 'Label',
-    items: [],
+    items: [
+      { title: 'Title', value: 'value' },
+      { title: 'Title', value: 'value1' },
+    ],
     required: false,
     displayName: '',
   },
