@@ -102,7 +102,7 @@ npm run dev
   - /prisma: Prisma schema & migrations
 
 - Code style:
-  - Run ```npm run lint``` and ```npm run format``` before pushing.
+  - Run ```npm run lint``` and ```npm run format``` or ```npm run precheck``` before pushing.
   ESLint + Prettier + TypeScript strict everywhere.
 
 ## 🤖 AI Assistant (How it works)
