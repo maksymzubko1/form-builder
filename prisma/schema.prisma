@@ -11,40 +11,64 @@ model User {
   id             String          @id @default(uuid())
   email          String          @unique
   passwordHash   String
+  emailVerified  DateTime?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+  tokens         Token[]
   forms          Form[]
   sessions       Session[]
   aiChatSessions AiChatSession[]
 }
 
 model Form {
-  id            String           @id @default(uuid())
-  user          User             @relation(fields: [userId], references: [id])
-  userId        String
-  title         String
-  description   String?
-  content       Json
-  isPublished   Boolean          @default(false)
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
-  submissions   FormSubmission[]
-  AiChatSession AiChatSession[]
+  id                 String           @id @default(uuid())
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             String
+  title              String
+  description        String?
+  notifyOnSubmission Boolean          @default(false)
+  content            Json
+  isPublished        Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  submissions        FormSubmission[]
+  AiChatSession      AiChatSession[]
+  FormView           FormView[]
 }
 
 model FormSubmission {
   id          String   @id @default(uuid())
-  form        Form     @relation(fields: [formId], references: [id])
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId      String
   email       String
   data        Json
   submittedAt DateTime @default(now())
+  isDraft     Boolean  @default(true)
+}
+
+model FormView {
+  id          String   @id @default(uuid())
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId      String
+  viewedAt    DateTime @default(now())
+  viewerEmail String
+  viewerIp    String?
+}
+
+model Token {
+  id        String   @id @default(uuid())
+  type      String
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model Session {
   id        String   @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   token     String   @unique
   createdAt DateTime @default(now())
   expiresAt DateTime
@@ -53,9 +77,9 @@ model Session {
 model AiChatSession {
   id        String   @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   formId    String
-  form      Form     @relation(fields: [formId], references: [id])
+  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
   messages  Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
