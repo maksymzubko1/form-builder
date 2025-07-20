@@ -145,7 +145,11 @@ export default function AIChatPanel({
           onKeyDown={onKeyDown}
           disabled={loading}
         />
-        <Button className="btn btn-primary" onClick={() => send(input)} disabled={loading}>
+        <Button
+          className="btn btn-primary"
+          onClick={() => send(input)}
+          disabled={loading || input.length < 2}
+        >
           <ArrowRight />
         </Button>
       </div>

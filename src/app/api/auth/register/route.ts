@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     });
 
     const token = await createToken(user.id, 'verify');
-    const confirmUrl = `${process.env.NEXTAUTH_URL}/${ROUTES.VERIFY_TOKEN(token)}`;
+    const confirmUrl = `${process.env.NEXTAUTH_URL}${ROUTES.VERIFY_TOKEN(token)}`;
 
     await sendConfirmationMail({ to: email, confirmUrl });
 
