@@ -13,9 +13,10 @@ const usePuck = createUsePuck<UserConfig>();
 
 interface Props {
   formId?: string;
+  isEditing: boolean;
 }
 
-const PuckAI = ({ formId }: Props) => {
+const PuckAI = ({ formId, isEditing }: Props) => {
   const context = usePuck((s) => s.appState.data.content);
   const dispatch = usePuck((s) => s.dispatch);
   const selectedFields =
@@ -65,10 +66,12 @@ const PuckAI = ({ formId }: Props) => {
       }
     };
 
-    if (formId) {
+    if (formId && isEditing) {
       getInitialMessages();
+    } else if (!isEditing) {
+      setLoadInitialMessages(false);
     }
-  }, [formId]);
+  }, [formId, isEditing]);
 
   return (
     <div>

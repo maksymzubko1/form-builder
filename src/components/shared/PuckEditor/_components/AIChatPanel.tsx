@@ -86,8 +86,6 @@ export default function AIChatPanel({
   const [loading, setLoading] = useState(false);
 
   const send = async (text: string) => {
-    if (!formId) return;
-
     setLoading(true);
     setInput('');
     setMessages((prev) => [...prev, { role: 'user', content: text }]);

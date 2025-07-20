@@ -19,5 +19,5 @@ generate:
 studio:
 	docker compose exec app npx prisma studio
 
-seed:
-	docker compose exec app npm run seed
+db_deploy:
+	docker compose exec app npx prisma migrate deploy

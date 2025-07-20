@@ -15,10 +15,6 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const formId = url.searchParams.get('formId') || undefined;
 
-    if (!formId) {
-      return NextResponse.json({ error: 'Form id required!' }, { status: 400 });
-    }
-
     const aiChat = await prisma.aiChatSession.findFirst({
       where: {
         formId,
@@ -26,7 +22,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    if (!aiChat) {
+    if (!aiChat && formId) {
       await prisma.aiChatSession.create({
         data: {
           formId,
@@ -123,6 +119,8 @@ For every action you return (add, update, or delete), always include a short and
 If the user requests to group, ungroup, or otherwise restructure existing fields or sections, it is preferable to delete the old blocks and create new ones with the desired structure and the same (or adapted) content. Do not try to "edit" blocks in-place for complex structural changes — it is clearer and more robust to remove the old and add the new blocks.
 
 IMPORTANT: Always treat only the most recent user message as the current instruction. All previous messages (from user or assistant) are history and context ONLY. You must respond only to the latest user message.
+You MUST use only the component types listed below, and the value of the "type" field MUST match the type name exactly (including case).
+For example, use "Select" (not "select").
 
 Supported Components and Their Properties:
 - Input
@@ -187,21 +185,23 @@ Never put explanations or comments outside the JSON. Never output code blocks, o
 
     const message = completion.choices[0].message?.content || '';
 
-    await prisma.aiChatSession.upsert({
-      create: {
-        formId,
-        userId: session.user.id,
-        messages: [...messages, { role: 'assistant', content: message }],
-      },
-      update: {
-        messages: [...messages, { role: 'assistant', content: message }],
-      },
-      where: {
-        id: aiChat?.id,
-        formId,
-        userId: session.user.id,
-      },
-    });
+    if (formId) {
+      await prisma.aiChatSession.upsert({
+        create: {
+          formId,
+          userId: session.user.id,
+          messages: [...messages, { role: 'assistant', content: message }],
+        },
+        update: {
+          messages: [...messages, { role: 'assistant', content: message }],
+        },
+        where: {
+          id: aiChat?.id,
+          formId,
+          userId: session.user.id,
+        },
+      });
+    }
 
     return NextResponse.json({ message });
   } catch (e: unknown) {
