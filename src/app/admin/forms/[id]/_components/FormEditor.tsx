@@ -66,8 +66,6 @@ export function FormEditor({ initialForm }: FormEditorProps) {
     setValue('emailNotification', data.root.props?.emailNotification);
     setValue('description', data.root.props?.description);
 
-    console.log('save');
-    return;
     submitButtonRef.current?.click();
   };
 
