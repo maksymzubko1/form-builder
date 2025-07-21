@@ -14,6 +14,9 @@ export enum ELoginResponseTypes {
 
 export const LoginSchema = z.object({
   email: z.email('Incorrect email'),
-  password: z.string().min(6, 'Password at least 6 characters'),
+  password: z
+    .string()
+    .min(6, 'Password at least 6 characters')
+    .max(35, 'Password max length 35 characters'),
 });
 export type LoginForm = z.infer<typeof LoginSchema>;
