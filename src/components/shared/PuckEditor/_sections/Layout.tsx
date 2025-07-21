@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, ReactNode } from 'react';
+import React, { CSSProperties, forwardRef, ReactNode } from 'react';
 import { ComponentConfig, DefaultComponentProps, Fields, ObjectField } from '@measured/puck';
 import { spacingOptions } from '@/components/shared/PuckEditor/options';
 
@@ -82,6 +82,7 @@ export { Layout };
 export function withLayout<Props extends DefaultComponentProps = DefaultComponentProps>(
   componentConfig: ComponentConfig<Props>,
 ): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
+  console.log(componentConfig);
   return {
     ...componentConfig,
     fields: {
@@ -136,10 +137,28 @@ export function withLayout<Props extends DefaultComponentProps = DefaultComponen
       } as Fields<Props & { layout?: LayoutFieldProps }>;
     },
     inline: true,
-    render: (props) => (
-      <Layout layout={props.layout as LayoutFieldProps} ref={props.puck.dragRef}>
-        {componentConfig.render(props)}
-      </Layout>
-    ),
+    render: (props) => {
+      const selectedFields =
+        document
+          .querySelector('[data-selected-fields]')
+          ?.getAttribute('data-selected-fields')
+          ?.split(',') || [];
+      const isSelected = props.puck.isEditing && selectedFields.includes(props.id);
+
+      return (
+        <Layout
+          layout={props.layout as LayoutFieldProps}
+          ref={props.puck.dragRef}
+          className={`relative ${isSelected ? 'mt-10 border-[1px] border-green-600' : ''}`}
+        >
+          {isSelected && (
+            <span className="text-white font-sans bg-green-600 absolute bottom-[100%] left-[-2px] px-3 py-1">
+              AI
+            </span>
+          )}
+          {componentConfig.render(props)}
+        </Layout>
+      );
+    },
   };
 }

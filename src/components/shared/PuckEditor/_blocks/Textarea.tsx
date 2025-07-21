@@ -37,20 +37,8 @@ const TextareaInner: ComponentConfig<TextareaProps> = {
     const defaultValue = defaultValues?.[id];
     const error = errors?.[id];
 
-    const selectedFields =
-      document
-        .querySelector('[data-selected-fields]')
-        ?.getAttribute('data-selected-fields')
-        ?.split(',') || [];
-    const isSelected = puck.isEditing && selectedFields.includes(id);
-
     return (
-      <Section className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}>
-        {isSelected && (
-          <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">
-            AI
-          </span>
-        )}
+      <Section>
         <div className="grid w-full items-center gap-3 mb-4">
           <Label htmlFor={id} className={`${error ? 'text-destructive' : ''}`}>
             {label}

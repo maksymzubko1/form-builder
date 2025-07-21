@@ -42,7 +42,7 @@ export function AdminSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
-              <a href="#">
+              <a href={ROUTES.ADMIN}>
                 <span className="text-base font-semibold">Form Builder AI</span>
               </a>
             </SidebarMenuButton>

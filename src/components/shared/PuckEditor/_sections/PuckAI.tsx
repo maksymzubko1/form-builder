@@ -57,10 +57,10 @@ const PuckAI = ({ formId, isEditing }: Props) => {
         if (res.status === 'success') {
           setInitialMessages(res.data?.messages || []);
         } else {
-          console.log('Failed to get intitial messages');
+          console.log('Failed to get initial messages');
         }
       } catch (e: unknown) {
-        console.log('Failed to get intitial messages', e);
+        console.log('Failed to get initial messages', e);
       } finally {
         setLoadInitialMessages(false);
       }

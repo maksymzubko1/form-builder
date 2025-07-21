@@ -64,21 +64,9 @@ const HeadingInternal: ComponentConfig<HeadingProps> = {
       padding: '8px',
     },
   },
-  render: ({ align, text, size, level, id, puck }) => {
-    const selectedFields =
-      document
-        .querySelector('[data-selected-fields]')
-        ?.getAttribute('data-selected-fields')
-        ?.split(',') || [];
-    const isSelected = puck.isEditing && selectedFields.includes(id);
-
+  render: ({ align, text, size, level }) => {
     return (
-      <Section className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}>
-        {isSelected && (
-          <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">
-            AI
-          </span>
-        )}
+      <Section>
         <_Heading size={size} rank={level}>
           <span style={{ display: 'block', textAlign: align, width: '100%' }}>{text}</span>
         </_Heading>

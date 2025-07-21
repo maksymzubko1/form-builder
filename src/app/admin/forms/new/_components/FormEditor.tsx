@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
 import { useSidebar } from '@/components/ui/sidebar';
 import { requestCreateForm } from '@/app/admin/forms/new/utils';
+import Error from '@/app/admin/forms/new/_components/Error';
 
 export function FormEditor() {
   const { setPageTitle } = useSidebar();
@@ -81,16 +82,8 @@ export function FormEditor() {
         </form>
       </Form>
 
-      <div className="flex flex-col">
-        <div className="error mb-2 flex flex-col">
-          {errors.title && <span className="text-destructive text-sm">{errors.title.message}</span>}
-          {errors.description && (
-            <span className="text-destructive text-sm">{errors.description.message}</span>
-          )}
-          {errors.content && (
-            <span className="text-destructive text-sm">{errors.content.message}</span>
-          )}
-        </div>
+      <div className="flex flex-col gap-2">
+        <Error errors={errors} />
         <PuckEditorForm content={content} onPublish={onPublish} isLoading={loading} />
       </div>
     </div>
