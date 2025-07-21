@@ -82,7 +82,6 @@ export { Layout };
 export function withLayout<Props extends DefaultComponentProps = DefaultComponentProps>(
   componentConfig: ComponentConfig<Props>,
 ): ComponentConfig<Props & { layout?: LayoutFieldProps }> {
-  console.log(componentConfig);
   return {
     ...componentConfig,
     fields: {
