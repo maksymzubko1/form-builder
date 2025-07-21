@@ -21,41 +21,48 @@ export const makeFormSchema = (fields: FormFieldDef[]) => {
   fields.forEach((f) => {
     if (f.type === 'Input') {
       if (f.validate === 'email') {
-        const base = z.email('Incorrect email');
+        const base = z.email('Incorrect email').max(100, 'Max email input length 100 characters');
         if (f.required) {
           shape[f.id] = base.min(1, 'Field is required');
         } else {
           shape[f.id] = base.optional().nullable();
         }
       } else if (f.validate === 'phone') {
-        const base = z.e164('Incorrect phone number');
+        const base = z
+          .e164('Incorrect phone number')
+          .max(20, 'Max phone input length 20 characters');
         if (f.required) {
           shape[f.id] = base.min(1, 'Field is required');
         } else {
           shape[f.id] = base.optional().nullable();
         }
       } else if (f.validate === 'number') {
-        const base = z.string('This field is required').regex(/^\d+$/g, 'Not a number');
+        const base = z
+          .string('This field is required')
+          .regex(/^\d+$/g, 'Not a number')
+          .max(80, 'Max number input length 80 characters');
         if (!f.required) {
           shape[f.id] = base.optional().nullable();
         } else {
           shape[f.id] = base.min(1, 'Field is required');
         }
       } else {
-        const base = z.string('Field is required');
+        const base = z.string('Field is required').max(100, 'Max input length 100 characters');
         if (f.required) {
           shape[f.id] = base.min(1, 'Field is required');
         } else {
           shape[f.id] = base.optional().nullable();
         }
       }
-    } else if (
-      f.type === 'Textarea' ||
-      f.type === 'Checkbox' ||
-      f.type == 'Select' ||
-      f.type === 'RadioButton'
-    ) {
-      const base = z.string('Field is required');
+    } else if (f.type === 'Textarea') {
+      const base = z.string('Field is required').max(1024, 'Max length 1024 characters');
+      if (f.required) {
+        shape[f.id] = base.min(1, 'Field is required');
+      } else {
+        shape[f.id] = base.optional().nullable();
+      }
+    } else if (f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
+      const base = z.string('Field is required').max(100, 'Max length 100 characters');
       if (f.required) {
         shape[f.id] = base.min(1, 'Field is required');
       } else {
@@ -81,48 +88,90 @@ export const makeFormSchemaServer = (fields: FormFieldDef[]) => {
     if (f.type === 'Input') {
       if (f.validate === 'email') {
         if (f.required) {
-          shape[f.id] = z.object({ value: z.email('Incorrect email').min(1, 'Field is required') });
+          shape[f.id] = z.object({
+            value: z
+              .email('Incorrect email')
+              .min(1, 'Field is required')
+              .max(100, 'Max email length 100 characters'),
+          });
         } else {
-          shape[f.id] = z.object({ value: z.email('Incorrect email').optional().nullable() });
+          shape[f.id] = z.object({
+            value: z
+              .email('Incorrect email')
+              .max(100, 'Max email length 100 characters')
+              .optional()
+              .nullable(),
+          });
         }
       } else if (f.validate === 'phone') {
         if (f.required) {
           shape[f.id] = z.object({
-            value: z.e164('Incorrect phone number').min(1, 'Field is required'),
+            value: z
+              .e164('Incorrect phone number')
+              .min(1, 'Field is required')
+              .max(20, 'Max phone length 20 characters'),
           });
         } else {
-          shape[f.id] = z.object({ value: z.e164('Incorrect phone number').optional().nullable() });
+          shape[f.id] = z.object({
+            value: z
+              .e164('Incorrect phone number')
+              .max(20, 'Max phone length 20 characters')
+              .optional()
+              .nullable(),
+          });
         }
       } else if (f.validate === 'number') {
         if (!f.required) {
           shape[f.id] = z.object({
-            value: z.string().regex(/^\d+$/g, 'Not a number').optional().nullable(),
+            value: z
+              .string()
+              .regex(/^\d+$/g, 'Not a number')
+              .max(80, 'Max number length 80 characters')
+              .optional()
+              .nullable(),
           });
         } else {
           shape[f.id] = z.object({
             value: z
               .string('This field is required')
               .regex(/^\d+$/g, 'Not a number')
-              .min(1, 'Field is required'),
+              .min(1, 'Field is required')
+              .max(80, 'Max number length 100 characters'),
           });
         }
       } else {
         if (f.required) {
-          shape[f.id] = z.object({ value: z.string().min(1, 'Field is required') });
+          shape[f.id] = z.object({
+            value: z
+              .string()
+              .min(1, 'Field is required')
+              .max(100, 'Max input length 100 characters'),
+          });
         } else {
-          shape[f.id] = z.object({ value: z.string().optional().nullable() });
+          shape[f.id] = z.object({
+            value: z.string().max(100, 'Max input length 100 characters').optional().nullable(),
+          });
         }
       }
-    } else if (
-      f.type === 'Textarea' ||
-      f.type === 'Checkbox' ||
-      f.type == 'Select' ||
-      f.type === 'RadioButton'
-    ) {
+    } else if (f.type === 'Textarea') {
       if (f.required) {
-        shape[f.id] = z.object({ value: z.string().min(1, 'Field is required') });
+        shape[f.id] = z.object({
+          value: z.string().min(1, 'Field is required').max(1024, 'Max length 1024 characters'),
+        });
       } else {
-        shape[f.id] = z.object({ value: z.string().optional().nullable() });
+        shape[f.id] = z.object({
+          value: z.string().max(1024, 'Max length 1024 characters').optional().nullable(),
+        });
+      }
+    } else if (f.type === 'Checkbox' || f.type == 'Select' || f.type === 'RadioButton') {
+      if (f.required) {
+        shape[f.id] = z.object({
+          value: z.string().min(1, 'Field is required').max(100, 'Max length 100 characters'),
+        });
+      } else {
+        shape[f.id] = z.object({
+          value: z.string().max(100, 'Max length 100 characters').optional().nullable(),
+        });
       }
     } else if (f.type === 'FileInput') {
       const base = fileSchemaByAccept(f.fileType as string, true);

@@ -3,8 +3,8 @@ import { askAi } from '@/lib/ai/askAi';
 import { ArrowRight, Info, XIcon } from 'lucide-react';
 import { GPTResponse, Message } from '@/types/puck';
 import { ComponentData } from '@measured/puck';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 
 function getFastCommands(selectedFields: ComponentData[]) {
   if (selectedFields.length === 1)
@@ -60,12 +60,17 @@ const MessageItem = ({
         </div>
         {Array.isArray(message) ? (
           message.map((msg, idx) => (
-            <p key={idx} className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">
+            <p
+              key={idx}
+              className="text-sm font-normal py-2.5 text-gray-900 dark:text-white whitespace-break-spaces wrap-anywhere"
+            >
               {msg}
             </p>
           ))
         ) : (
-          <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{message}</p>
+          <p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white whitespace-break-spaces wrap-anywhere">
+            {message}
+          </p>
         )}
       </div>
     </div>
@@ -102,14 +107,14 @@ export default function AIChatPanel({
     setLoading(false);
   };
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     event.stopPropagation();
     setInput(event.target.value);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     event.stopPropagation();
-    if (event.key === 'Enter' && input.length > 1) {
+    if (event.key === 'Enter' && !event.shiftKey && input.length > 1) {
       send(input);
     }
   };
@@ -137,12 +142,14 @@ export default function AIChatPanel({
         {loading && <div className="italic text-gray-400">Thinking...</div>}
       </div>
       <div className="p-2 border-t flex gap-2">
-        <Input
-          className="input flex-1 border-2 border-gray-200"
+        <Textarea
+          className="input flex-1 border-2 border-gray-200 resize-none"
           placeholder="Write your request in English..."
           value={input}
           onChange={onChange}
           onKeyDown={onKeyDown}
+          maxLength={512}
+          rows={4}
           disabled={loading}
         />
         <Button

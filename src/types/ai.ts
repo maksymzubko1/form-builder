@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
 export const AIRequest = z.object({
-  prompt: z.string().min(2, 'Prompt must be at least 2 characters'),
+  prompt: z
+    .string()
+    .min(2, 'Prompt must be at least 2 characters')
+    .max(512, 'Max prompt length 512 characters'),
   context: z.object({
     context: z.any().array(),
     selectedFields: z.any().array(),

@@ -14,6 +14,9 @@ export const ResetSchema = z.object({
 export type ResetForm = z.infer<typeof ResetSchema>;
 
 export const ResetTokenSchema = z.object({
-  password: z.string().min(6, 'Password at least 6 characters'),
+  password: z
+    .string()
+    .min(6, 'Password at least 6 characters')
+    .max(35, 'Password max length 35 characters'),
 });
 export type ResetTokenForm = z.infer<typeof ResetTokenSchema>;
