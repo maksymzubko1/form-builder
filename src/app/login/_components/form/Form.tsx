@@ -33,7 +33,7 @@ export default function LoginForm() {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isSubmitSuccessful },
   } = form;
 
   const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
@@ -83,7 +83,12 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button tabIndex={3} type="submit" className="w-full" disabled={isSubmitting}>
+        <Button
+          tabIndex={3}
+          type="submit"
+          className="w-full"
+          disabled={isSubmitting || isSubmitSuccessful}
+        >
           {isSubmitting ? 'Loading...' : 'Log in'}
         </Button>
         <div className="flex justify-between text-sm">

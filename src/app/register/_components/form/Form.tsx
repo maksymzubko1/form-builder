@@ -32,7 +32,7 @@ export default function RegisterForm() {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isSubmitSuccessful },
   } = form;
 
   const onSubmit = async (data: TRegisterForm) => {
@@ -85,7 +85,7 @@ export default function RegisterForm() {
             tabIndex={2}
             type="submit"
             className="justify-self-center-safe w-full"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isSubmitSuccessful}
           >
             {isSubmitting ? 'Loading...' : 'Register'}
           </Button>

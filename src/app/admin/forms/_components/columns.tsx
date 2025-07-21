@@ -91,7 +91,6 @@ export const formsColumns: ColumnDef<FormListItem>[] = [
           <DropdownMenuContent>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuSeparator />
             <DropdownMenuItem>
               <PublishFormButton
                 formId={form.id}

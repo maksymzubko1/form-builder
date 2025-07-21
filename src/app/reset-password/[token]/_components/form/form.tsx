@@ -32,7 +32,7 @@ export default function ResetTokenForm() {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isSubmitSuccessful },
   } = form;
 
   const onSubmit = async (data: TResetTokenForm) => {
@@ -73,7 +73,7 @@ export default function ResetTokenForm() {
             tabIndex={1}
             type="submit"
             className="justify-self-center-safe w-full"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isSubmitSuccessful}
           >
             {isSubmitting ? 'Loading...' : 'Save'}
           </Button>

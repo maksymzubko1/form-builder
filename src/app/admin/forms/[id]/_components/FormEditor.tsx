@@ -11,6 +11,7 @@ import { Data } from '@measured/puck';
 import { Form } from '@/components/ui/form';
 import { useSidebar } from '@/components/ui/sidebar';
 import { requestUpdateForm } from '@/app/admin/forms/[id]/utils';
+import Error from '@/app/admin/forms/[id]/_components/Error';
 
 interface FormEditorProps {
   initialForm: FormType & { id: string; isPublished: boolean };
@@ -92,16 +93,8 @@ export function FormEditor({ initialForm }: FormEditorProps) {
         </form>
       </Form>
 
-      <div className="flex flex-col">
-        <div className="error mb-2 flex flex-col">
-          {errors.title && <span className="text-destructive text-sm">{errors.title.message}</span>}
-          {errors.description && (
-            <span className="text-destructive text-sm">{errors.description.message}</span>
-          )}
-          {errors.content && (
-            <span className="text-destructive text-sm">{errors.content.message}</span>
-          )}
-        </div>
+      <div className="flex flex-col gap-2">
+        <Error errors={errors} />
         <PuckEditorForm
           isLoading={loading}
           content={content}

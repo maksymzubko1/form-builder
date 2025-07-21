@@ -9,7 +9,7 @@ export function ResetSuccess() {
   return (
     <div className="max-w-sm mx-auto mt-16">
       <h2 className="text-xl font-bold mb-2">Check your email</h2>
-      <p>Password reset link has been sent to your email.</p>
+      <p>If we find your account, you will receive password reset link to your email.</p>
       <Button tabIndex={0} className="mt-4" onClick={() => push(ROUTES.LOGIN)}>
         Go to login
       </Button>

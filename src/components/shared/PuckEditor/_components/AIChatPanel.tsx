@@ -109,7 +109,7 @@ export default function AIChatPanel({
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && input.length > 1) {
       send(input);
     }
   };

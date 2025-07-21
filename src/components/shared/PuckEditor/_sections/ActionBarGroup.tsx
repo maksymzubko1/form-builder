@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActionBar, ComponentData, createUsePuck } from '@measured/puck';
 import { UserConfig } from '@/components/shared/PuckEditor/types';
+import { toast } from 'sonner';
 
 interface Props {
   label?: string;
@@ -20,20 +21,31 @@ const ActionBarGroup = ({ label, children }: Props) => {
   const dispatch = usePuck((s) => s.dispatch);
 
   const handleClick = () => {
-    dispatch({
-      type: 'setData',
-      data: (previous) => {
-        const prevSelectedItems = (previous.root.props?.selectedItems as ComponentData[]) || [];
-        const selectedItems = isItemSelected
-          ? [...prevSelectedItems.filter((item) => item.props.id !== selectedItem.props.id)]
-          : [...prevSelectedItems, selectedItem];
+    if (selectedItem) {
+      const name = selectedItem?.props.id;
+      toast.info(
+        `${name} has been ${isItemSelected ? `removed from AI context` : `selected for AI context`}`,
+        {
+          position: 'bottom-right',
+          closeButton: true,
+        },
+      );
 
-        return {
-          ...previous,
-          root: { ...previous.root, props: { ...previous.root.props, selectedItems } },
-        };
-      },
-    });
+      dispatch({
+        type: 'setData',
+        data: (previous) => {
+          const prevSelectedItems = (previous.root.props?.selectedItems as ComponentData[]) || [];
+          const selectedItems = isItemSelected
+            ? [...prevSelectedItems.filter((item) => item.props.id !== selectedItem.props.id)]
+            : [...prevSelectedItems, selectedItem];
+
+          return {
+            ...previous,
+            root: { ...previous.root, props: { ...previous.root.props, selectedItems } },
+          };
+        },
+      });
+    }
   };
 
   return (

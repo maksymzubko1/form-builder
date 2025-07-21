@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
       const token = await createToken(user.id, 'reset');
-      const resetPasswordLink = `${process.env.NEXTAUTH_URL}/${ROUTES.RESET_TOKEN(token)}`;
+      const resetPasswordLink = `${process.env.NEXTAUTH_URL}${ROUTES.RESET_TOKEN(token)}`;
       await sendResetMail({
         to: email,
         resetUrl: resetPasswordLink,

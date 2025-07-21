@@ -10,12 +10,12 @@ export const FormSchema = z.object({
     .custom<Data>()
     .refine(
       (val): val is Data => !(!val || (Array.isArray(val.content) && val.content.length === 0)),
-      { message: 'Form must have at least one component' },
+      { message: 'Form must have at least one any component' },
     )
     .refine(
       (val): val is Data =>
         val.content.filter((content) => InteractiveItems.includes(content.type)).length !== 0,
-      { message: 'Form must have at least interactive component' },
+      { message: 'Form must have at least one interactive component' },
     ),
 });
 export type FormType = z.infer<typeof FormSchema>;

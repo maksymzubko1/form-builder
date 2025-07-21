@@ -48,24 +48,9 @@ const TextInner: ComponentConfig<TextProps> = {
     size: 'm',
     color: 'default',
   },
-  render: ({ align, color, text, size, puck, id, maxWidth }) => {
-    const selectedFields =
-      document
-        .querySelector('[data-selected-fields]')
-        ?.getAttribute('data-selected-fields')
-        ?.split(',') || [];
-    const isSelected = puck.isEditing && selectedFields.includes(id);
-
+  render: ({ align, color, text, size, maxWidth }) => {
     return (
-      <Section
-        maxWidth={maxWidth}
-        className={`relative ${isSelected ? 'mt-10 border-[1px] border-blue-400' : ''}`}
-      >
-        {isSelected && (
-          <span className="text-white bg-blue-400 absolute bottom-[100%] left-[-2px] px-2 py-1">
-            AI
-          </span>
-        )}
+      <Section maxWidth={maxWidth}>
         <span
           className="flex w-full"
           style={{
